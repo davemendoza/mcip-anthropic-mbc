@@ -2422,12 +2422,10 @@
     a.click();
   }
 
-  // Load seeds when Seed Hub page is first activated
-  const _navOrig = navigate;
-  function navigate(pageId) {
-    _navOrig(pageId);
-    if (pageId === 'seedhub' && sh_allSeeds.length === 0) sh_loadSeeds();
-  }
+  // Load seeds on page load (non-blocking)
+  document.addEventListener('DOMContentLoaded', function() {
+    sh_loadSeeds();
+  });
 
   function sh_loadSeeds() {
     fetch('MCIP_Seed_Hub_min.json')
