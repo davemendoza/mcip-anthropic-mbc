@@ -1,0 +1,349 @@
+{
+  "_meta": {
+    "name": "MCIP Role Determinants",
+    "version": "v1",
+    "purpose": "Evidence-based scoring schema for Anthropic MBC talent. Mirrors SIP authority scoring methodology. All scores integers 1-10. No subjective signals. No follower counts. No engagement metrics.",
+    "governance": "Score on verifiable artifacts only. Every score must map to a named source URL or evidence type.",
+    "formula": {
+      "authority_score": "Trust_Signals * Source_Weight * Recurrence",
+      "influence_score": "Breadth * Recurrence * Authority",
+      "invisible_titan_score": "Authority + Influence - Public_Visibility",
+      "role_fit_score": "weighted_average(all_7_determinants)"
+    },
+    "source": "Derived from live Anthropic MBC job descriptions — Field Marketing Manager, Events Lead Brand, Communications Manager, Head of Portfolio Marketing, Head of Comms Brand Marketing Recruiting. June 2026."
+  },
+
+  "determinant_dimensions": [
+    {
+      "id": "D1",
+      "name": "AI_Context_Fluency",
+      "weight": 0.20,
+      "description": "Evidence of sustained work at or for AI/ML companies. Not adjacent. Not consulting. Direct employment or named client work.",
+      "why_it_matters": "Anthropic JDs consistently require AI/ML industry background. Field Marketing Manager requires 'familiarity with the AI/ML landscape.' Events Lead requires 'experience producing events in the technology, AI, or enterprise software space.' This is a baseline filter.",
+      "evidence_types": [
+        "Current employer is AI/ML company (OpenAI, Mistral, Cohere, HuggingFace, DeepMind, Stability, Inflection)",
+        "Named in AI company press release as communications or marketing contact",
+        "Conference speaker at AI-specific event (NeurIPS, ICML, AI Summit, GTC)",
+        "Byline in AI trade publication (The Information AI vertical, VentureBeat AI, MIT Tech Review)",
+        "Named in AI company case study or customer story"
+      ],
+      "score_anchors": {
+        "10": "Current senior employee at frontier AI lab (OpenAI, Mistral, Google DeepMind, Cohere)",
+        "8": "Former employee at frontier AI lab OR current senior employee at major AI-adjacent tech (AWS AI, Azure AI, GCP AI)",
+        "6": "Named in AI company press materials or conference AI track speaker",
+        "4": "Tangential AI exposure — enterprise tech with AI product line, AI consulting",
+        "2": "No AI context but strong adjacent tech (SaaS, cloud, dev tools)",
+        "1": "No technology context"
+      },
+      "forbidden_signals": ["AI interest expressed in bio", "Follows AI accounts", "Posts about AI on LinkedIn"]
+    },
+    {
+      "id": "D2",
+      "name": "Technical_Audience_Credibility",
+      "weight": 0.18,
+      "description": "Verifiable evidence of successfully communicating to or building programs for technical audiences — developers, engineers, researchers, technical founders.",
+      "why_it_matters": "Anthropic Startups Field Marketing explicitly requires 'credible with founders, with VCs, and with technical audiences.' Enterprise Field Marketing requires 'experience building ABM and field programs selling technical products targeting senior enterprise personas within technical domains.' This is the single hardest signal to fake.",
+      "evidence_types": [
+        "Speaker at developer conference (DevRelCon, APIdays, GitHub Universe, Google I/O, AWS re:Invent)",
+        "Byline in developer-targeted publication (Dev.to, Hacker News featured, DZone, InfoQ)",
+        "Named organizer of technical community event (hackathon, developer meetup, DevRel program)",
+        "LinkedIn articles with substantive technical content engagement from engineers",
+        "Podcast guest on developer/founder-targeted show (Lex Fridman, TBPN, Lenny's Podcast, Acquired)"
+      ],
+      "score_anchors": {
+        "10": "DevRel background + named speaker at 3+ developer conferences + developer community organizer",
+        "8": "Field marketing at dev-tools or API company with named developer program ownership",
+        "6": "Conference speaker at mixed technical/business event with technical track content",
+        "4": "Worked in B2B tech but primarily enterprise executive audience, not developer/engineer",
+        "2": "Consumer or B2C marketing background",
+        "1": "No evidence of technical audience engagement"
+      },
+      "forbidden_signals": ["Claims to 'understand developers'", "Social media engagement from developers"]
+    },
+    {
+      "id": "D3",
+      "name": "Zero_to_One_Build_Evidence",
+      "weight": 0.18,
+      "description": "Pattern of building marketing or communications programs from scratch, across multiple companies. Not inheriting a playbook. Not maintaining an established program.",
+      "why_it_matters": "Anthropic Startups Field Marketing JD explicitly states: 'This is a builder role. Field Marketing at Anthropic is a small, scrappy team and Startups is greenfield — there is no existing playbook for you to inherit.' They also require 'repeat success across multiple companies — we are looking for a pattern of impact, scaling field or demand generation programs in different environments, not a single-company tour.' This is non-negotiable.",
+      "evidence_types": [
+        "Named as first or founding marketing hire at a company (press release, company blog, LinkedIn)",
+        "Named in funding announcement as head of marketing (indicates early-stage hire)",
+        "Conference talk on building a marketing program from scratch (topic as signal)",
+        "Multiple companies with <200 employees on LinkedIn tenure (early-stage pattern)",
+        "Published case study or thought leadership on 0-to-1 program building"
+      ],
+      "score_anchors": {
+        "10": "3+ companies where evidence of 0-to-1 build confirmed via press or named program launch",
+        "8": "2 companies with confirmed early-stage program ownership (sub-50 person team)",
+        "6": "1 confirmed 0-to-1 build at known company, subsequent roles larger scale",
+        "4": "All roles at established companies with existing programs",
+        "2": "Enterprise only — large team, inherited programs",
+        "1": "No pattern of independent program ownership"
+      },
+      "forbidden_signals": ["Self-described as 'builder'", "Resume says 'built from scratch' without corroborating evidence"]
+    },
+    {
+      "id": "D4",
+      "name": "Institutional_Authority",
+      "weight": 0.15,
+      "description": "Verifiable institutional endorsement — jury seat, advisory board, think tank authorship, government advisory role, standards body contributor, fellowship recipient. Mirrors SIP's highest-tier authority signals.",
+      "why_it_matters": "Anthropic's MBC roles are high-visibility externally. Events Lead Brand requires 'experience working with policy, government, or academic audiences on thought leadership events.' Communications roles require interfacing with EU AI Office, UK AISI, policy forums. The candidate who has already operated in these institutional circles is pre-validated.",
+      "evidence_types": [
+        "Named jury member at Cannes Lions, D&AD, Clio Awards, Webby Awards (verified program)",
+        "Named speaker or contributor at World Economic Forum, Aspen Institute, Brookings",
+        "Named contributor to EU AI Act consultation or UK AI Safety Institute advisory",
+        "Think tank paper authorship (Rand, McKinsey Global Institute, WEF white paper)",
+        "Named fellow — Knight Foundation, Shorenstein Center, Reuters Institute",
+        "Named advisory board member at AI policy organization"
+      ],
+      "score_anchors": {
+        "10": "Named contributor to government AI policy document OR Cannes Lions jury member",
+        "9": "Think tank paper author OR named advisory board member at recognized institution",
+        "8": "Named speaker at WEF, Aspen, Brookings, or equivalent",
+        "6": "Industry award recipient (named, competitive selection) OR conference program committee",
+        "4": "Panel moderator or speaker at recognized industry event",
+        "2": "No institutional endorsement beyond employer",
+        "1": "No verifiable institutional signal"
+      },
+      "forbidden_signals": ["Self-identified as thought leader", "Award nominations not confirmed as wins"]
+    },
+    {
+      "id": "D5",
+      "name": "Pipeline_Attribution_Signal",
+      "weight": 0.12,
+      "description": "Named in verifiable revenue or pipeline outcomes — press releases citing program results, customer case studies, partner announcements, earnings call references. This is what separates MarComm from PR fluff.",
+      "why_it_matters": "Anthropic Field Marketing JDs are explicit: 'builds pipeline and accelerates revenue,' 'connecting brand events to awareness, sentiment, and affinity goals,' 'track record of delivering measurable impact.' The Anthropic MBC function is not brand for brand's sake — it serves a commercial mission. Candidates who can point to named, verifiable pipeline outcomes are rare.",
+      "evidence_types": [
+        "Named in company press release announcing program revenue outcomes",
+        "Customer case study where candidate is named as program owner",
+        "Partner announcement citing joint marketing program",
+        "Earnings call or investor day mention of marketing program they owned",
+        "Conference presentation with quantified program outcome (named, verifiable event)"
+      ],
+      "score_anchors": {
+        "10": "Named in earnings call, investor day, or major press coverage citing pipeline outcome",
+        "8": "Customer case study or partner announcement with named program ownership",
+        "6": "Conference presentation with quantified outcome claim (verifiable event, named speaker)",
+        "4": "Company blog post with program metrics (company-published, named author)",
+        "2": "Self-reported outcomes only (LinkedIn posts, resume claims)",
+        "1": "No verifiable pipeline or revenue attribution"
+      },
+      "forbidden_signals": ["Resume bullet points with metrics", "LinkedIn posts claiming results", "Award entries with uncorroborated claims"]
+    },
+    {
+      "id": "D6",
+      "name": "Cross_Functional_Reach",
+      "weight": 0.10,
+      "description": "Evidence of operating across the communications, policy, brand, product, and developer relations intersection — not siloed in one discipline. Anthropic MBC is unusual in requiring all five simultaneously.",
+      "why_it_matters": "Anthropic's CCO and Head of Brand operate under two C-level leaders across three functions (Communications, Brand, Marketing). The Head of Comms Brand Marketing Recruiting JD requires 'deep understanding of each function's talent needs.' Every senior MBC hire needs to speak all three languages. Candidates who have only lived in one silo are disqualifying.",
+      "evidence_types": [
+        "Named speaker at events across 2+ discipline tracks (e.g., communications track + marketing track at same conference)",
+        "Byline across 2+ discipline publications (PR Week + Adweek, or MarTech + DevRel)",
+        "Named in org announcement spanning multiple functions (comms + marketing, or brand + policy)",
+        "Conference organizer across multiple tracks (evidence of breadth)",
+        "Podcast appearances across multiple discipline-specific shows"
+      ],
+      "score_anchors": {
+        "10": "Named in communications AND policy AND brand contexts with verifiable evidence in each",
+        "8": "Named in two discipline contexts with verifiable evidence",
+        "6": "Primary in one discipline with clear adjacency to second (e.g., comms lead who ran product launches)",
+        "4": "Single discipline throughout career",
+        "2": "Narrow functional silo with no cross-functional signal",
+        "1": "No cross-functional evidence"
+      },
+      "forbidden_signals": ["Claims to be 'full-stack marketer'", "LinkedIn headline spanning multiple disciplines without evidence"]
+    },
+    {
+      "id": "D7",
+      "name": "Invisible_Titan_Score",
+      "weight": 0.07,
+      "description": "The MCIP equivalent of SIP's Invisible Titan signal. High authority, high influence, low public visibility. The candidate who is doing serious institutional work without a large social media presence. These are the hardest to find and the highest-value placements.",
+      "why_it_matters": "The best MBC operators at frontier AI labs are not LinkedIn influencers. They are policy shapers, institutional connectors, and program builders who operate below the social media radar but have verifiable institutional footprints. Finding them requires non-LinkedIn sourcing — exactly what MCIP is built to do.",
+      "formula": "Invisible_Titan_Score = (D4_Institutional_Authority * 0.5) + (D1_AI_Context * 0.3) + (D3_Zero_to_One * 0.2) - Public_Visibility_Score",
+      "public_visibility_scoring": {
+        "10": "Major newsletter author, top podcast host, 50k+ LinkedIn followers",
+        "7": "Regular conference speaker, active public writer",
+        "5": "Occasional speaker, moderate LinkedIn presence",
+        "3": "Named in press but not self-publishing",
+        "1": "No public presence — found only via institutional records"
+      },
+      "score_anchors": {
+        "10": "Cannes Lions jury + EU AI policy contributor + zero social media presence",
+        "8": "Think tank author + multiple 0-to-1 builds + low LinkedIn activity",
+        "6": "Named in institutional contexts but unknown in MarComm circles",
+        "4": "Moderate authority + moderate visibility (conference speaker with active LinkedIn)",
+        "2": "High visibility but low institutional authority (newsletter writer, no jury/advisory signals)",
+        "1": "Pure social media presence — no institutional signals"
+      }
+    }
+  ],
+
+  "role_family_weights": {
+    "Field Marketing": {
+      "D1_AI_Context_Fluency": 0.22,
+      "D2_Technical_Audience_Credibility": 0.22,
+      "D3_Zero_to_One_Build": 0.20,
+      "D4_Institutional_Authority": 0.10,
+      "D5_Pipeline_Attribution": 0.16,
+      "D6_Cross_Functional_Reach": 0.06,
+      "D7_Invisible_Titan": 0.04
+    },
+    "Communications": {
+      "D1_AI_Context_Fluency": 0.18,
+      "D2_Technical_Audience_Credibility": 0.14,
+      "D3_Zero_to_One_Build": 0.14,
+      "D4_Institutional_Authority": 0.22,
+      "D5_Pipeline_Attribution": 0.08,
+      "D6_Cross_Functional_Reach": 0.16,
+      "D7_Invisible_Titan": 0.08
+    },
+    "Brand & Creative": {
+      "D1_AI_Context_Fluency": 0.16,
+      "D2_Technical_Audience_Credibility": 0.10,
+      "D3_Zero_to_One_Build": 0.20,
+      "D4_Institutional_Authority": 0.20,
+      "D5_Pipeline_Attribution": 0.06,
+      "D6_Cross_Functional_Reach": 0.18,
+      "D7_Invisible_Titan": 0.10
+    },
+    "DevRel": {
+      "D1_AI_Context_Fluency": 0.25,
+      "D2_Technical_Audience_Credibility": 0.30,
+      "D3_Zero_to_One_Build": 0.18,
+      "D4_Institutional_Authority": 0.08,
+      "D5_Pipeline_Attribution": 0.06,
+      "D6_Cross_Functional_Reach": 0.08,
+      "D7_Invisible_Titan": 0.05
+    },
+    "Policy Comms": {
+      "D1_AI_Context_Fluency": 0.20,
+      "D2_Technical_Audience_Credibility": 0.10,
+      "D3_Zero_to_One_Build": 0.10,
+      "D4_Institutional_Authority": 0.30,
+      "D5_Pipeline_Attribution": 0.04,
+      "D6_Cross_Functional_Reach": 0.20,
+      "D7_Invisible_Titan": 0.06
+    },
+    "PMM": {
+      "D1_AI_Context_Fluency": 0.22,
+      "D2_Technical_Audience_Credibility": 0.20,
+      "D3_Zero_to_One_Build": 0.18,
+      "D4_Institutional_Authority": 0.08,
+      "D5_Pipeline_Attribution": 0.18,
+      "D6_Cross_Functional_Reach": 0.10,
+      "D7_Invisible_Titan": 0.04
+    },
+    "Events": {
+      "D1_AI_Context_Fluency": 0.18,
+      "D2_Technical_Audience_Credibility": 0.14,
+      "D3_Zero_to_One_Build": 0.22,
+      "D4_Institutional_Authority": 0.16,
+      "D5_Pipeline_Attribution": 0.14,
+      "D6_Cross_Functional_Reach": 0.12,
+      "D7_Invisible_Titan": 0.04
+    },
+    "Research Comms": {
+      "D1_AI_Context_Fluency": 0.28,
+      "D2_Technical_Audience_Credibility": 0.22,
+      "D3_Zero_to_One_Build": 0.12,
+      "D4_Institutional_Authority": 0.20,
+      "D5_Pipeline_Attribution": 0.04,
+      "D6_Cross_Functional_Reach": 0.10,
+      "D7_Invisible_Titan": 0.04
+    }
+  },
+
+  "tier_thresholds": {
+    "Tier_1": {
+      "min_role_fit_score": 7.5,
+      "required_dimensions": ["D1_min_6", "D3_min_6"],
+      "label": "Immediate outreach — strong evidence match to Anthropic MBC profile"
+    },
+    "Tier_2": {
+      "min_role_fit_score": 5.5,
+      "required_dimensions": ["D1_min_4"],
+      "label": "Pipeline — build relationship, watch for role fit development"
+    },
+    "Tier_3": {
+      "min_role_fit_score": 0,
+      "required_dimensions": [],
+      "label": "Monitor — early signal, insufficient evidence for active outreach"
+    }
+  },
+
+  "command_console_queries": [
+    {
+      "id": "Q1",
+      "label": "Invisible Policy Operators",
+      "description": "High D4 Institutional Authority + Low public visibility. EU AI Office, UK AISI, think tank authors who have never appeared on a MarComm conference stage.",
+      "filter": {"D4_min": 8, "public_visibility_max": 3, "categories": ["Hidden Authority", "Policy Intelligence", "Hidden Authority Surface"]}
+    },
+    {
+      "id": "Q2",
+      "label": "Technical Audience Builders",
+      "description": "High D2 + High D3. Candidates who have built 0-to-1 developer programs and can prove technical credibility.",
+      "filter": {"D2_min": 7, "D3_min": 7, "categories": ["Community Surface", "Conference Ecosystem", "Academic Intelligence"]}
+    },
+    {
+      "id": "Q3",
+      "label": "Pre-LinkedIn Field Marketing",
+      "description": "Field Marketing leads sourced before LinkedIn was consulted. Press wire, conference roster, design credit.",
+      "filter": {"role_family": "Field Marketing", "source_not": "LinkedIn", "categories": ["Press Intelligence", "Conference Ecosystem", "VC Ecosystem"]}
+    },
+    {
+      "id": "Q4",
+      "label": "Competitor MBC Intelligence",
+      "description": "Named MBC talent at OpenAI, Mistral, Google DeepMind, Cohere — mapped to equivalent Anthropic open roles.",
+      "filter": {"categories": ["Competitor Intelligence"], "D1_min": 8}
+    },
+    {
+      "id": "Q5",
+      "label": "Brussels Pipeline",
+      "description": "EU AI policy and communications talent in Belgium, France, Germany. EU AI Office, Cannes Lions EMEA, policy forums.",
+      "filter": {"geography": ["Belgium", "France", "Germany"], "categories": ["Policy Intelligence", "Conference Ecosystem", "Hidden Authority"]}
+    },
+    {
+      "id": "Q6",
+      "label": "Japan Community Builders",
+      "description": "Claude and AI community organizers in Japan. connpass event organizers, Tokyo AI meetup leads, Anthropic Japan ecosystem.",
+      "filter": {"geography": ["Japan"], "categories": ["Community Surface", "International Intelligence"]}
+    },
+    {
+      "id": "Q7",
+      "label": "Research Comms Crossover",
+      "description": "Candidates who bridge technical AI research and public communication. ArXiv acknowledgment surfaces, AI publication bylines, research podcast guests.",
+      "filter": {"role_family": "Research Comms", "categories": ["Academic Intelligence", "Podcast Ecosystem", "Press Intelligence"], "D1_min": 7, "D2_min": 6}
+    },
+    {
+      "id": "Q8",
+      "label": "Design Credit Hidden Authority",
+      "description": "Motion designers and design engineers found via Brand New, Motionographer, Awwwards — not via LinkedIn or agency sites.",
+      "filter": {"categories": ["Design Credit Database"], "role_family": ["Motion Design", "Brand & Creative", "Design Engineering"]}
+    }
+  ],
+
+  "scoring_governance": {
+    "forbidden_signals": [
+      "Followers count",
+      "LinkedIn connection count",
+      "Post engagement (likes, comments, shares)",
+      "Newsletter subscriber count",
+      "Podcast download count",
+      "Award nominations (wins only)",
+      "Self-described expertise",
+      "Resume bullet points without corroborating artifact URL"
+    ],
+    "required_for_tier_1": [
+      "Minimum one artifact URL per scored dimension",
+      "D1 score >= 6 (AI context is non-negotiable for Anthropic)",
+      "D3 score >= 6 (builder pattern required — Anthropic explicitly states this)"
+    ],
+    "score_integrity_rules": [
+      "All scores must be integers 1-10",
+      "Every score >= 7 requires a named artifact URL in evidence field",
+      "Public visibility score must be scored independently of authority (high authority + low visibility = highest Invisible Titan value)",
+      "Role_fit_score = weighted average using role_family_weights for the specific role family"
+    ]
+  }
+}
