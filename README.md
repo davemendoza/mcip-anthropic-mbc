@@ -165,12 +165,10 @@ and which are discovery-only surfaces.
 
 ---
 
-## Co-inventors
+## Inventor
 
-Dave Mendoza, Talent Engine.io — platform architecture, seed hub design, scoring governance
-Chris Galy — co-inventor, Signal Intelligence Platform (SIP) and Talent Intelligence Platform (TIP)
+Dave Mendoza
+Talent Engine.io — Castle Rock, CO
 
-Patent-pending: Constraint-Based Evidence Validation System
-Patent-pending: Multi-Entity Simulation and Talent Optimization System
-
-MCIP is a domain application of the SIP architecture, not a separate patent filing.
+Platform architecture, seed hub design, influence classification,
+scoring governance, and creative sourcing methodology.
