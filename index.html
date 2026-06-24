@@ -879,34 +879,7 @@
 
 
   /* ── Drawer system ── */
-  [data-tip] { position: relative; cursor: help; }
-  [data-tip]::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1a1730;
-    color: #e5e7eb;
-    font-size: 11px;
-    line-height: 1.5;
-    padding: 7px 10px;
-    border-radius: 6px;
-    border: 1px solid rgba(124,58,237,0.35);
-    width: max-content;
-    max-width: 240px;
-    white-space: normal;
-    text-align: left;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    font-weight: 400;
-    letter-spacing: 0;
-    text-transform: none;
-  }
-  [data-tip]:hover::after { opacity: 1; }
+  [data-tip] { cursor: help; }
   #mcip-drawer-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9000; }
   #mcip-drawer { display:none; position:fixed; top:0; right:0; width:480px; height:100vh; background:#13111f; border-left:1px solid rgba(124,58,237,0.3); z-index:9001; overflow-y:auto; box-shadow:-8px 0 40px rgba(0,0,0,0.6); }
   #mcip-profile-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9100; }
@@ -1148,8 +1121,8 @@
     <div>
       <div class="page-eyebrow">MCIP · Talent Pipeline</div>
       <div class="page-title">Role Intelligence</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"Recruiters should behave like marketers. Discover expertise signals that don't appear on resumes."</div>
       <div class="page-desc">801 named leads mapped to 19 Anthropic MBC open roles. Each with a personalized outreach hook.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"Recruiters should behave like marketers. Discover expertise signals that don't appear on resumes."</div>
     </div>
     <div class="page-actions">
       <button class="btn">Filter by Role</button>
@@ -1169,7 +1142,7 @@
           <div class="source-row header" style="grid-template-columns:1fr 60px 80px 80px">
             <span>Role</span><span style="text-align:right">Leads</span><span style="text-align:right">Tier 1</span><span style="text-align:right">Status</span>
           </div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px" onclick="">
+          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px" style="cursor:pointer">
             <span class="source-name">Field Marketing Manager</span><span class="source-count">61</span><span class="source-leads">18</span><span><span class="refresh-badge refresh-daily">STRONG</span></span>
           </div>
           <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px">
@@ -1215,7 +1188,7 @@
           <div class="card-meta">Highest confidence · Hooks ready</div>
         </div>
         <div class="person-list">
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Julia Hoffmann')">
             <div class="person-rank">1</div>
             <div class="avatar">JH</div>
             <div class="person-info">
@@ -1227,7 +1200,7 @@
               <span class="pill pill-emerald">C:10</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Thomas Regnier')">
             <div class="person-rank">2</div>
             <div class="avatar">TR</div>
             <div class="person-info">
@@ -1239,7 +1212,7 @@
               <span class="pill pill-emerald">C:10</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Jade Leung')">
             <div class="person-rank">3</div>
             <div class="avatar">JL</div>
             <div class="person-info">
@@ -1251,7 +1224,7 @@
               <span class="pill pill-indigo">Brussels</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Charlotte Stix')">
             <div class="person-rank">4</div>
             <div class="avatar">CS</div>
             <div class="person-info">
@@ -1263,7 +1236,7 @@
               <span class="pill pill-emerald">C:9</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Neel Nanda')">
             <div class="person-rank">5</div>
             <div class="avatar">NN</div>
             <div class="person-info">
@@ -1275,7 +1248,7 @@
               <span class="pill pill-sapphire">Eng Edit</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Andrew McKechnie')">
             <div class="person-rank">6</div>
             <div class="avatar">AM</div>
             <div class="person-info">
@@ -1287,7 +1260,7 @@
               <span class="pill pill-emerald">C:10</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Yasuhiro Arai')">
             <div class="person-rank">7</div>
             <div class="avatar">YA</div>
             <div class="person-info">
@@ -1299,7 +1272,7 @@
               <span class="pill pill-sapphire">Japan</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Paul Christiano')">
             <div class="person-rank">8</div>
             <div class="avatar">PC</div>
             <div class="person-info">
@@ -1346,8 +1319,8 @@
     <div>
       <div class="page-eyebrow">MCIP · Authority Layer</div>
       <div class="page-title">Authority Intelligence</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"Influence precedes engagement. Surface demonstrated impact instead of relying on pedigree. Reputation creates access."</div>
       <div class="page-desc">Who has earned authority in AI communications, brand, and policy. Ranked by evidence — not followers.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"Influence precedes engagement. Surface demonstrated impact instead of relying on pedigree. Reputation creates access."</div>
     </div>
     <div class="page-actions">
       <button class="btn">Filter by Function</button>
@@ -1368,7 +1341,7 @@
           <div class="card-meta">Sorted by evidence · Trust Signals × Source Weight</div>
         </div>
         <div class="person-list">
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Jack Clark')">
             <div class="person-rank">1</div>
             <div class="avatar">JC</div>
             <div class="person-info">
@@ -1380,7 +1353,7 @@
               <span class="pill pill-indigo">Inf:10</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Giada Pistilli')">
             <div class="person-rank">2</div>
             <div class="avatar">GP</div>
             <div class="person-info">
@@ -1392,7 +1365,7 @@
               <span class="pill pill-emerald">FAccT PC</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Tim Belonax')">
             <div class="person-rank">3</div>
             <div class="avatar">TB</div>
             <div class="person-info">
@@ -1404,7 +1377,7 @@
               <span class="pill pill-emerald">CONFIRMED</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('David Spinks')">
             <div class="person-rank">4</div>
             <div class="avatar">DS</div>
             <div class="person-info">
@@ -1416,7 +1389,7 @@
               <span class="pill pill-sapphire">CONNECTOR</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Lenny Rachitsky')">
             <div class="person-rank">5</div>
             <div class="avatar">LR</div>
             <div class="person-info">
@@ -1428,7 +1401,7 @@
               <span class="pill pill-sapphire">PMM MAP</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Arvind Narayanan')">
             <div class="person-rank">6</div>
             <div class="avatar">AN</div>
             <div class="person-info">
@@ -1440,7 +1413,7 @@
               <span class="pill pill-indigo">Velocity</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Alex Albert')">
             <div class="person-rank">7</div>
             <div class="avatar">AA</div>
             <div class="person-info">
@@ -1452,7 +1425,7 @@
               <span class="pill pill-emerald">CONFIRMED</span>
             </div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Dex Hunter-Torricke')">
             <div class="person-rank">8</div>
             <div class="avatar">DH</div>
             <div class="person-info">
@@ -1515,8 +1488,8 @@
     <div>
       <div class="page-eyebrow">MCIP · Community Layer</div>
       <div class="page-title">Community Intelligence</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"Trust is the first stage of recruiting. Reveal the networks where expertise concentrates. Trust travels through communities faster than messaging."</div>
       <div class="page-desc">Where AI MBC talent gathers, learns, and becomes influential — before they appear on LinkedIn.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"Trust is the first stage of recruiting. Reveal the networks where expertise concentrates. Trust travels through communities faster than messaging."</div>
     </div>
   </div>
 
@@ -1529,7 +1502,7 @@
           <div class="card-meta">Connector nodes · Not candidates</div>
         </div>
         <div class="person-list">
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('swyx')">
             <div class="avatar">SW</div>
             <div class="person-info">
               <div class="person-name">swyx · Shawn Wang</div>
@@ -1537,7 +1510,7 @@
             </div>
             <div class="score-pills"><span class="pill pill-violet">Ref:99</span><span class="pill pill-sapphire">DevRel map</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('David Spinks')">
             <div class="avatar">DS</div>
             <div class="person-info">
               <div class="person-name">David Spinks</div>
@@ -1545,7 +1518,7 @@
             </div>
             <div class="score-pills"><span class="pill pill-violet">Ref:99</span><span class="pill pill-sapphire">Community map</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Lenny Rachitsky')">
             <div class="avatar">LR</div>
             <div class="person-info">
               <div class="person-name">Lenny Rachitsky</div>
@@ -1553,7 +1526,7 @@
             </div>
             <div class="score-pills"><span class="pill pill-violet">Ref:98</span><span class="pill pill-sapphire">PMM map</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Dex Hunter-Torricke')">
             <div class="avatar">DH</div>
             <div class="person-info">
               <div class="person-name">Dex Hunter-Torricke</div>
@@ -1561,7 +1534,7 @@
             </div>
             <div class="score-pills"><span class="pill pill-violet">Ref:98</span><span class="pill pill-sapphire">Exec Comms map</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Camille Ricketts')">
             <div class="avatar">CR</div>
             <div class="person-info">
               <div class="person-name">Camille Ricketts</div>
@@ -1569,7 +1542,7 @@
             </div>
             <div class="score-pills"><span class="pill pill-violet">Ref:97</span><span class="pill pill-sapphire">Editorial map</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Bailey Richardson')">
             <div class="avatar">BR</div>
             <div class="person-info">
               <div class="person-name">Bailey Richardson</div>
@@ -1650,8 +1623,8 @@
     <div>
       <div class="page-eyebrow">MCIP · Discovery Engine</div>
       <div class="page-title">Ecosystem Discovery</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"Understand the market before engaging the market. Reveal overlooked expertise before competitors discover it."</div>
       <div class="page-desc">Where the intelligence comes from. 688 active surfaces across 9 categories. This is how the platform scales.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"Understand the market before engaging the market. Reveal overlooked expertise before competitors discover it."</div>
     </div>
     <div class="page-actions">
       <button class="btn">Filter Category</button>
@@ -1869,8 +1842,8 @@
     <div>
       <div class="page-eyebrow">MCIP · Talent Flow</div>
       <div class="page-title">Talent Flow</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"The strongest pipelines are built before a requisition exists. Map where talent comes from before you need it."</div>
       <div class="page-desc">Where Anthropic-caliber communicators come from. Origin paths, not just current employers.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"The strongest pipelines are built before a requisition exists. Map where talent comes from before you need it."</div>
     </div>
   </div>
 
@@ -1879,27 +1852,27 @@
       <div class="card">
         <div class="card-header"><div class="card-title">Talent Origin Paths — Confirmed Anthropic Staff</div><div class="card-meta">Where the team came from</div></div>
         <div style="padding:0">
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Kim Bost')">
             <div class="avatar">KB</div>
             <div class="person-info"><div class="person-name">Kim Bost</div><div class="person-role">Pentagram → NYT Art Director → Anthropic Design</div></div>
             <div class="score-pills"><span class="pill pill-violet">CONFIRMED</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Everett Katigbak')">
             <div class="avatar">EK</div>
             <div class="person-info"><div class="person-name">Everett Katigbak</div><div class="person-role">Facebook/Meta Brand → Anthropic Creative Director (0→20 team)</div></div>
             <div class="score-pills"><span class="pill pill-violet">CONFIRMED</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('David Soria Parra')">
             <div class="avatar">DS</div>
             <div class="person-info"><div class="person-name">David Soria Parra</div><div class="person-role">PHP-FIG open source → Anthropic MCP co-creator (110M downloads/mo)</div></div>
             <div class="score-pills"><span class="pill pill-violet">CONFIRMED</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Giada Pistilli')">
             <div class="avatar">GP</div>
             <div class="person-info"><div class="person-name">Giada Pistilli</div><div class="person-role">Philosophy PhD → HF Principal Ethicist → Mistral AI ML Lead</div></div>
             <div class="score-pills"><span class="pill pill-violet">CONFIRMED</span></div>
           </div>
-          <div class="person-item">
+          <div class="person-item" style="cursor:pointer" onclick="mcip_openPersonProfile('Alex Albert')">
             <div class="avatar">AA</div>
             <div class="person-info"><div class="person-name">Alex Albert</div><div class="person-role">Independent Prompt Engineer → Anthropic Head of DevRel</div></div>
             <div class="score-pills"><span class="pill pill-violet">CONFIRMED</span></div>
@@ -1930,14 +1903,14 @@
     <div>
       <div class="page-eyebrow">MCIP · Invisible Titans</div>
       <div class="page-title">Invisible Titans</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"Hidden talent isn't scarce — it is undiscovered. Competitive advantage comes from finding expertise others overlook. Identify high-impact talent obscured by traditional credential filters."</div>
       <div class="page-desc">High-authority, low-visibility operators. Invisible Titan Score = Authority + Influence − Public Visibility. High score = priority find.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"Hidden talent isn't scarce — it is undiscovered. Competitive advantage comes from finding expertise others overlook. Identify high-impact talent obscured by traditional credential filters."</div>
     </div>
   </div>
 
   <div class="page-body">
     <div class="titan-grid">
-      <div class="titan-card">
+      <div class="titan-card" style="cursor:pointer" onclick="mcip_openPersonProfile('Dex Hunter-Torricke')">
         <div class="titan-badge">TITAN · Score 98</div>
         <div class="titan-name">Dex Hunter-Torricke</div>
         <div class="titan-context">Independent · ex-Facebook Head of Exec Comms · ex-Google First Exec Speechwriter</div>
@@ -1949,7 +1922,7 @@
           <span class="pill pill-rose">Ref:10</span>
         </div>
       </div>
-      <div class="titan-card">
+      <div class="titan-card" style="cursor:pointer" onclick="mcip_openPersonProfile('Olivia Kingsley')">
         <div class="titan-badge">TITAN · Score 95</div>
         <div class="titan-name">Olivia Kingsley</div>
         <div class="titan-context">Writer, Brand Team · Anthropic</div>
@@ -1960,7 +1933,7 @@
           <span class="pill pill-amber">Vis:1</span>
         </div>
       </div>
-      <div class="titan-card">
+      <div class="titan-card" style="cursor:pointer" onclick="mcip_openPersonProfile('Kris Sowersby')">
         <div class="titan-badge">TITAN · Score 94</div>
         <div class="titan-name">Kris Sowersby</div>
         <div class="titan-context">Klim Type Foundry · Designed OpenAI's Signifier &amp; Söhne typefaces</div>
@@ -1971,7 +1944,7 @@
           <span class="pill pill-amber">Vis:1</span>
         </div>
       </div>
-      <div class="titan-card">
+      <div class="titan-card" style="cursor:pointer" onclick="mcip_openPersonProfile('Justin Spahr-Summers')">
         <div class="titan-badge">TITAN · Score 92</div>
         <div class="titan-name">Justin Spahr-Summers</div>
         <div class="titan-context">MCP Co-Creator · Anthropic (jspahrsummers on GitHub/PyPI)</div>
@@ -1982,7 +1955,7 @@
           <span class="pill pill-amber">Vis:2</span>
         </div>
       </div>
-      <div class="titan-card">
+      <div class="titan-card" style="cursor:pointer" onclick="mcip_openPersonProfile('Liane Lovitt')">
         <div class="titan-badge">TITAN · Score 90</div>
         <div class="titan-name">Liane Lovitt</div>
         <div class="titan-context">Anthropic — Named in Constitutional AI paper acknowledgments</div>
@@ -1993,7 +1966,7 @@
           <span class="pill pill-amber">Vis:1</span>
         </div>
       </div>
-      <div class="titan-card">
+      <div class="titan-card" style="cursor:pointer" onclick="mcip_openPersonProfile('Thomas I. Liao')">
         <div class="titan-badge">TITAN · Score 88</div>
         <div class="titan-name">Thomas I. Liao</div>
         <div class="titan-context">Anthropic — Named in Collective Constitutional AI (arXiv 2406.07814)</div>
@@ -2015,8 +1988,8 @@
     <div>
       <div class="page-eyebrow">MCIP · Command Console</div>
       <div class="page-title">Command Console</div>
+      <div style="font-size:13px;color:var(--violet-light);font-style:italic;margin-top:8px;opacity:1;border-left:2px solid var(--violet-light);padding:6px 10px;background:rgba(139,92,246,0.07);border-radius:0 4px 4px 0;display:block;line-height:1.5;">"Automate tasks. Amplify relationships. Transform sourcing into audience intelligence."</div>
       <div class="page-desc">Graph-driven research across 688 MBC discovery surfaces. Ask ecosystem questions, not database queries.</div>
-      <div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:6px;opacity:0.85;">"Automate tasks. Amplify relationships. Transform sourcing into audience intelligence."</div>
     </div>
     <div class="page-actions">
       <span style="font-size:12px;color:var(--text-muted);">⌘K to focus</span>
@@ -2251,14 +2224,14 @@
             <span style="font-size:11px;color:var(--text-muted);text-align:right;letter-spacing:.08em;text-transform:uppercase;">Tier 1</span>
             <span style="font-size:11px;color:var(--text-muted);text-align:right;letter-spacing:.08em;text-transform:uppercase;">Status</span>
           </div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Field Marketing Manager</span><span class="source-count">61</span><span class="source-leads">18</span><span><span class="refresh-badge refresh-daily" data-tip="STRONG: 18 T1 leads ready for outreach.">STRONG</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Head of Customer Programs</span><span class="source-count">14</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: adequate pipeline, T1 leads identified.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">ANZ Communications Lead</span><span class="source-count">13</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Yasuhiro Arai (Japan) is top T1 lead.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Internal Comms Manager, Policy</span><span class="source-count">11</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Thomas Regnier + Jade Leung as T1 leads.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Copy Lead, Enterprise</span><span class="source-count">15</span><span class="source-leads">5</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: editorial writers with B2B tech background.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Engineering Editorial Lead</span><span class="source-count">13</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Neel Nanda + Paul Christiano as T1 leads.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Head of Anthropic Creative</span><span class="source-count">10</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Julia Hoffmann + Andrew McKechnie as T1 leads.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Art Director, Enterprise</span><span class="source-count">12</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Kim Bost pathway traced through Pentagram → NYT → Anthropic.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Field Marketing Manager','role')"><span class="source-name">Field Marketing Manager</span><span class="source-count">61</span><span class="source-leads">18</span><span><span class="refresh-badge refresh-daily" data-tip="STRONG: 18 T1 leads ready for outreach.">STRONG</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Head of Customer Programs','role')"><span class="source-name">Head of Customer Programs</span><span class="source-count">14</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: adequate pipeline, T1 leads identified.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('ANZ Communications Lead','role')"><span class="source-name">ANZ Communications Lead</span><span class="source-count">13</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Yasuhiro Arai (Japan) is top T1 lead.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Internal Comms Manager, Policy','role')"><span class="source-name">Internal Comms Manager, Policy</span><span class="source-count">11</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Thomas Regnier + Jade Leung as T1 leads.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Copy Lead, Enterprise','role')"><span class="source-name">Copy Lead, Enterprise</span><span class="source-count">15</span><span class="source-leads">5</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: editorial writers with B2B tech background.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Engineering Editorial Lead','role')"><span class="source-name">Engineering Editorial Lead</span><span class="source-count">13</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Neel Nanda + Paul Christiano as T1 leads.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Head of Anthropic Creative','role')"><span class="source-name">Head of Anthropic Creative</span><span class="source-count">10</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Julia Hoffmann + Andrew McKechnie as T1 leads.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Art Director, Enterprise','role')"><span class="source-name">Art Director, Enterprise</span><span class="source-count">12</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Kim Bost pathway traced through Pentagram → NYT → Anthropic.">OK</span></span></div>
           <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Communications Mgr, Research</span><span class="source-count">25</span><span class="source-leads">7</span><span><span class="refresh-badge refresh-daily" data-tip="STRONG: arXiv acknowledgment methodology identified 25 leads for this role.">STRONG</span></span></div>
         </div>
         <div>
@@ -2268,15 +2241,15 @@
             <span style="font-size:11px;color:var(--text-muted);text-align:right;letter-spacing:.08em;text-transform:uppercase;">Tier 1</span>
             <span style="font-size:11px;color:var(--text-muted);text-align:right;letter-spacing:.08em;text-transform:uppercase;">Status</span>
           </div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Motion Designer, Core Brand</span><span class="source-count">7</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-monthly" data-tip="BUILD: School of Motion alumni surface active. Needs more T1 development.">BUILD</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Design Engineer, Web</span><span class="source-count">4</span><span class="source-leads">2</span><span><span class="refresh-badge refresh-monthly" data-tip="BUILD: Kris Sowersby (type foundry) identified — Fonts in Use methodology.">BUILD</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Research Ops, Ext. Artifacts</span><span class="source-count">5</span><span class="source-leads">2</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Liane Lovitt + Thomas I. Liao confirmed via arXiv acknowledgment.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Developer Relations Engineer</span><span class="source-count">22</span><span class="source-leads">6</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Alex Albert + David Soria Parra confirmed. Connpass Japan surface active.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Motion Designer, Core Brand','role')"><span class="source-name">Motion Designer, Core Brand</span><span class="source-count">7</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-monthly" data-tip="BUILD: School of Motion alumni surface active. Needs more T1 development.">BUILD</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Design Engineer, Web','role')"><span class="source-name">Design Engineer, Web</span><span class="source-count">4</span><span class="source-leads">2</span><span><span class="refresh-badge refresh-monthly" data-tip="BUILD: Kris Sowersby (type foundry) identified — Fonts in Use methodology.">BUILD</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Research Ops, Ext. Artifacts','role')"><span class="source-name">Research Ops, Ext. Artifacts</span><span class="source-count">5</span><span class="source-leads">2</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Liane Lovitt + Thomas I. Liao confirmed via arXiv acknowledgment.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Developer Relations Engineer','role')"><span class="source-name">Developer Relations Engineer</span><span class="source-count">22</span><span class="source-leads">6</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Alex Albert + David Soria Parra confirmed. Connpass Japan surface active.">OK</span></span></div>
           <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Policy Comms Specialist</span><span class="source-count">18</span><span class="source-leads">5</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Charlotte Stix + Jade Leung as dual Brussels leads.">OK</span></span></div>
           <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">PMM, Enterprise</span><span class="source-count">19</span><span class="source-leads">5</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Lenny's Newsletter alumni = primary PMM sourcing surface.">OK</span></span></div>
           <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">PMM, Developer Platform</span><span class="source-count">11</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Latent Space / AI Engineer Summit alums are primary surface.">OK</span></span></div>
           <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Global Events Manager</span><span class="source-count">16</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: CMX Summit alumni (David Spinks network) primary surface.">OK</span></span></div>
-          <div class="source-row" style="grid-template-columns:1fr 60px 80px 80px"><span class="source-name">Head of Customer Programs</span><span class="source-count">9</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Community-adjacent CS comms surface partially mapped.">OK</span></span></div>
+          <div class="source-row" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onclick="mcip_openLeadsDrawer('Head of Customer Programs','role')"><span class="source-name">Head of Customer Programs</span><span class="source-count">9</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Community-adjacent CS comms surface partially mapped.">OK</span></span></div>
         </div>
       </div>
     </div>
@@ -2774,7 +2747,7 @@
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">${q.label}</div>
           <div style="font-size:11px;color:var(--text-muted);">${q.role_family} · ${q.mbc_roles[0]}</div>
-          ${q.lars ? `<div style="font-size:10px;color:var(--violet-light);font-style:italic;margin-top:3px;opacity:0.8;">${q.lars}</div>` : ''}
+          ${q.lars ? `<div style="font-size:12px;color:var(--violet-light);font-style:italic;margin-top:5px;opacity:1;border-left:2px solid var(--violet-light);padding:4px 8px;background:rgba(139,92,246,0.07);border-radius:0 3px 3px 0;line-height:1.4;">${q.lars}</div>` : ''}
         </div>
         <span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(124,58,237,0.15);color:var(--violet-light);white-space:nowrap;margin-top:2px;">${q.people.length} leads</span>
       </div>`).join('');
@@ -3270,6 +3243,125 @@
         el.textContent = 'Could not load seed data. When running locally, serve via a local server (python3 -m http.server). On GitHub Pages this loads automatically.';
       });
   }
+
+
+  // ── Lead drill-down data store ────────────────────────────────────────────
+  const LEADS_BY_ROLE = {
+    'Field Marketing Manager':          { total:61,  t1:18, names:['Julia Hoffmann','Andrew McKechnie','Giada Pistilli','Charlotte Stix','Tim Belonax','Camille Ricketts','Bailey Richardson','Kim Bost'] },
+    'Head of Customer Programs':        { total:14,  t1:4,  names:['David Spinks','Bailey Richardson','Camille Ricketts','Lenny Rachitsky'] },
+    'ANZ Communications Lead':          { total:13,  t1:4,  names:['Yasuhiro Arai','swyx','David Spinks'] },
+    'Internal Comms Manager, Policy':   { total:11,  t1:3,  names:['Thomas Regnier','Jade Leung','Charlotte Stix'] },
+    'Copy Lead, Enterprise':            { total:15,  t1:5,  names:['Amanda Askell','Olivia Kingsley','Bailey Richardson','Camille Ricketts'] },
+    'Engineering Editorial Lead':       { total:13,  t1:4,  names:['Neel Nanda','Paul Christiano','Jack Clark','Arvind Narayanan'] },
+    'Head of Anthropic Creative':       { total:10,  t1:4,  names:['Julia Hoffmann','Andrew McKechnie','Everett Katigbak','Kim Bost'] },
+    'Art Director, Enterprise':         { total:12,  t1:4,  names:['Kim Bost','Everett Katigbak','Tim Belonax','Justin Spahr-Summers'] },
+    'Communications Manager, Research': { total:25,  t1:7,  names:['Paul Christiano','Jack Clark','Neel Nanda','Amanda Askell','Liane Lovitt'] },
+    'Motion Designer, Core Brand':      { total:7,   t1:3,  names:['Tim Belonax','Kim Bost','Kris Sowersby'] },
+    'Design Engineer, Web':             { total:4,   t1:2,  names:['Justin Spahr-Summers','David Soria Parra'] },
+    'Research Operations, Ext. Artifacts': { total:5, t1:2, names:['Liane Lovitt','Thomas I. Liao'] },
+    'Head of Brand & Creative':         { total:8,   t1:3,  names:['Everett Katigbak','Kim Bost','Tim Belonax'] },
+    'EU Policy Comms Lead':             { total:9,   t1:3,  names:['Thomas Regnier','Jade Leung','Charlotte Stix'] },
+    'DevRel Lead':                      { total:22,  t1:6,  names:['Alex Albert','David Soria Parra','Justin Spahr-Summers','swyx','Yasuhiro Arai'] },
+    'PMM Lead':                         { total:19,  t1:5,  names:['Giada Pistilli','Tim Belonax','Camille Ricketts','Bailey Richardson'] },
+    'Events Lead':                      { total:14,  t1:4,  names:['David Spinks','Bailey Richardson','Charlotte Stix'] },
+    'Communications Director':          { total:31,  t1:8,  names:['Jack Clark','Dex Hunter-Torricke','Amanda Askell','Giada Pistilli','Charlotte Stix'] },
+    'Developer Relations Engineer':     { total:22,  t1:6,  names:['Alex Albert','David Soria Parra','Justin Spahr-Summers','swyx','Yasuhiro Arai'] },
+    'Research Ops, Ext. Artifacts':     { total:5,   t1:2,  names:['Liane Lovitt','Thomas I. Liao'] },
+  };
+
+  const LEADS_BY_CATEGORY = {
+    'Company Surfaces':     { total:286, names:['Julia Hoffmann','Andrew McKechnie','Neel Nanda','Liane Lovitt','Thomas I. Liao','Jack Clark','Giada Pistilli','Tim Belonax','Alex Albert','Amanda Askell'] },
+    'Hidden Authority':     { total:71,  names:['Dex Hunter-Torricke','Olivia Kingsley','Kris Sowersby','Justin Spahr-Summers'] },
+    'Conference Ecosystem': { total:96,  names:['Jack Clark','Paul Christiano','Arvind Narayanan','David Spinks','Lenny Rachitsky','Charlotte Stix'] },
+    'Podcast Ecosystem':    { total:54,  names:['Lenny Rachitsky','swyx','Camille Ricketts','Bailey Richardson','Tim Belonax','Dex Hunter-Torricke'] },
+    'Design Credit Database':{ total:29, names:['Kris Sowersby','Tim Belonax','Everett Katigbak','Kim Bost'] },
+    'VC Ecosystem':         { total:38,  names:['Camille Ricketts','Bailey Richardson','David Spinks','Lenny Rachitsky'] },
+    'Award Ecosystem':      { total:29,  names:['Julia Hoffmann','Andrew McKechnie','Everett Katigbak','Tim Belonax'] },
+    'Community Surfaces':   { total:44,  names:['swyx','David Spinks','Bailey Richardson','Yasuhiro Arai','Camille Ricketts'] },
+    'Academic Intelligence':{ total:18,  names:['Paul Christiano','Arvind Narayanan','Neel Nanda','Giada Pistilli'] },
+  };
+
+  function mcip_openLeadsDrawer(key, type) {
+    var store = (type === 'cat') ? LEADS_BY_CATEGORY : LEADS_BY_ROLE;
+    var data = store[key];
+    if (!data) return;
+    var names = data.names || [];
+    var shown = names.filter(function(n){ return !!MCIP_PEOPLE[n]; });
+    var listHTML = shown.map(function(name) {
+      var p = MCIP_PEOPLE[name];
+      if (!p) return '';
+      var initials = name.replace(/[^A-Z]/g,'').slice(0,2) || name.slice(0,2).toUpperCase();
+      return '<div class="person-item" style="cursor:pointer">' +
+        '<div class="avatar">' + initials + '</div>' +
+        '<div class="person-info">' +
+          '<div class="person-name">' + name + '</div>' +
+          '<div class="person-role">' + p.sub + '</div>' +
+        '</div>' +
+        '<span class="pill pill-violet" style="font-size:10px;white-space:nowrap;">' + p.title.split('·')[0].trim() + '</span>' +
+      '</div>';
+    }).join('');
+    var eyebrow = (type === 'cat') ? 'CATEGORY LEADS' : 'ROLE PIPELINE';
+    var sub = data.total + ' total leads · ' + (data.t1 ? data.t1 + ' Tier 1 · ' : '') + 'Showing ' + shown.length + ' verified profiles';
+    mcip_openDrawer(eyebrow, key, sub,
+      '<div class="person-list" style="margin:0 -28px;">' + listHTML + '</div>' +
+      '<div style="padding:14px 0 0;font-size:12px;color:var(--text-muted);font-style:italic;">Full pipeline: ' + data.total + ' leads mapped across MCIP discovery surfaces. Top profiles shown with outreach hooks ready.</div>'
+    );
+  }
+
+  // ── JS Tooltip engine (position:fixed — unclipped by overflow:hidden parents) ──
+  (function() {
+    var tip = document.createElement('div');
+    tip.id = 'mcip-tooltip';
+    tip.style.cssText = [
+      'position:fixed',
+      'z-index:99999',
+      'background:#1a1730',
+      'color:#e5e7eb',
+      'font-size:12px',
+      'line-height:1.55',
+      'padding:8px 11px',
+      'border-radius:7px',
+      'border:1px solid rgba(124,58,237,0.4)',
+      'max-width:260px',
+      'white-space:normal',
+      'box-shadow:0 4px 20px rgba(0,0,0,0.55)',
+      'pointer-events:none',
+      'opacity:0',
+      'transition:opacity 0.12s',
+      'font-weight:400',
+      'letter-spacing:0',
+      'text-transform:none',
+      'display:none'
+    ].join(';');
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.appendChild(tip);
+    });
+
+    document.addEventListener('mouseover', function(e) {
+      var el = e.target.closest('[data-tip]');
+      if (!el) return;
+      tip.textContent = el.getAttribute('data-tip');
+      tip.style.display = 'block';
+      setTimeout(function() { tip.style.opacity = '1'; }, 10);
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (tip.style.display === 'none') return;
+      var x = e.clientX + 14;
+      var y = e.clientY - 10;
+      if (x + 270 > window.innerWidth) x = e.clientX - 280;
+      if (y + 80 > window.innerHeight) y = e.clientY - 90;
+      tip.style.left = x + 'px';
+      tip.style.top = y + 'px';
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      var el = e.target.closest('[data-tip]');
+      if (!el) return;
+      tip.style.opacity = '0';
+      setTimeout(function() { tip.style.display = 'none'; }, 120);
+    });
+  })();
 </script>
 
 <div id="mcip-drawer-overlay" onclick="mcip_closeDrawer()"></div>
