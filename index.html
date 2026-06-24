@@ -877,6 +877,40 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.3); border-radius: 2px; }
 
+
+  /* ── Drawer system ── */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1730;
+    color: #e5e7eb;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(124,58,237,0.35);
+    width: max-content;
+    max-width: 240px;
+    white-space: normal;
+    text-align: left;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  [data-tip]:hover::after { opacity: 1; }
+  #mcip-drawer-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9000; }
+  #mcip-drawer { display:none; position:fixed; top:0; right:0; width:480px; height:100vh; background:#13111f; border-left:1px solid rgba(124,58,237,0.3); z-index:9001; overflow-y:auto; box-shadow:-8px 0 40px rgba(0,0,0,0.6); }
+  #mcip-profile-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9100; }
+  #mcip-profile-drawer { display:none; position:fixed; top:0; right:0; width:520px; height:100vh; background:#0f0d1a; border-left:1px solid rgba(124,58,237,0.4); z-index:9101; overflow-y:auto; }
 </style>
 </head>
 <body>
@@ -896,7 +930,7 @@
   <div class="nav-item active" onclick="navigate('home')">
     <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2"/></svg>
     Ecosystem Home
-    <span class="nav-badge">v19</span>
+    
   </div>
   <div class="nav-item" onclick="navigate('role')">
     <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
@@ -931,6 +965,13 @@
   <div class="nav-item" onclick="navigate('console')">
     <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7l2 2-2 2M9 11h2"/></svg>
     Command Console
+  </div>
+
+  <div class="nav-section">Infrastructure</div>
+  <div class="nav-item" onclick="navigate('seedhub')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/><path d="M8 4v8M4 8h8"/><circle cx="8" cy="2" r="1"/><circle cx="14" cy="8" r="1"/><circle cx="8" cy="14" r="1"/><circle cx="2" cy="8" r="1"/></svg>
+    Seed Hub
+    <span class="nav-badge">688</span>
   </div>
 
   <div class="nav-footer">
@@ -2044,6 +2085,115 @@
   </div>
 </div>
 
+<!-- ─────────────── PAGE: SEED HUB INTELLIGENCE ─────────────── -->
+<div class="page" id="page-seedhub">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Discovery Engine</div>
+      <div class="page-title">Seed Hub Intelligence</div>
+      <div class="page-desc">The signal intelligence engine powering all MCIP results. Each URL is a candidate discovery surface, not a candidate. 688 seeds across 27 MBC authority categories.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn" onclick="sh_exportCSV()">Export CSV</button>
+      <button class="btn btn-primary" onclick="sh_filterPriority('1 -- CRITICAL')">Critical Only</button>
+    </div>
+  </div>
+  <div class="page-body">
+
+    <!-- Hero stats -->
+    <div class="stat-row" style="grid-template-columns: repeat(4,1fr); margin-bottom:20px;">
+      <div class="stat-block">
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Total Seeds</div>
+        <div style="font-size:36px;font-weight:700;color:var(--violet-light);line-height:1;">688</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">discovery surfaces</div>
+      </div>
+      <div class="stat-block">
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Critical Priority</div>
+        <div style="font-size:36px;font-weight:700;color:var(--rose);line-height:1;">102</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">highest-yield sources</div>
+      </div>
+      <div class="stat-block">
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">High Priority</div>
+        <div style="font-size:36px;font-weight:700;color:var(--amber);line-height:1;">230</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">strong signal sources</div>
+      </div>
+      <div class="stat-block">
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Authority Categories</div>
+        <div style="font-size:36px;font-weight:700;color:var(--violet-bright);line-height:1;">27</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">MBC surface types</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+      <input id="sh-search" type="text" placeholder="Search URL or source name..."
+        oninput="sh_render()"
+        style="flex:1;min-width:220px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text-primary);font-size:14px;outline:none;font-family:var(--font-ui);">
+      <select id="sh-cat" onchange="sh_render()"
+        style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text-primary);font-size:14px;outline:none;cursor:pointer;font-family:var(--font-ui);">
+        <option value="">All Categories</option>
+        <option>AI Education Ecosystem</option>
+        <option>Academic Intelligence</option>
+        <option>Agency Ecosystem</option>
+        <option>Agency Portfolio</option>
+        <option>Analyst Ecosystem</option>
+        <option>Award Ecosystem</option>
+        <option>Community Intelligence</option>
+        <option>Community Surface</option>
+        <option>Company Surface</option>
+        <option>Competitor Intelligence</option>
+        <option>Conference Ecosystem</option>
+        <option>Conference Intelligence</option>
+        <option>Creator Ecosystem</option>
+        <option>Design Credit Database</option>
+        <option>Hidden Authority</option>
+        <option>Hidden Authority Surface</option>
+        <option>International Intelligence</option>
+        <option>Narrative Velocity</option>
+        <option>Newsletter Intelligence</option>
+        <option>Podcast Ecosystem</option>
+        <option>Podcast Intelligence</option>
+        <option>Policy Intelligence</option>
+        <option>Press Intelligence</option>
+        <option>Press Wire</option>
+        <option>Referral Network</option>
+        <option>Talent Creation Surface</option>
+        <option>VC Ecosystem</option>
+      </select>
+      <select id="sh-pri" onchange="sh_render()"
+        style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--text-primary);font-size:14px;outline:none;cursor:pointer;font-family:var(--font-ui);">
+        <option value="">All Priorities</option>
+        <option>1 -- CRITICAL</option>
+        <option>2 -- HIGH</option>
+        <option>3 -- MEDIUM</option>
+      </select>
+      <div id="sh-count" style="font-size:13px;color:var(--text-muted);white-space:nowrap;">— seeds</div>
+    </div>
+
+    <!-- Table -->
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <table id="sh-table" style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr style="background:var(--bg-secondary);border-bottom:1px solid var(--border);">
+            <th style="padding:11px 14px;text-align:left;font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;font-weight:500;white-space:nowrap;">Priority</th>
+            <th style="padding:11px 14px;text-align:left;font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;font-weight:500;">Category</th>
+            <th style="padding:11px 14px;text-align:left;font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;font-weight:500;">Source Name</th>
+            <th style="padding:11px 14px;text-align:left;font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;font-weight:500;">URL</th>
+            <th style="padding:11px 14px;text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;font-weight:500;white-space:nowrap;">Auth Strength</th>
+            <th style="padding:11px 14px;text-align:center;font-size:11px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;font-weight:500;white-space:nowrap;">Yield</th>
+          </tr>
+        </thead>
+        <tbody id="sh-tbody">
+          <tr><td colspan="6" style="padding:40px;text-align:center;color:var(--text-muted);">Loading seed data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="sh-load-error" style="display:none;padding:24px;text-align:center;color:var(--rose);font-size:14px;"></div>
+
+  </div>
+</div>
+
 </main>
 
 <script>
@@ -2162,6 +2312,160 @@
     // Update console input placeholder
     document.querySelector('.console-input').value = q.q.replace('› ', '');
   }
+
+  // ── Drawer functions ─────────────────────────────────────────────────────
+  function mcip_openDrawer(eyebrow, title, subtitle, bodyHTML) {
+    document.getElementById('mcip-drawer-eyebrow').textContent = eyebrow || '';
+    document.getElementById('mcip-drawer-title').textContent = title || '';
+    document.getElementById('mcip-drawer-subtitle').textContent = subtitle || '';
+    document.getElementById('mcip-drawer-body').innerHTML = bodyHTML || '';
+    document.getElementById('mcip-drawer-overlay').style.display = 'block';
+    document.getElementById('mcip-drawer').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function mcip_closeDrawer() {
+    document.getElementById('mcip-drawer-overlay').style.display = 'none';
+    document.getElementById('mcip-drawer').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  function mcip_openProfile(bodyHTML) {
+    document.getElementById('mcip-profile-body').innerHTML = bodyHTML || '';
+    document.getElementById('mcip-profile-overlay').style.display = 'block';
+    document.getElementById('mcip-profile-drawer').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function mcip_closeProfile() {
+    document.getElementById('mcip-profile-overlay').style.display = 'none';
+    document.getElementById('mcip-profile-drawer').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // ── Seed Hub ─────────────────────────────────────────────────────────────
+  let sh_allSeeds = [];
+
+  const SH_PRI_COLOR = {
+    '1 -- CRITICAL': { bg: 'rgba(244,63,94,0.15)', color: '#f87171', label: '1 CRITICAL' },
+    '2 -- HIGH':     { bg: 'rgba(245,158,11,0.15)', color: '#fbbf24', label: '2 HIGH' },
+    '3 -- MEDIUM':   { bg: 'rgba(99,102,241,0.15)', color: '#a5b4fc', label: '3 MEDIUM' }
+  };
+
+  function sh_pillPri(p) {
+    const c = SH_PRI_COLOR[p] || { bg: 'rgba(100,100,100,0.15)', color: '#9ca3af', label: p };
+    return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.06em;background:${c.bg};color:${c.color};white-space:nowrap;">${c.label}</span>`;
+  }
+
+  function sh_scoreBar(val) {
+    const n = parseInt(val) || 0;
+    const pct = Math.round((n / 10) * 100);
+    const col = n >= 9 ? '#a78bfa' : n >= 7 ? '#818cf8' : '#6b7280';
+    return `<div style="display:flex;align-items:center;gap:6px;justify-content:center;">
+      <div style="width:40px;height:4px;background:var(--bg-secondary);border-radius:2px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${col};border-radius:2px;"></div>
+      </div>
+      <span style="font-size:13px;color:${col};font-weight:600;">${n}</span>
+    </div>`;
+  }
+
+  function sh_render() {
+    const q = (document.getElementById('sh-search').value || '').toLowerCase();
+    const cat = document.getElementById('sh-cat').value;
+    const pri = document.getElementById('sh-pri').value;
+
+    const filtered = sh_allSeeds.filter(s => {
+      if (cat && s.seed_category !== cat) return false;
+      if (pri && s.priority !== pri) return false;
+      if (q && !s.source_name.toLowerCase().includes(q) && !s.source_url.toLowerCase().includes(q)) return false;
+      return true;
+    });
+
+    document.getElementById('sh-count').textContent = `${filtered.length} of ${sh_allSeeds.length} seeds`;
+
+    const tbody = document.getElementById('sh-tbody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--text-muted);">No seeds match your filters.</td></tr>';
+      return;
+    }
+
+    const yieldVal = s => {
+      const v = s.candidate_yield_potential;
+      return typeof v === 'number' ? v : (v === 'LOW-MEDIUM' ? 4 : 2);
+    };
+
+    tbody.innerHTML = filtered.map((s, i) => `
+      <tr style="border-bottom:1px solid var(--border-subtle);${i % 2 === 0 ? '' : 'background:rgba(255,255,255,0.015);'}">
+        <td style="padding:10px 14px;white-space:nowrap;">${sh_pillPri(s.priority)}</td>
+        <td style="padding:10px 14px;color:var(--text-secondary);font-size:13px;max-width:160px;">${s.seed_category}</td>
+        <td style="padding:10px 14px;color:var(--text-primary);font-size:13px;font-weight:500;">${s.source_name}</td>
+        <td style="padding:10px 14px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          <a href="${s.source_url}" target="_blank" rel="noopener"
+            style="color:var(--violet-light);font-size:12px;text-decoration:none;font-family:var(--font-mono);"
+            title="${s.source_url}">${s.source_url.replace(/^https?:\/\//, '').substring(0, 55)}${s.source_url.length > 60 ? '…' : ''}</a>
+        </td>
+        <td style="padding:10px 14px;">${sh_scoreBar(s.authority_strength)}</td>
+        <td style="padding:10px 14px;">${sh_scoreBar(yieldVal(s))}</td>
+      </tr>`).join('');
+  }
+
+  function sh_filterPriority(p) {
+    document.getElementById('sh-pri').value = p;
+    sh_render();
+    navigate('seedhub');
+  }
+
+  function sh_exportCSV() {
+    const rows = [['Priority','Category','Source Name','URL','Authority Strength','Yield Potential']];
+    sh_allSeeds.forEach(s => rows.push([s.priority, s.seed_category, s.source_name, s.source_url, s.authority_strength, s.candidate_yield_potential]));
+    const csv = rows.map(r => r.map(v => `"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'MCIP_Seed_Hub_Export.csv';
+    a.click();
+  }
+
+  // Load seeds when Seed Hub page is first activated
+  const _navOrig = navigate;
+  function navigate(pageId) {
+    _navOrig(pageId);
+    if (pageId === 'seedhub' && sh_allSeeds.length === 0) sh_loadSeeds();
+  }
+
+  function sh_loadSeeds() {
+    fetch('MCIP_Seed_Hub_min.json')
+      .then(r => r.json())
+      .then(data => {
+        sh_allSeeds = data.seeds || [];
+        sh_render();
+      })
+      .catch(err => {
+        document.getElementById('sh-tbody').innerHTML = '';
+        const el = document.getElementById('sh-load-error');
+        el.style.display = 'block';
+        el.textContent = 'Could not load seed data. When running locally, serve via a local server (python3 -m http.server). On GitHub Pages this loads automatically.';
+      });
+  }
 </script>
+
+<div id="mcip-drawer-overlay" onclick="mcip_closeDrawer()"></div>
+<div id="mcip-drawer">
+  <div style="padding:24px 28px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div id="mcip-drawer-eyebrow" style="font-size:11px;color:#7C3AED;font-weight:600;letter-spacing:0.08em;text-transform:uppercase"></div>
+      <button onclick="mcip_closeDrawer()" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:20px;padding:4px 8px">✕</button>
+    </div>
+    <div id="mcip-drawer-title" style="font-size:22px;font-weight:700;color:#fff;margin-bottom:6px"></div>
+    <div id="mcip-drawer-subtitle" style="font-size:13px;color:#9ca3af;margin-bottom:20px"></div>
+  </div>
+  <div id="mcip-drawer-body" style="padding:0 28px 40px"></div>
+</div>
+<div id="mcip-profile-overlay" onclick="mcip_closeProfile()"></div>
+<div id="mcip-profile-drawer">
+  <div style="padding:24px 28px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:11px;color:#A78BFA;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">LEAD PROFILE</div>
+      <button onclick="mcip_closeProfile()" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:20px;padding:4px 8px">✕</button>
+    </div>
+    <div id="mcip-profile-body"></div>
+  </div>
+</div>
 </body>
 </html>
