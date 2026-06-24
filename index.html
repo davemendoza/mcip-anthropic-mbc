@@ -1,0 +1,2977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCIP — Marketing & Communications Intelligence Platform</title>
+<style>
+  :root {
+    /* Deep purple Anthropic-adjacent palette — no orange */
+    --bg-primary: #0D0B14;
+    --bg-secondary: #13101E;
+    --bg-card: #181326;
+    --bg-card-hover: #1E1830;
+    --bg-glass: rgba(255,255,255,0.03);
+
+    /* Purple spectrum — primary accent */
+    --violet: #7C3AED;
+    --violet-light: #A78BFA;
+    --violet-bright: #C4B5FD;
+    --violet-dim: rgba(124,58,237,0.14);
+    --violet-glow: rgba(124,58,237,0.08);
+
+    /* Lavender — secondary accent, softer reads */
+    --lavender: #8B5CF6;
+    --lavender-light: #DDD6FE;
+    --lavender-dim: rgba(139,92,246,0.12);
+
+    /* Indigo — data and charts */
+    --indigo: #4F46E5;
+    --indigo-light: #818CF8;
+    --indigo-dim: rgba(79,70,229,0.15);
+
+    /* Semantic accents */
+    --emerald: #10B981;
+    --emerald-dim: rgba(16,185,129,0.12);
+    --sapphire: #3B82F6;
+    --sapphire-dim: rgba(59,130,246,0.12);
+    --rose: #F43F5E;
+    --rose-dim: rgba(244,63,94,0.12);
+    --amber: #F59E0B;
+    --amber-dim: rgba(245,158,11,0.12);
+
+    /* Borders */
+    --border: rgba(139,92,246,0.12);
+    --border-active: rgba(139,92,246,0.4);
+    --border-subtle: rgba(255,255,255,0.05);
+
+    /* Text */
+    --text-primary: #F1F0F8;
+    --text-secondary: #A89EC0;
+    --text-muted: #6B5F8A;
+    --text-violet: #A78BFA;
+
+    /* Layout */
+    --nav-width: 228px;
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-ui: -apple-system, 'Inter', 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    font-size: 19px;
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────────────────────────────── */
+  .nav {
+    width: var(--nav-width);
+    min-height: 100vh;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .nav-logo {
+    padding: 22px 18px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo-mark {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--violet-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .nav-logo-full {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  .nav-pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--emerald);
+    letter-spacing: 0.05em;
+  }
+
+  .pulse-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--emerald);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .nav-section {
+    padding: 18px 18px 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-size: 17px;
+    color: var(--text-secondary);
+    border-left: 2px solid transparent;
+    transition: all 0.12s;
+    user-select: none;
+  }
+
+  .nav-item:hover {
+    background: var(--violet-glow);
+    color: var(--text-primary);
+  }
+
+  .nav-item.active {
+    color: var(--violet-bright);
+    border-left-color: var(--violet);
+    background: var(--violet-dim);
+  }
+
+  .nav-icon {
+    width: 14px; height: 14px;
+    opacity: 0.55;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  .nav-badge {
+    margin-left: auto;
+    font-size: 13px;
+    background: var(--violet-dim);
+    color: var(--violet-light);
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+
+  .nav-footer {
+    margin-top: auto;
+    padding: 16px 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-footer-name {
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .nav-footer-role {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .nav-footer-tag {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--violet-light);
+    background: var(--violet-dim);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── MAIN CONTENT ─────────────────────────────────────────────────────── */
+  .main {
+    margin-left: var(--nav-width);
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page { display: none; flex-direction: column; flex: 1; }
+  .page.active { display: flex; }
+
+  /* ── PAGE HEADER ──────────────────────────────────────────────────────── */
+  .page-header {
+    padding: 28px 32px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 18px;
+  }
+
+  .page-eyebrow {
+    font-size: 14px;
+    color: var(--violet-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: normal;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .page-desc {
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    max-width: 480px;
+  }
+
+  .page-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    font-size: 16px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--text-secondary);
+    background: transparent;
+    font-family: var(--font-ui);
+    transition: all 0.12s;
+  }
+
+  .btn:hover { background: var(--bg-glass); color: var(--text-primary); }
+
+  .btn-primary {
+    background: var(--violet-dim);
+    border-color: var(--border-active);
+    color: var(--violet-light);
+  }
+
+  .btn-primary:hover { background: var(--violet); color: white; border-color: var(--violet); }
+
+  /* ── PAGE BODY ────────────────────────────────────────────────────────── */
+  .page-body { padding: 24px 32px 32px; flex: 1; overflow-y: auto; }
+
+  /* ── SHARED COMPONENTS ────────────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+  .col-layout { display: grid; gap: 14px; }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .card:hover { border-color: rgba(139,92,246,0.25); }
+
+  .card-header {
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 16px;
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .card-meta { font-size: 14px; color: var(--text-muted); }
+
+  .card-body { padding: 16px 18px; }
+
+  /* ── STAT BLOCKS ──────────────────────────────────────────────────────── */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+
+  .stat-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--violet);
+    opacity: 0.6;
+  }
+
+  .stat-block.accent-emerald::before { background: var(--emerald); }
+  .stat-block.accent-indigo::before { background: var(--indigo-light); }
+  .stat-block.accent-sapphire::before { background: var(--sapphire); }
+  .stat-block.accent-lavender::before { background: var(--lavender); }
+
+  .stat-n {
+    font-size: 46px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .stat-sub {
+    font-size: 14px;
+    color: var(--violet-light);
+    margin-top: 3px;
+  }
+
+  .stat-block.accent-emerald .stat-sub { color: var(--emerald); }
+  .stat-block.accent-indigo .stat-sub { color: var(--indigo-light); }
+  .stat-block.accent-sapphire .stat-sub { color: var(--sapphire); }
+
+  /* ── PERSON ITEMS ─────────────────────────────────────────────────────── */
+  .person-list { display: flex; flex-direction: column; }
+
+  .person-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .person-item:last-child { border-bottom: none; }
+  .person-item:hover { background: var(--violet-glow); }
+
+  .person-rank { font-size: 14px; color: var(--text-muted); width: 18px; text-align: right; flex-shrink: 0; }
+
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-active);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 17px;
+    color: var(--violet-light);
+    flex-shrink: 0;
+  }
+
+  .person-info { flex: 1; min-width: 0; }
+
+  .person-name {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .person-role {
+    font-size: 14px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .score-pills { display: flex; gap: 5px; flex-shrink: 0; }
+
+  .pill {
+    font-size: 13px;
+    padding: 2px 7px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  .pill-violet { background: var(--violet-dim); color: var(--violet-light); }
+  .pill-emerald { background: var(--emerald-dim); color: var(--emerald); }
+  .pill-indigo { background: var(--indigo-dim); color: var(--indigo-light); }
+  .pill-sapphire { background: var(--sapphire-dim); color: var(--sapphire); }
+  .pill-amber { background: var(--amber-dim); color: var(--amber); }
+  .pill-rose { background: var(--rose-dim); color: var(--rose); }
+
+  /* ── SIGNAL ITEMS ─────────────────────────────────────────────────────── */
+  .signal-list { display: flex; flex-direction: column; }
+
+  .signal-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .signal-item:last-child { border-bottom: none; }
+  .signal-item:hover { background: var(--violet-glow); }
+
+  .signal-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .dot-violet { background: var(--violet); }
+  .dot-emerald { background: var(--emerald); }
+  .dot-indigo { background: var(--indigo-light); }
+  .dot-sapphire { background: var(--sapphire); }
+  .dot-amber { background: var(--amber); }
+
+  .signal-text { font-size: 16px; color: var(--text-primary); line-height: 1.4; }
+  .signal-meta { display: flex; gap: 8px; margin-top: 2px; align-items: center; }
+  .signal-tag { font-size: 13px; color: var(--violet-light); background: var(--violet-dim); padding: 1px 6px; border-radius: 3px; }
+  .signal-time { font-size: 13px; color: var(--text-muted); }
+
+  /* ── BAR CHART ────────────────────────────────────────────────────────── */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .bar-label { font-size: 16px; color: var(--text-secondary); width: 130px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 5px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; background: var(--violet); transition: width 0.8s ease; }
+  .bar-fill.f-emerald { background: var(--emerald); }
+  .bar-fill.f-indigo { background: var(--indigo-light); }
+  .bar-fill.f-sapphire { background: var(--sapphire); }
+  .bar-fill.f-lavender { background: var(--lavender); }
+  .bar-fill.f-amber { background: var(--amber); }
+  .bar-value { font-size: 16px; color: var(--text-muted); width: 30px; text-align: right; flex-shrink: 0; }
+
+  /* ── FUNNEL ───────────────────────────────────────────────────────────── */
+  .funnel { display: flex; flex-direction: column; gap: 0; }
+
+  .funnel-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    position: relative;
+  }
+
+  .funnel-step:last-child { border-bottom: none; }
+
+  .funnel-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .funnel-info { flex: 1; }
+  .funnel-name { font-size: 17px; font-weight: 500; color: var(--text-primary); }
+  .funnel-desc { font-size: 14px; color: var(--text-muted); margin-top: 1px; }
+  .funnel-n { font-size: 26px; font-weight: 700; color: var(--text-primary); flex-shrink: 0; }
+  .funnel-arrow { font-size: 14px; color: var(--text-muted); padding: 0 18px; text-align: center; }
+
+  /* ── TITAN CARDS ──────────────────────────────────────────────────────── */
+  .titan-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  .titan-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .titan-card:hover { border-color: var(--border-active); background: var(--bg-card-hover); }
+
+  .titan-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 13px;
+    color: var(--violet-light);
+    background: var(--violet-dim);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .titan-name { font-family: var(--font-display); font-size: 22px; color: var(--text-primary); margin-bottom: 2px; }
+  .titan-context { font-size: 14px; color: var(--violet-light); margin-bottom: 8px; }
+  .titan-why { font-size: 16px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
+  .titan-score { display: flex; gap: 5px; flex-wrap: wrap; }
+
+  /* ── DISCOVERY PAGE SPECIFICS ─────────────────────────────────────────── */
+  .discovery-header-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .disc-stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 14px 12px;
+    text-align: center;
+  }
+
+  .disc-stat-n {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .disc-stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .disc-stat-n.violet { color: var(--violet-light); }
+  .disc-stat-n.emerald { color: var(--emerald); }
+  .disc-stat-n.indigo { color: var(--indigo-light); }
+  .disc-stat-n.sapphire { color: var(--sapphire); }
+  .disc-stat-n.lavender { color: var(--lavender-light); }
+
+  .source-table { width: 100%; }
+  .source-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 70px 70px 70px;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 16px;
+  }
+
+  .source-row:last-child { border-bottom: none; }
+  .source-row:hover { background: var(--violet-glow); cursor: pointer; }
+  .source-row.header { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; padding-top: 10px; padding-bottom: 10px; }
+
+  .source-icon {
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .source-name { color: var(--text-primary); font-weight: 500; }
+  .source-count { text-align: right; color: var(--text-primary); font-weight: 600; }
+  .source-leads { text-align: right; color: var(--violet-light); }
+  .source-refresh { text-align: right; }
+
+  .refresh-badge {
+    font-size: 13px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .refresh-daily { background: var(--emerald-dim); color: var(--emerald); }
+  .refresh-weekly { background: var(--sapphire-dim); color: var(--sapphire); }
+  .refresh-monthly { background: var(--lavender-dim); color: var(--lavender-light); }
+  .refresh-annual { background: var(--amber-dim); color: var(--amber); }
+
+  /* Wow moment */
+  .wow-panel {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(79,70,229,0.10) 100%);
+    border: 1px solid var(--border-active);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  .wow-headline {
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .wow-sub { font-size: 17px; color: var(--text-secondary); margin-bottom: 16px; }
+
+  .wow-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  .wow-cell {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .wow-n { font-size: 32px; font-weight: 700; color: var(--violet-bright); line-height: 1; }
+  .wow-source { font-size: 13px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .wow-total {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wow-total-n { font-size: 35px; font-weight: 700; color: var(--emerald); }
+  .wow-total-label { font-size: 17px; color: var(--text-secondary); }
+
+  /* Funnel visual */
+  .disc-funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .disc-funnel-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    position: relative;
+  }
+
+  .disc-funnel-step:last-child { border-bottom: none; }
+
+  .funnel-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--violet-dim);
+    border: 1px solid var(--border-active);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--violet-light);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .funnel-step-info { flex: 1; }
+  .funnel-step-name { font-size: 17px; color: var(--text-primary); font-weight: 500; }
+  .funnel-step-desc { font-size: 14px; color: var(--text-muted); margin-top: 1px; }
+
+  .funnel-step-n {
+    font-size: 29px;
+    font-weight: 700;
+    color: var(--text-primary);
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 60px;
+  }
+
+  .funnel-step-n span { font-size: 14px; color: var(--text-muted); font-weight: normal; margin-left: 3px; }
+
+  /* ── CONSOLE PAGE ─────────────────────────────────────────────────────── */
+  .console-input-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border-active);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .console-prompt {
+    font-family: var(--font-mono);
+    font-size: 19px;
+    color: var(--violet-light);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .console-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-ui);
+    font-size: 19px;
+    color: var(--text-primary);
+    resize: none;
+    line-height: 1.5;
+    min-height: 22px;
+  }
+
+  .console-run {
+    background: var(--violet);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    flex-shrink: 0;
+    transition: background 0.12s;
+  }
+
+  .console-run:hover { background: var(--lavender); }
+
+  .query-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+
+  .query-chip {
+    font-size: 16px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .query-chip:hover { border-color: var(--border-active); color: var(--violet-light); background: var(--violet-dim); }
+
+  .console-result {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .console-result-q {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--violet-light);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-answer {
+    font-size: 19px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .result-answer strong { color: var(--text-primary); }
+
+  .result-persons { display: flex; flex-direction: column; gap: 0; }
+
+  /* ── GEO MAP ──────────────────────────────────────────────────────────── */
+  .region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+
+  .region-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .region-item:nth-child(even) { border-right: none; }
+  .region-item:hover { background: var(--violet-glow); }
+
+  .region-flag { font-size: 23px; flex-shrink: 0; }
+  .region-info { flex: 1; }
+  .region-name { font-size: 16px; color: var(--text-primary); font-weight: 500; }
+  .region-seeds { font-size: 13px; color: var(--text-muted); }
+  .region-count { font-size: 19px; font-weight: 700; color: var(--violet-light); }
+
+  /* ── VELOCITY GRID ────────────────────────────────────────────────────── */
+  .velocity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .vel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .vel-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    flex-shrink: 0;
+  }
+
+  .vel-info { flex: 1; }
+  .vel-n { font-size: 32px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+  .vel-label { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+  .vel-trend { font-size: 14px; color: var(--emerald); }
+
+  /* ── SEPARATORS ───────────────────────────────────────────────────────── */
+  .section-gap { margin-bottom: 14px; }
+  .section-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  /* scroll */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.3); border-radius: 2px; }
+
+
+  /* ── Tooltip system ──────────────────────────────────────────────────── */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1730;
+    color: #e5e7eb;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(124,58,237,0.35);
+    white-space: nowrap;
+    max-width: 260px;
+    white-space: normal;
+    text-align: left;
+    width: max-content;
+    max-width: 240px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  [data-tip]::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 3px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(124,58,237,0.35);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+  }
+  [data-tip]:hover::after,
+  [data-tip]:hover::before { opacity: 1; }
+  [data-tip-right]::after { left: auto; right: 0; transform: none; }
+  [data-tip-left]::after { left: 0; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ SIDEBAR NAV ════════════════════════ -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">MCIP</div>
+    <div class="nav-logo-full">Marketing &amp; Communications<br>Intelligence Platform</div>
+    <div class="nav-pulse">
+      <div class="pulse-dot"></div>
+      LIVE · JUNE 2026
+    </div>
+  </div>
+
+  <div class="nav-section">Intelligence</div>
+  <div class="nav-item active" onclick="navigate('home')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2"/></svg>
+    Ecosystem Home
+    <span class="nav-badge">v19</span>
+  </div>
+  <div class="nav-item" onclick="navigate('role')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+    Role Intelligence
+    <span class="nav-badge">801</span>
+  </div>
+  <div class="nav-item" onclick="navigate('authority')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3.5L13 6l-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5L8 2z"/></svg>
+    Authority Intelligence
+  </div>
+  <div class="nav-item" onclick="navigate('community')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="6" r="2"/><circle cx="11" cy="6" r="2"/><circle cx="8" cy="11" r="2"/><path d="M7 6h2M6.5 9.5l1 1M9.5 9.5l-1 1"/></svg>
+    Community Intelligence
+  </div>
+
+  <div class="nav-section">Discovery</div>
+  <div class="nav-item" onclick="navigate('discovery')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/><path d="M7 4.5v5M4.5 7h5"/></svg>
+    Ecosystem Discovery
+    <span class="nav-badge">688</span>
+  </div>
+  <div class="nav-item" onclick="navigate('flow')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h3l3 8 3-8h3"/></svg>
+    Talent Flow
+  </div>
+
+  <div class="nav-section">Intelligence</div>
+  <div class="nav-item" onclick="navigate('titans')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/></svg>
+    Invisible Titans
+  </div>
+  <div class="nav-item" onclick="navigate('console')">
+    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7l2 2-2 2M9 11h2"/></svg>
+    Command Console
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-name">Dave Mendoza</div>
+    <div class="nav-footer-role">Talent Engine.io · Castle Rock, CO</div>
+    <div class="nav-footer-tag">⊛ SIP + TIP Patent Pending</div>
+  </div>
+</nav>
+
+<!-- ════════════════════════ MAIN CONTENT ════════════════════════ -->
+<main class="main">
+
+<!-- ─────────────── PAGE: ECOSYSTEM HOME ─────────────── -->
+<div class="page active" id="page-home">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Anthropic MBC</div>
+      <div class="page-title">Ecosystem Home</div>
+      <div class="page-desc">Move beyond candidate search to talent ecosystem intelligence — revealing hidden expertise, mapping influence networks, and enabling authentic talent attraction before outreach begins.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Export Report</button>
+      <button class="btn btn-primary">+ Add Lead</button>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <!-- Platform stats -->
+    <div class="stat-row">
+      <div class="stat-block" onclick="mcip_statDrawer('leads')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(167,139,250,0.4)'" onmouseout="this.style.borderColor=''">
+        <div class="stat-n">801</div>
+        <div class="stat-label">Named Leads</div>
+        <div class="stat-sub">↑ 422 since v1</div>
+      </div>
+      <div class="stat-block accent-indigo" onclick="mcip_statDrawer('seeds')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(167,139,250,0.4)'" onmouseout="this.style.borderColor=''">
+        <div class="stat-n">688</div>
+        <div class="stat-label">Seed Surfaces</div>
+        <div class="stat-sub">↑ 421 new surfaces</div>
+      </div>
+      <div class="stat-block accent-emerald" onclick="mcip_statDrawer('regions')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(52,211,153,0.4)'" onmouseout="this.style.borderColor=''">
+        <div class="stat-n">16</div>
+        <div class="stat-label">Global Regions</div>
+        <div class="stat-sub">Mirrors Anthropic offices</div>
+      </div>
+      <div class="stat-block accent-sapphire" onclick="mcip_statDrawer('prelinkedin')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(96,165,250,0.4)'" onmouseout="this.style.borderColor=''">
+        <div class="stat-n">599</div>
+        <div class="stat-label">Pre-LinkedIn Finds</div>
+        <div class="stat-sub">74.8% of total leads</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="gap:14px">
+      <!-- Open role pipeline -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Open Role Pipeline Coverage</div>
+          <div class="card-meta">14 MBC + 5 Comms roles open</div>
+        </div>
+        <div class="card-body" style="padding:10px 0">
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">Field Marketing</div>
+            <div class="bar-track"><div class="bar-fill f-emerald" style="width:100%"></div></div>
+            <div class="bar-value">61</div>
+          </div>
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">PMM / Product Marketing</div>
+            <div class="bar-track"><div class="bar-fill f-indigo" style="width:70%"></div></div>
+            <div class="bar-value">43</div>
+          </div>
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">Communications</div>
+            <div class="bar-track"><div class="bar-fill" style="width:68%"></div></div>
+            <div class="bar-value">105</div>
+          </div>
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">Content &amp; Copy</div>
+            <div class="bar-track"><div class="bar-fill f-sapphire" style="width:64%"></div></div>
+            <div class="bar-value">39</div>
+          </div>
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">Brand &amp; Creative</div>
+            <div class="bar-track"><div class="bar-fill f-lavender" style="width:70%"></div></div>
+            <div class="bar-value">43</div>
+          </div>
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">Community / DevRel</div>
+            <div class="bar-track"><div class="bar-fill f-amber" style="width:45%"></div></div>
+            <div class="bar-value">27</div>
+          </div>
+          <div class="bar-row" style="padding:6px 18px">
+            <div class="bar-label">Events</div>
+            <div class="bar-track"><div class="bar-fill f-emerald" style="width:42%"></div></div>
+            <div class="bar-value">26</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live signal feed -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Intelligence Feed</div>
+          <div class="card-meta">Last 24 hours</div>
+        </div>
+        <div class="signal-list">
+          <div class="signal-item" onclick="mcip_openLeadProfile('JH')" style="cursor:pointer;border-radius:8px;padding:10px;margin:-10px;transition:background 0.15s" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="signal-dot dot-violet"></div>
+            <div style="flex:1">
+              <div class="signal-text"><strong>Julia Hoffmann</strong> — OpenAI Head of International Creative. Direct competitor building the exact function Anthropic's Creative Studio head needs to build.</div>
+              <div class="signal-meta"><span class="signal-tag" data-tip="Competitor intelligence surface: LBBOnline creative industry coverage. Named heads of creative at OpenAI, Mistral, DeepMind. Maps to Head of Anthropic Creative.">HEAD OF CREATIVE</span><span class="signal-time">Confirmed · LBBOnline</span><span style="font-size:11px;color:#7C3AED;margin-left:8px">Click for profile ›</span></div>
+            </div>
+          </div>
+          <div class="signal-item" onclick="mcip_openLeadProfile('YA')" style="cursor:pointer;border-radius:8px;padding:10px;margin:-10px;transition:background 0.15s" onmouseover="this.style.background='rgba(16,185,129,0.06)'" onmouseout="this.style.background=''">
+            <div class="signal-dot dot-emerald"></div>
+            <div style="flex:1">
+              <div class="signal-text"><strong>Yasuhiro Arai</strong> — Organizer, Claude Code Meetup Japan #1–#6. Most active Claude community lead in Japan. Confirmed via connpass.com.</div>
+              <div class="signal-meta"><span class="signal-tag" data-tip="Japan sourcing surface: connpass.com organizer pages. Claude Code Meetup organizer confirmed. Maps to Developer Community Lead, Japan office pipeline.">ANZ COMMS · JAPAN</span><span class="signal-time">Confirmed · connpass event</span><span style="font-size:11px;color:#7C3AED;margin-left:8px">Click for profile ›</span></div>
+            </div>
+          </div>
+          <div class="signal-item" onclick="mcip_openLeadProfile('JL')" style="cursor:pointer;border-radius:8px;padding:10px;margin:-10px;transition:background 0.15s" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="signal-dot dot-indigo"></div>
+            <div style="flex:1">
+              <div class="signal-text"><strong>Jade Leung</strong> (UK AISI) — ex-OpenAI Governance lead + UK Prime Minister AI Advisor. Highest-value Brussels/UK policy pipeline candidate in the workbook.</div>
+              <div class="signal-meta"><span class="signal-tag" data-tip="Brussels pipeline: EU AI Office, CEPS, KU Leuven, Digital Europe. Primary regulatory comms talent surface for Anthropic's Brussels office.">POLICY COMMS · BRUSSELS</span><span class="signal-time">Confirmed · aisi.gov.uk</span><span style="font-size:11px;color:#7C3AED;margin-left:8px">Click for profile ›</span></div>
+            </div>
+          </div>
+          <div class="signal-item" onclick="mcip_openLeadProfile('TR')" style="cursor:pointer;border-radius:8px;padding:10px;margin:-10px;transition:background 0.15s" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="signal-dot dot-sapphire"></div>
+            <div style="flex:1">
+              <div class="signal-text"><strong>Thomas Regnier</strong> — Head of Communication, EU AI Office. Regulatory counterpart to Anthropic's Brussels office. Future in-house pipeline candidate.</div>
+              <div class="signal-meta"><span class="signal-tag" data-tip="Policy comms surface: EC AI Office staff pages, EU AI Act contributor records. Named individuals in regulatory positions map to Internal Comms Manager, Policy.">INTERNAL COMMS · POLICY</span><span class="signal-time">Confirmed · EC AI Office</span><span style="font-size:11px;color:#7C3AED;margin-left:8px">Click for profile ›</span></div>
+            </div>
+          </div>
+          <div class="signal-item" onclick="mcip_openArxivDrawer()" style="cursor:pointer;border-radius:8px;padding:10px;margin:-10px;transition:background 0.15s" onmouseover="this.style.background='rgba(245,158,11,0.06)'" onmouseout="this.style.background=''">
+            <div class="signal-dot dot-amber"></div>
+            <div style="flex:1">
+              <div class="signal-text"><strong>ArXiv acknowledgment confirmed</strong> — Collective Constitutional AI (2406.07814) names Liane Lovitt + Thomas I. Liao as Anthropic non-research staff. Methodology scales across 200+ Anthropic papers.</div>
+              <div class="signal-meta"><span class="signal-tag" data-tip="arXiv acknowledgment surface: Names non-research Anthropic staff who contributed to published papers. Found only via PDF acknowledgment extraction — not on any other recruiting surface.">RESEARCH OPS</span><span class="signal-time">arXiv · FAccT 2024</span><span style="font-size:11px;color:#fbbf24;margin-left:8px">Click for methodology ›</span></div>
+            </div>
+          </div>
+          <div class="signal-item" onclick="mcip_openLeadProfile('NN')" style="cursor:pointer;border-radius:8px;padding:10px;margin:-10px;transition:background 0.15s" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="signal-dot dot-violet"></div>
+            <div style="flex:1">
+              <div class="signal-text"><strong>Neel Nanda</strong> — Mechanistic interpretability at Google DeepMind. YouTube channel + blog: most effective AI research communicator for technical audiences. Prior Anthropic internship.</div>
+              <div class="signal-meta"><span class="signal-tag" data-tip="Research comms surface: neelnanda.io, Google DeepMind profiles, YouTube channels. Individuals who explain AI research to non-specialist audiences. Maps to Engineering Editorial Lead.">ENGINEERING EDITORIAL</span><span class="signal-time">Confirmed · neelnanda.io</span><span style="font-size:11px;color:#7C3AED;margin-left:8px">Click for profile ›</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform narrative — mirrors Lars Schmidt LinkedIn post language exactly -->
+    <div style="margin-top:14px; background:linear-gradient(135deg, rgba(124,58,237,0.10) 0%, rgba(79,70,229,0.06) 100%); border:1px solid var(--border-active); border-radius:10px; padding:20px 22px;">
+      <div style="font-family:var(--font-display); font-size: 22px; color:var(--text-primary); margin-bottom:8px;">The Platform Thesis</div>
+      <div style="font-size: 17px; color:var(--text-secondary); line-height:1.7; max-width:820px;">
+        MCIP was built for one purpose: find the <strong style="color:var(--text-primary)">communicators and brand builders who shape how Anthropic and Claude show up in the world</strong> — the ones who don't surface on the open market. This is not a reqs-and-InMails database. It is a living talent map built on deep research, creative sourcing, and proactive outreach across 688 seed surfaces. <strong style="color:var(--text-primary)">LinkedIn is a confirmation surface. MCIP is the discovery layer.</strong>
+      </div>
+      <div style="display:flex; gap:24px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+        <div><div style="font-size: 29px; font-weight:700; color:var(--violet-light)">74.8%</div><div style="font-size: 14px; color:var(--text-muted)">Don't surface on open market</div></div>
+        <div><div style="font-size: 29px; font-weight:700; color:var(--emerald)">801</div><div style="font-size: 14px; color:var(--text-muted)">Living talent map entries</div></div>
+        <div><div style="font-size: 29px; font-weight:700; color:var(--indigo-light)">23</div><div style="font-size: 14px; color:var(--text-muted)">VC network seeds mapped</div></div>
+        <div><div style="font-size: 29px; font-weight:700; color:var(--sapphire)">801</div><div style="font-size: 14px; color:var(--text-muted)">Personalized outreach hooks</div></div>
+      </div>
+    </div>
+
+    <!-- Three pillars from Lars post -->
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:8px;padding:12px" data-tip="Lars Schmidt post: 'deep research, living talent maps, and creative outreach for people who don't surface on the open market'">
+        <div style="font-size:10px;color:#7C3AED;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Deep Research</div>
+        <div style="font-size:12px;color:#d1d5db;line-height:1.5">Discover capability beyond credentials. Identify expertise through evidence, not assumptions. The surfaces nobody else checks.</div>
+      </div>
+      <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:12px" data-tip="Lars Schmidt post: 'Bonus points for experience building and engaging robust VC talent networks and market maps. That expertise will be a massive unlock.'">
+        <div style="font-size:10px;color:#10b981;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">VC Network Maps</div>
+        <div style="font-size:12px;color:#d1d5db;line-height:1.5">Relationships compound when intelligence precedes outreach. 23 VC network seeds. CMOs-in-residence wired. Network multipliers, not candidate lists.</div>
+      </div>
+      <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:12px" data-tip="Lars Schmidt post: 'use AI in your workflow.' MCIP pipeline runs locally — 102 critical seeds scored in one command.">
+        <div style="font-size:10px;color:#f59e0b;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">AI in the Workflow</div>
+        <div style="font-size:12px;color:#d1d5db;line-height:1.5">Scale research without sacrificing authenticity. 102 critical seeds scored in one command. Less administration. More relationship building.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: ROLE INTELLIGENCE ─────────────── -->
+<div class="page" id="page-role">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Talent Pipeline</div>
+      <div class="page-title">Role Intelligence</div>
+      <div class="page-desc">The strongest pipelines are built before a requisition exists. 801 leads mapped. Talent attraction starts here — before outreach begins.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Filter by Role</button>
+      <button class="btn btn-primary">Export Tier 1</button>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:14px">
+      <!-- Role coverage table -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Open Role Coverage — All 19 MBC Roles</div>
+          <div class="card-meta">Anthropic careers · June 2026</div>
+        </div>
+        <div style="padding:0">
+          <div class="source-row header" style="grid-template-columns:1fr 60px 80px 80px">
+            <span>Role</span><span style="text-align:right">Leads</span><span style="text-align:right" data-tip="Tier 1: Immediate outreach. Strong evidence match to Anthropic MBC profile. Hook ready. Contact confidence HIGH or CONFIRMED.">Tier 1</span><span style="text-align:right">Status</span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Field Marketing Manager')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Field Marketing Manager</span><span class="source-count">61</span><span class="source-leads">18</span><span><span class="refresh-badge refresh-daily" data-tip="STRONG: 15+ Tier 1 leads. Pipeline is deep enough to start outreach now across multiple seniority levels.">STRONG</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Head of Customer Programs')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Head of Customer Programs</span><span class="source-count">14</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('ANZ Communications Lead')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">ANZ Communications Lead</span><span class="source-count">13</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Internal Comms Manager, Policy')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Internal Comms Manager, Policy</span><span class="source-count">11</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Copy Lead, Enterprise')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Copy Lead, Enterprise</span><span class="source-count">15</span><span class="source-leads">5</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Engineering Editorial Lead')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Engineering Editorial Lead</span><span class="source-count">13</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Head of Anthropic Creative')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Head of Anthropic Creative</span><span class="source-count">10</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Art Director, Enterprise')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Art Director, Enterprise</span><span class="source-count">12</span><span class="source-leads">4</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Communications Manager, Research')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Communications Manager, Research</span><span class="source-count">25</span><span class="source-leads">7</span><span><span class="refresh-badge refresh-daily" data-tip="STRONG: 15+ Tier 1 leads. Pipeline is deep enough to start outreach now across multiple seniority levels.">STRONG</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Motion Designer, Core Brand')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Motion Designer, Core Brand</span><span class="source-count">7</span><span class="source-leads">3</span><span><span class="refresh-badge refresh-monthly" data-tip="BUILD: Thin pipeline — fewer than 3 Tier 1 leads. Expand seed coverage before outreach. Check Design Credit and Conference seeds first.">BUILD</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Design Engineer, Web')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Design Engineer, Web</span><span class="source-count">4</span><span class="source-leads">2</span><span><span class="refresh-badge refresh-monthly" data-tip="BUILD: Thin pipeline — fewer than 3 Tier 1 leads. Expand seed coverage before outreach. Check Design Credit and Conference seeds first.">BUILD</span></span>
+          </div>
+          <div class="source-row" onclick="mcip_openRoleDrawer('Research Operations, Ext. Artifacts')" style="cursor:pointer;grid-template-columns:1fr 60px 80px 80px" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name">Research Operations, Ext. Artifacts</span><span class="source-count">5</span><span class="source-leads">2</span><span><span class="refresh-badge refresh-weekly" data-tip="OK: Solid pipeline with 3-5 Tier 1 leads. Sufficient for an active search. Add more seeds if role is urgent.">OK</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Tier 1 leads -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Tier 1 — Immediate Outreach</div>
+          <div class="card-meta">Highest confidence · Hooks ready</div>
+        </div>
+        <div class="person-list">
+          <div class="person-item" onclick="mcip_openLeadProfile('JH')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">1</div>
+            <div class="avatar">JH</div>
+            <div class="person-info">
+              <div class="person-name">Julia Hoffmann</div>
+              <div class="person-role">Head of Int'l Creative · OpenAI London</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 10/10 — Maximum institutional signal. Congressional, EU AI Act, or Cannes Lions equivalent.">A:10</span>
+              <span class="pill pill-emerald" data-tip="Contact Confidence 10 — Direct email or phone confirmed. Safe to reach out immediately.">C:10</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('TR')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">2</div>
+            <div class="avatar">TR</div>
+            <div class="person-info">
+              <div class="person-name">Thomas Regnier</div>
+              <div class="person-role">Head of Comms · EU AI Office, Brussels</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 10/10 — Maximum institutional signal. Congressional, EU AI Act, or Cannes Lions equivalent.">A:10</span>
+              <span class="pill pill-emerald" data-tip="Contact Confidence 10 — Direct email or phone confirmed. Safe to reach out immediately.">C:10</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('JL')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">3</div>
+            <div class="avatar">JL</div>
+            <div class="person-info">
+              <div class="person-name">Jade Leung</div>
+              <div class="person-role">CTO · UK AISI (ex-OpenAI Governance)</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 10/10 — Maximum institutional signal. Congressional, EU AI Act, or Cannes Lions equivalent.">A:10</span>
+              <span class="pill pill-indigo">Brussels</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('CS')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">4</div>
+            <div class="avatar">CS</div>
+            <div class="person-info">
+              <div class="person-name">Charlotte Stix</div>
+              <div class="person-role">AI Policy Researcher · CLR / Brussels</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank or major publication authority. High institutional endorsement.">A:9</span>
+              <span class="pill pill-emerald">C:9</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('NN')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">5</div>
+            <div class="avatar">NN</div>
+            <div class="person-info">
+              <div class="person-name">Neel Nanda</div>
+              <div class="person-role">Researcher · Google DeepMind (ex-Anthropic)</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank or major publication authority. High institutional endorsement.">A:9</span>
+              <span class="pill pill-sapphire">Eng Edit</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('AM')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">6</div>
+            <div class="avatar">AM</div>
+            <div class="person-info">
+              <div class="person-name">Andrew McKechnie</div>
+              <div class="person-role">Head of Business Creative · OpenAI NYC</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank or major publication authority. High institutional endorsement.">A:9</span>
+              <span class="pill pill-emerald" data-tip="Contact Confidence 10 — Direct email or phone confirmed. Safe to reach out immediately.">C:10</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('YA')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">7</div>
+            <div class="avatar">YA</div>
+            <div class="person-info">
+              <div class="person-name">Yasuhiro Arai</div>
+              <div class="person-role">Organizer · Claude Code Meetup Japan</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank or major publication authority. High institutional endorsement.">A:9</span>
+              <span class="pill pill-sapphire">Japan</span>
+            </div>
+          </div>
+          <div class="person-item" onclick="mcip_openLeadProfile('PC')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <div class="person-rank">8</div>
+            <div class="avatar">PC</div>
+            <div class="person-info">
+              <div class="person-name">Paul Christiano</div>
+              <div class="person-role">Founder · ARC (ai-alignment.com)</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank or major publication authority. High institutional endorsement.">A:9</span>
+              <span class="pill pill-indigo">Eng Edit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Geo coverage -->
+    <div style="margin-top:14px" class="card">
+      <div class="card-header">
+        <div class="card-title">Global Coverage — Anthropic Office Footprint</div>
+        <div class="card-meta">16 regions · mirrors Anthropic hiring</div>
+      </div>
+      <div class="region-grid">
+        <div class="region-item"><div class="region-flag">🇺🇸</div><div class="region-info"><div class="region-name">United States</div><div class="region-seeds">SF · NYC · Seattle · DC · Boston</div></div><div class="region-count">561</div></div>
+        <div class="region-item"><div class="region-flag">🇬🇧</div><div class="region-info"><div class="region-name">United Kingdom</div><div class="region-seeds">London · Field Marketing EMEA open</div></div><div class="region-count">50</div></div>
+        <div class="region-item"><div class="region-flag">🇫🇷</div><div class="region-info"><div class="region-name">France</div><div class="region-seeds">Paris · Mistral AI ecosystem</div></div><div class="region-count">19</div></div>
+        <div class="region-item"><div class="region-flag">🇨🇦</div><div class="region-info"><div class="region-name">Canada</div><div class="region-seeds">Toronto · Montreal AI ecosystem</div></div><div class="region-count">19</div></div>
+        <div class="region-item"><div class="region-flag">🇯🇵</div><div class="region-info"><div class="region-name">Japan</div><div class="region-seeds">Tokyo · connpass organizers confirmed</div></div><div class="region-count">14</div></div>
+        <div class="region-item"><div class="region-flag">🇦🇺</div><div class="region-info"><div class="region-name">Australia</div><div class="region-seeds">Sydney · ANZ Comms Lead open</div></div><div class="region-count">10</div></div>
+        <div class="region-item"><div class="region-flag">🇩🇪</div><div class="region-info"><div class="region-name">Germany</div><div class="region-seeds">Munich · DACH AI ecosystem</div></div><div class="region-count">9</div></div>
+        <div class="region-item"><div class="region-flag">🇨🇭</div><div class="region-info"><div class="region-name">Switzerland</div><div class="region-seeds">Zurich · ETH AI Center · DeepMind</div></div><div class="region-count">9</div></div>
+        <div class="region-item"><div class="region-flag">🇮🇪</div><div class="region-info"><div class="region-name">Ireland</div><div class="region-seeds">Dublin · Google DeepMind office</div></div><div class="region-count">7</div></div>
+        <div class="region-item"><div class="region-flag">🇧🇪</div><div class="region-info"><div class="region-name">Belgium</div><div class="region-seeds">Brussels · EU AI Office · CEPS</div></div><div class="region-count">8</div></div>
+        <div class="region-item"><div class="region-flag">🇰🇷</div><div class="region-info"><div class="region-name">South Korea</div><div class="region-seeds">Seoul · SK Telecom $100M partner</div></div><div class="region-count">6</div></div>
+        <div class="region-item"><div class="region-flag">🇮🇳</div><div class="region-info"><div class="region-name">India</div><div class="region-seeds">Bangalore · NASSCOM seeded</div></div><div class="region-count">6</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: AUTHORITY INTELLIGENCE ─────────────── -->
+<div class="page" id="page-authority">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Authority Layer</div>
+      <div class="page-title">Authority Intelligence</div>
+      <div class="page-desc" style="font-style:italic;color:var(--violet-light)">Authority attracts attention. Trust attracts talent. Reputation creates access.</div>
+      <div class="page-desc" style="margin-top:4px">Who has earned authority in AI communications, brand, and policy. Ranked by evidence — not followers.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Filter by Function</button>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <!-- Scoring governance reminder -->
+    <div style="background:var(--violet-dim); border:1px solid var(--border-active); border-radius:8px; padding:12px 16px; margin-bottom:14px; font-size: 16px; color:var(--text-secondary);">
+      <strong style="color:var(--violet-light)">Scoring Governance</strong> — Authority is evidence-based, not popularity-based. NEVER: followers, likes, views, engagement, virality. ALWAYS: Congressional testimony (10), Conference Organizer (10), Think Tank Author (9), Major Publication (9), Podcast Guest (8), Award Judge (8).
+    </div>
+
+    <div class="grid-2">
+      <!-- Authority rankings -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Top Authority Scores — MBC Domain</div>
+          <div class="card-meta">Sorted by evidence · Trust Signals × Source Weight</div>
+        </div>
+        <div class="person-list">
+          <div class="person-item">
+            <div class="person-rank">1</div>
+            <div class="avatar">JC</div>
+            <div class="person-info">
+              <div class="person-name">Jack Clark</div>
+              <div class="person-role">Import AI Newsletter · ex-Anthropic co-founder</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 10/10 — Congressional testimony, EU AI Act authorship, or Cannes Lions jury equivalent. Maximum institutional signal.">Auth:10</span>
+              <span class="pill pill-indigo" data-tip="Influence Score 10/10 — Maximum breadth across multiple authority surfaces. Network reach is ecosystem-defining.">Inf:10</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">2</div>
+            <div class="avatar">GP</div>
+            <div class="person-info">
+              <div class="person-name">Giada Pistilli</div>
+              <div class="person-role">ML Team Lead · Mistral AI (ex-HF Principal Ethicist)</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+              <span class="pill pill-emerald">FAccT PC</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">3</div>
+            <div class="avatar">TB</div>
+            <div class="person-info">
+              <div class="person-name">Tim Belonax</div>
+              <div class="person-role">Creative Director · Anthropic</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+              <span class="pill pill-emerald" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">4</div>
+            <div class="avatar">DS</div>
+            <div class="person-info">
+              <div class="person-name">David Spinks</div>
+              <div class="person-role">Founder · CMX Summit / Bevy</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Referral Score 99 — Network multiplier. One warm introduction from this person reaches the entire community they built or lead.">Ref:99</span>
+              <span class="pill pill-sapphire">CONNECTOR</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">5</div>
+            <div class="avatar">LR</div>
+            <div class="person-info">
+              <div class="person-name">Lenny Rachitsky</div>
+              <div class="person-role">Founder · Lenny's Newsletter (1M+ subscribers)</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Referral Score 98 — Near-maximum network reach. Introduction from this person carries institutional credibility in its segment.">Ref:98</span>
+              <span class="pill pill-sapphire">PMM MAP</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">6</div>
+            <div class="avatar">AN</div>
+            <div class="person-info">
+              <div class="person-name">Arvind Narayanan</div>
+              <div class="person-role">Professor Princeton · AI Snake Oil (400% Substack growth)</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+              <span class="pill pill-indigo">Velocity</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">7</div>
+            <div class="avatar">AA</div>
+            <div class="person-info">
+              <div class="person-name">Alex Albert</div>
+              <div class="person-role">Head of Developer Relations · Anthropic</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+              <span class="pill pill-emerald" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span>
+            </div>
+          </div>
+          <div class="person-item">
+            <div class="person-rank">8</div>
+            <div class="avatar">DH</div>
+            <div class="person-info">
+              <div class="person-name">Dex Hunter-Torricke</div>
+              <div class="person-role">Independent · ex-Google/Facebook Exec Comms</div>
+            </div>
+            <div class="score-pills">
+              <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+              <span class="pill pill-amber">TITAN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Narrative ownership -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Narrative Ownership — Who Owns Each Topic</div>
+          <div class="card-meta">Most authoritative voice per AI narrative</div>
+        </div>
+        <div style="padding:0">
+          <div style="padding:10px 18px; border-bottom:1px solid var(--border-subtle)">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">AI SAFETY COMMUNICATIONS</div>
+            <div style="font-size: 17px; color:var(--text-primary)">Paul Christiano <span style="color:var(--text-muted)">— ai-alignment.com · ARC</span></div>
+          </div>
+          <div style="padding:10px 18px; border-bottom:1px solid var(--border-subtle)">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">CONSTITUTIONAL AI NARRATIVE</div>
+            <div style="font-size: 17px; color:var(--text-primary)">Amanda Askell <span style="color:var(--text-muted)">— Anthropic · arXiv 2212.08073</span></div>
+          </div>
+          <div style="padding:10px 18px; border-bottom:1px solid var(--border-subtle)">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">AI RESEARCH TRANSLATION</div>
+            <div style="font-size: 17px; color:var(--text-primary)">Jack Clark <span style="color:var(--text-muted)">— Import AI · 40,000+ subscribers</span></div>
+          </div>
+          <div style="padding:10px 18px; border-bottom:1px solid var(--border-subtle)">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">DEVELOPER EDUCATION / CLAUDE</div>
+            <div style="font-size: 17px; color:var(--text-primary)">Alex Albert <span style="color:var(--text-muted)">— Anthropic DevRel · connpass confirmed</span></div>
+          </div>
+          <div style="padding:10px 18px; border-bottom:1px solid var(--border-subtle)">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">AI GOVERNANCE / EU POLICY</div>
+            <div style="font-size: 17px; color:var(--text-primary)">Charlotte Stix <span style="color:var(--text-muted)">— CLR / ex-EU AI Office · Brussels</span></div>
+          </div>
+          <div style="padding:10px 18px; border-bottom:1px solid var(--border-subtle)">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">AI BRAND + VISUAL IDENTITY</div>
+            <div style="font-size: 17px; color:var(--text-primary)">Tim Belonax + Kim Bost <span style="color:var(--text-muted)">— Anthropic Creative</span></div>
+          </div>
+          <div style="padding:10px 18px;">
+            <div style="font-size: 14px; color:var(--text-muted); margin-bottom:4px">MCP / DEVELOPER INFRASTRUCTURE</div>
+            <div style="font-size: 17px; color:var(--text-primary)">David Soria Parra <span style="color:var(--text-muted)">— Anthropic · 110M SDK downloads/mo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: COMMUNITY INTELLIGENCE ─────────────── -->
+<div class="page" id="page-community">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Community Layer</div>
+      <div class="page-title">Community Intelligence</div>
+      <div class="page-desc" style="font-style:italic;color:var(--emerald)">Map communities, not just candidates. Reveal the networks where expertise concentrates.</div>
+      <div class="page-desc" style="margin-top:4px">Where AI MBC talent gathers, learns, and becomes influential — before they appear on LinkedIn.</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="grid-2">
+      <!-- Referral connectors -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Referral Network — Who Can Unlock 20 People</div>
+          <div class="card-meta">Connector nodes · Not candidates</div>
+        </div>
+        <div class="person-list">
+          <div class="person-item">
+            <div class="avatar">SW</div>
+            <div class="person-info">
+              <div class="person-name">swyx · Shawn Wang</div>
+              <div class="person-role">Founder · Latent Space / AI Engineer Summit</div>
+            </div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="Referral Score 99 — Network multiplier. One warm introduction from this person reaches the entire community they built or lead.">Ref:99</span><span class="pill pill-sapphire" data-tip="DevRel Map: This person can introduce you to the top Developer Relations professionals in AI. Tap before sourcing any DevRel or Developer Community role.">DevRel map</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">DS</div>
+            <div class="person-info">
+              <div class="person-name">David Spinks</div>
+              <div class="person-role">Founder · CMX Summit / Bevy</div>
+            </div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="Referral Score 99 — Network multiplier. One warm introduction from this person reaches the entire community they built or lead.">Ref:99</span><span class="pill pill-sapphire" data-tip="Community Map: This person leads or founded the community infrastructure that MBC talent participates in. Introduction unlocks the entire network.">Community map</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">LR</div>
+            <div class="person-info">
+              <div class="person-name">Lenny Rachitsky</div>
+              <div class="person-role">Founder · Lenny's Newsletter (1M+ PMM subscribers)</div>
+            </div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="Referral Score 98 — Near-maximum network reach. Introduction from this person carries institutional credibility in its segment.">Ref:98</span><span class="pill pill-sapphire" data-tip="PMM Map: This person can introduce you to senior Product Marketing Managers across AI, SaaS, and developer-tool companies. Essential for PMM pipeline.">PMM map</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">DH</div>
+            <div class="person-info">
+              <div class="person-name">Dex Hunter-Torricke</div>
+              <div class="person-role">Independent · ex-Google/Facebook Exec Comms</div>
+            </div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="Referral Score 98 — Near-maximum network reach. Introduction from this person carries institutional credibility in its segment.">Ref:98</span><span class="pill pill-sapphire" data-tip="Executive Comms Map: This person has built executive communications programs at major tech companies. Introduction reaches every senior exec comms professional in the ecosystem.">Exec Comms map</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">CR</div>
+            <div class="person-info">
+              <div class="person-name">Camille Ricketts</div>
+              <div class="person-role">Head of Content · Notion / ex-First Round Review EIC</div>
+            </div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="Referral Score 97 — Very high network reach. Known and trusted across multiple MBC communities.">Ref:97</span><span class="pill pill-sapphire" data-tip="Editorial Map: This person can introduce you to editorial leaders, content strategists, and engineering writers across the AI ecosystem.">Editorial map</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">BR</div>
+            <div class="person-info">
+              <div class="person-name">Bailey Richardson</div>
+              <div class="person-role">Author Get Together · ex-OpenAI Community</div>
+            </div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="Referral Score 97 — Very high network reach. Known and trusted across multiple MBC communities.">Ref:97</span><span class="pill pill-sapphire" data-tip="OpenAI Alumni Network: This person is wired into the OpenAI alumni community — a high-density source of experienced AI MBC talent watching for their next move.">OpenAI alumni</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Talent creation surfaces -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Talent Creation — Where Candidates Are Made</div>
+          <div class="card-meta">Factories, not directories</div>
+        </div>
+        <div style="padding:0">
+          <div class="source-row header" style="grid-template-columns:1fr 80px 100px">
+            <span>Platform</span><span style="text-align:right">Alumni</span><span style="text-align:right">Maps To</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="Reforge: Elite PMM and Growth professional community. 100K+ alumni. First-mover sourcing surface for senior PMM and Growth MBC hires. Check cohort speakers and project leads.">Reforge</span><span class="source-leads" style="text-align:right">100K+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">PMM · Growth</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="School of Motion: The largest motion design education platform. 50K+ alumni. Named instructor and featured student pages are primary sourcing surfaces for Motion Designer, Core Brand.">School of Motion</span><span class="source-leads" style="text-align:right">50K+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">Motion Designer</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="CMX Academy: The professional community for community professionals. 25K+ members. Instructor and speaker rosters map directly to Community Lead and Developer Community roles.">CMX Academy</span><span class="source-leads" style="text-align:right">25K+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">Community Lead</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="DeepLearning.AI: Andrew Ng's AI education platform. 7M+ learners. Course instructors and named contributors bridge technical AI knowledge with communication skills — rare DevRel/Research Comms profile.">DeepLearning.AI</span><span class="source-leads" style="text-align:right">7M+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">DevRel · Research</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="Write of Passage: Elite online writing program. 5K+ alumni. Primary sourcing surface for Engineering Editorial Lead and Content & Copy roles. Alumni often write for major tech publications.">Write of Passage</span><span class="source-leads" style="text-align:right">5K+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">Eng Editorial</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="Maven: Cohort-based course platform. 100K+ learners. Instructor pages surface senior PMM, Content, and Community professionals who have built educational programs — 0-to-1 builder signal.">Maven</span><span class="source-leads" style="text-align:right">100K+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">Content · PMM</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 100px">
+            <span class="source-name" data-tip="YC AI Companies: Y Combinator AI portfolio. 1K+ companies. First marketing hire at each company = Field Marketing and PMM talent operating in AI context from day one. Often pre-LinkedIn visible.">YC AI Companies</span><span class="source-leads" style="text-align:right">1K+ cos</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">First Mktg Hire</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 120px" onclick="mcip_openDrawer('TALENT CREATION SURFACE','Employer Brand Ecosystem','Lars Schmidt built SpaceX\'s first employer brand campaign. This ecosystem maps his network.','<div style=\'font-size:13px;color:#d1d5db;line-height:1.7;margin-bottom:16px\'>Employer brand practitioners are MBC operators who sit at the intersection of talent, communications, and brand. Lars Schmidt is deeply wired into this community — he built SpaceX\'s first employer brand campaign, won the NPR Innovation Award, and founded Amplify Talent. Sourcing here means sourcing from his ecosystem.</div><div style=\'margin-bottom:8px\'><a href=\'https://brandemix.com\' target=\'_blank\' style=\'color:#A78BFA\'>Brandemix speakers ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://www.recruitingbrainfood.com\' target=\'_blank\' style=\'color:#A78BFA\'>Recruiting Brainfood newsletter ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://builtfor.work\' target=\'_blank\' style=\'color:#A78BFA\'>Built For Work community ↗</a></div><div><a href=\'https://www.linkedin.com/groups/employer-brand\' target=\'_blank\' style=\'color:#A78BFA\'>Employer Brand community ↗</a></div>')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name" data-tip="Employer Brand Ecosystem: Lars Schmidt built SpaceX's first employer brand campaign. Brandemix, Employer Brand International, Talent Brand Alliance. Maps to Comms and Brand roles.">Employer Brand Ecosystem</span><span class="source-leads" style="text-align:right">500+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">Comms · Brand</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 120px" onclick="mcip_openDrawer('TALENT CREATION SURFACE','HR/TA Innovation Newsletter Ecosystem','Where MBC-adjacent talent publishes before they are visible anywhere else.','<div style=\'font-size:13px;color:#d1d5db;line-height:1.7;margin-bottom:16px\'>Lars Schmidt is himself a newsletter author and Fast Company contributor. The TA innovation community publishes on Substack, LinkedIn newsletters, and dedicated platforms. Named authors = verifiable, high-authority MBC candidates with proven communication skills.</div><div style=\'margin-bottom:8px\'><a href=\'https://www.recruitingbrainfood.com\' target=\'_blank\' style=\'color:#A78BFA\'>Recruiting Brainfood (Hung Lee) ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://substack.com/discover/recruiting\' target=\'_blank\' style=\'color:#A78BFA\'>Substack recruiting authors ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://larsschmidt.com\' target=\'_blank\' style=\'color:#A78BFA\'>Lars Schmidt — Amplify Talent ↗</a></div><div><a href=\'https://www.shrm.org/content/default.aspx\' target=\'_blank\' style=\'color:#A78BFA\'>SHRM contributors ↗</a></div>')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name" data-tip="HR/TA Innovation Newsletters: Recruiting Brainfood, Lars Schmidt's Amplify Talent, Substack TA authors. Named newsletter authors have verifiable reach and authority. Maps to Comms and Content roles.">HR/TA Innovation Newsletters</span><span class="source-leads" style="text-align:right">200+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">Comms · Content</span>
+          </div>
+          <div class="source-row" style="grid-template-columns:1fr 80px 120px" onclick="mcip_openDrawer('TALENT CREATION SURFACE','AI Podcast Guest Archive','Most underutilized sourcing surface in MBC — named guests with verifiable authority signals.','<div style=\'font-size:13px;color:#d1d5db;line-height:1.7;margin-bottom:16px\'>Podcast guest archives are the highest-signal non-LinkedIn sourcing surface for MBC talent. Named guests have (1) verifiable employer at time of recording, (2) articulated expertise on record, (3) a demonstrated ability to communicate complex ideas — exactly what Anthropic MBC roles require. Lars Schmidt hosted LinkedIn Presents: Redefining Work — his guest list is a sourcing surface.</div><div style=\'margin-bottom:8px\'><a href=\'https://redefinehr.com/podcast\' target=\'_blank\' style=\'color:#A78BFA\'>Redefining Work with Lars Schmidt ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://www.latentspace.ai\' target=\'_blank\' style=\'color:#A78BFA\'>Latent Space podcast (swyx) ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://www.lennysnewsletter.com/podcast\' target=\'_blank\' style=\'color:#A78BFA\'>Lenny\'s Podcast archive ↗</a></div><div style=\'margin-bottom:8px\'><a href=\'https://hardfork.simplecast.com\' target=\'_blank\' style=\'color:#A78BFA\'>Hard Fork guest archive ↗</a></div><div><a href=\'https://www.acquired.fm/episodes\' target=\'_blank\' style=\'color:#A78BFA\'>Acquired episode archive ↗</a></div>')" style="cursor:pointer" onmouseover="this.style.background='rgba(124,58,237,0.08)'" onmouseout="this.style.background=''">
+            <span class="source-name" data-tip="AI Podcast Guest Archives: Latent Space, Hard Fork, Lenny's Podcast, Decoder, TBPN. Named guests = verifiable authority + communication skill on record. Lars Schmidt's own podcast is a sourcing surface for his network.">AI Podcast Guest Archive</span><span class="source-leads" style="text-align:right">2K+</span><span style="text-align:right; font-size: 14px; color:var(--text-muted)">All MBC roles</span>
+          </div>
+    </div>
+
+    <!-- Fellowship + Think Tank -->
+    <div style="margin-top:14px" class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Fellowship Ecosystem</div><div class="card-meta">Pre-hire policy + comms talent</div></div>
+        <div style="padding:10px 0">
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">Schmidt Futures</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">10</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">TED Fellows</div><div class="bar-track"><div class="bar-fill f-emerald" style="width:90%"></div></div><div class="bar-value">9</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">Emergent Ventures</div><div class="bar-track"><div class="bar-fill f-indigo" style="width:90%"></div></div><div class="bar-value">9</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">Mozilla Fellowship</div><div class="bar-track"><div class="bar-fill f-sapphire" style="width:90%"></div></div><div class="bar-value">9</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">New America</div><div class="bar-track"><div class="bar-fill f-lavender" style="width:90%"></div></div><div class="bar-value">9</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">AI2050 / CAIS</div><div class="bar-track"><div class="bar-fill f-amber" style="width:100%"></div></div><div class="bar-value">10</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Trust &amp; Safety Communications Ecosystem</div><div class="card-meta">Rarest comms+safety overlap</div></div>
+        <div style="padding:10px 0">
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">Partnership on AI</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">10</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">CAIS (safe.ai)</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">10</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">Georgetown CSET</div><div class="bar-track"><div class="bar-fill f-emerald" style="width:100%"></div></div><div class="bar-value">10</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">AI Now Institute</div><div class="bar-track"><div class="bar-fill f-indigo" style="width:90%"></div></div><div class="bar-value">9</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">Future of Life Inst.</div><div class="bar-track"><div class="bar-fill f-sapphire" style="width:90%"></div></div><div class="bar-value">9</div></div>
+          <div class="bar-row" style="padding:5px 18px"><div class="bar-label">UK AI Safety Institute</div><div class="bar-track"><div class="bar-fill f-lavender" style="width:90%"></div></div><div class="bar-value">9</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: ECOSYSTEM DISCOVERY ─────────────── -->
+<div class="page" id="page-discovery">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Discovery Engine</div>
+      <div class="page-title">Ecosystem Discovery</div>
+      <div class="page-desc" style="font-style:italic;color:var(--sapphire)">Hidden talent isn't scarce — it is undiscovered. Competitive advantage comes from finding expertise others overlook.</div>
+      <div class="page-desc" style="margin-top:4px">Where the intelligence comes from. 688 active surfaces across 9 categories. This is how the platform scales.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn">Filter Category</button>
+      <button class="btn btn-primary">Add Source</button>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Discovery coverage stats -->
+    <div class="discovery-header-stats">
+      <div class="disc-stat"><div class="disc-stat-n violet">688</div><div class="disc-stat-label">Active Sources</div></div>
+      <div class="disc-stat"><div class="disc-stat-n emerald">9</div><div class="disc-stat-label">Discovery Categories</div></div>
+      <div class="disc-stat"><div class="disc-stat-n indigo">16</div><div class="disc-stat-label">Global Regions</div></div>
+      <div class="disc-stat"><div class="disc-stat-n sapphire">801</div><div class="disc-stat-label">Named Humans Found</div></div>
+      <div class="disc-stat"><div class="disc-stat-n lavender">4hrs</div><div class="disc-stat-label">Last Refresh</div></div>
+    </div>
+
+    <!-- The wow moment -->
+    <div class="wow-panel">
+      <div class="wow-headline">Discovery Before LinkedIn</div>
+      <div class="wow-sub">These leads were found before any LinkedIn search was run. Named humans confirmed via primary public sources with employer and role verified.</div>
+      <div class="wow-grid">
+        <div class="wow-cell"><div class="wow-n">187</div><div class="wow-source">Company Surfaces</div></div>
+        <div class="wow-cell"><div class="wow-n">96</div><div class="wow-source">Press Wires</div></div>
+        <div class="wow-cell"><div class="wow-n">61</div><div class="wow-source">Hidden Authority</div></div>
+        <div class="wow-cell"><div class="wow-n">59</div><div class="wow-source">Conferences</div></div>
+        <div class="wow-cell"><div class="wow-n">35</div><div class="wow-source">Podcasts</div></div>
+        <div class="wow-cell"><div class="wow-n">34</div><div class="wow-source">Design Credits</div></div>
+      </div>
+      <div class="wow-total">
+        <div class="wow-total-n">599</div>
+        <div class="wow-total-label">leads discovered without LinkedIn · <strong style="color:var(--text-primary)">74.8% of the total pipeline</strong></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Discovery funnel -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Discovery Funnel — How Seeds Become Candidates</div>
+          <div class="card-meta">From ecosystem to lead</div>
+        </div>
+        <div class="disc-funnel">
+          <div class="disc-funnel-step">
+            <div class="funnel-num">1</div>
+            <div class="funnel-step-info">
+              <div class="funnel-step-name">Communities</div>
+              <div class="funnel-step-desc">Conferences, podcasts, newsletters, VC platforms, awards — where influence is manufactured</div>
+            </div>
+            <div class="funnel-step-n">688 <span>seeds</span></div>
+          </div>
+          <div class="disc-funnel-step">
+            <div class="funnel-num">2</div>
+            <div class="funnel-step-info">
+              <div class="funnel-step-name">Authorities</div>
+              <div class="funnel-step-desc">Named humans extracted with employer + title verified. No guessing.</div>
+            </div>
+            <div class="funnel-step-n">2K+ <span>extractions</span></div>
+          </div>
+          <div class="disc-funnel-step">
+            <div class="funnel-num">3</div>
+            <div class="funnel-step-info">
+              <div class="funnel-step-name">Scoring</div>
+              <div class="funnel-step-desc">AI Relevance · Anthropic Relevance · Candidate Quality. 1-10 integers. No text labels.</div>
+            </div>
+            <div class="funnel-step-n">3 <span>scores</span></div>
+          </div>
+          <div class="disc-funnel-step">
+            <div class="funnel-num">4</div>
+            <div class="funnel-step-info">
+              <div class="funnel-step-name">Named Leads</div>
+              <div class="funnel-step-desc">Tiered by quality. Mapped to specific open Anthropic roles.</div>
+            </div>
+            <div class="funnel-step-n">801 <span>leads</span></div>
+          </div>
+          <div class="disc-funnel-step">
+            <div class="funnel-num">5</div>
+            <div class="funnel-step-info">
+              <div class="funnel-step-name">Outreach-Ready Candidates</div>
+              <div class="funnel-step-desc">801 personalized hooks written. Specific observation → Anthropic connection → question.</div>
+            </div>
+            <div class="funnel-step-n">801 <span>hooks</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Source table by category -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Discovery Sources by Category</div>
+          <div class="card-meta">Seeds · Leads · Refresh cadence</div>
+        </div>
+        <div class="source-table">
+          <div class="source-row header">
+            <span></span>
+            <span>Category</span>
+            <span class="source-count" style="text-align:right">Seeds</span>
+            <span class="source-leads" style="text-align:right">Leads</span>
+            <span class="source-refresh" style="text-align:right">Refresh</span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--violet-dim)">🏢</div>
+            <span class="source-name">Company Surfaces</span>
+            <span class="source-count">187</span>
+            <span class="source-leads">286</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-daily">Daily</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--indigo-dim)">👁</div>
+            <span class="source-name">Hidden Authority</span>
+            <span class="source-count">97</span>
+            <span class="source-leads">71</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-annual">Annual</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--emerald-dim)">🎤</div>
+            <span class="source-name">Conference Ecosystem</span>
+            <span class="source-count">78</span>
+            <span class="source-leads">96</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-annual">Annual</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--sapphire-dim)">🎙</div>
+            <span class="source-name">Podcast Ecosystem</span>
+            <span class="source-count">35</span>
+            <span class="source-leads">54</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-weekly">Weekly</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--rose-dim)">🎨</div>
+            <span class="source-name">Design Credit Database</span>
+            <span class="source-count">34</span>
+            <span class="source-leads">29</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-monthly">Monthly</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--amber-dim)">🏦</div>
+            <span class="source-name" onclick="mcip_openVCDrawer()" style="cursor:pointer;color:#A78BFA" data-tip="VC Ecosystem: Lars Schmidt called this a 'massive unlock'. 23 seeds across Bessemer, Lightspeed, CapitalG, Spark, SK Telecom. Platform team leads and CMOs-in-residence map directly to MBC hires.">VC Ecosystem ↗</span>
+            <span class="source-count">23</span>
+            <span class="source-leads">38</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-monthly">Monthly</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--violet-dim)">🏆</div>
+            <span class="source-name">Award Ecosystem</span>
+            <span class="source-count">22</span>
+            <span class="source-leads">29</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-annual">Annual</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--emerald-dim)">🌐</div>
+            <span class="source-name">Community Surfaces</span>
+            <span class="source-count">25</span>
+            <span class="source-leads">44</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-daily">Daily</span></span>
+          </div>
+          <div class="source-row">
+            <div class="source-icon" style="background:var(--sapphire-dim)">📋</div>
+            <span class="source-name">Academic Intelligence</span>
+            <span class="source-count">12</span>
+            <span class="source-leads">18</span>
+            <span class="source-refresh"><span class="refresh-badge refresh-weekly">Per paper</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery velocity -->
+    <div style="margin-top:14px">
+      <div class="section-label">Discovery Velocity — Last 30 Days</div>
+      <div class="velocity-grid">
+        <div class="vel-card">
+          <div class="vel-icon" style="background:var(--violet-dim)">👤</div>
+          <div class="vel-info">
+            <div class="vel-n">23</div>
+            <div class="vel-label">New named leads added</div>
+            <div class="vel-trend">↑ +8 from prior 30 days</div>
+          </div>
+        </div>
+        <div class="vel-card">
+          <div class="vel-icon" style="background:var(--emerald-dim)">🌍</div>
+          <div class="vel-info">
+            <div class="vel-n">9</div>
+            <div class="vel-label">New seed surfaces added</div>
+            <div class="vel-trend">↑ arXiv, connpass, AISI confirmed</div>
+          </div>
+        </div>
+        <div class="vel-card">
+          <div class="vel-icon" style="background:var(--sapphire-dim)">⚡</div>
+          <div class="vel-info">
+            <div class="vel-n">3</div>
+            <div class="vel-label">New regions expanded</div>
+            <div class="vel-trend">Belgium · Switzerland · Japan</div>
+          </div>
+        </div>
+        <div class="vel-card">
+          <div class="vel-icon" style="background:var(--indigo-dim)">🔗</div>
+          <div class="vel-info">
+            <div class="vel-n">15</div>
+            <div class="vel-label">New referral nodes mapped</div>
+            <div class="vel-trend">↑ REFERRAL_NETWORK_SURFACES</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: TALENT FLOW ─────────────── -->
+<div class="page" id="page-flow">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Talent Flow</div>
+      <div class="page-title">Talent Flow</div>
+      <div class="page-desc" style="font-style:italic;color:var(--amber)">Understand the market before engaging the market. Map expertise, influence, and capability at scale.</div>
+      <div class="page-desc" style="margin-top:4px">Where Anthropic-caliber communicators come from. Origin paths, not just current employers.</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Talent Origin Paths — Confirmed Anthropic Staff</div><div class="card-meta">Where the team came from</div></div>
+        <div style="padding:0">
+          <div class="person-item">
+            <div class="avatar">KB</div>
+            <div class="person-info"><div class="person-name">Kim Bost</div><div class="person-role">Pentagram → NYT Art Director → Anthropic Design</div></div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">EK</div>
+            <div class="person-info"><div class="person-name">Everett Katigbak</div><div class="person-role">Facebook/Meta Brand → Anthropic Creative Director (0→20 team)</div></div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">DS</div>
+            <div class="person-info"><div class="person-name">David Soria Parra</div><div class="person-role">PHP-FIG open source → Anthropic MCP co-creator (110M downloads/mo)</div></div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">GP</div>
+            <div class="person-info"><div class="person-name">Giada Pistilli</div><div class="person-role">Philosophy PhD → HF Principal Ethicist → Mistral AI ML Lead</div></div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span></div>
+          </div>
+          <div class="person-item">
+            <div class="avatar">AA</div>
+            <div class="person-info"><div class="person-name">Alex Albert</div><div class="person-role">Independent Prompt Engineer → Anthropic Head of DevRel</div></div>
+            <div class="score-pills"><span class="pill pill-violet" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Top Feeder Ecosystems for Anthropic MBC</div><div class="card-meta">Where to recruit first</div></div>
+        <div style="padding:10px 0">
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">Stripe (brand DNA)</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">22</div></div>
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">OpenAI (competitor)</div><div class="bar-track"><div class="bar-fill f-indigo" style="width:88%"></div></div><div class="bar-value">57</div></div>
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">Figma (design ref)</div><div class="bar-track"><div class="bar-fill f-emerald" style="width:75%"></div></div><div class="bar-value">18</div></div>
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">Hugging Face</div><div class="bar-track"><div class="bar-fill f-sapphire" style="width:70%"></div></div><div class="bar-value">16</div></div>
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">Databricks</div><div class="bar-track"><div class="bar-fill f-lavender" style="width:65%"></div></div><div class="bar-value">16</div></div>
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">Vercel (design eng)</div><div class="bar-track"><div class="bar-fill f-amber" style="width:70%"></div></div><div class="bar-value">17</div></div>
+          <div class="bar-row" style="padding:6px 18px"><div class="bar-label">Salesforce (scale)</div><div class="bar-track"><div class="bar-fill f-emerald" style="width:58%"></div></div><div class="bar-value">14</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: INVISIBLE TITANS ─────────────── -->
+<div class="page" id="page-titans">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Invisible Titans</div>
+      <div class="page-title">Invisible Titans</div>
+      <div class="page-desc" style="font-style:italic;color:var(--violet-light)">The market's most valuable talent is often the least visible. Hidden talent isn't scarce — it is undiscovered.</div>
+      <div class="page-desc" style="margin-top:4px">High-authority, low-visibility operators. Invisible Titan Score = Authority + Influence − Public Visibility. High score = priority find.</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="titan-grid">
+      <div class="titan-card" onclick="mcip_openTitanDrawer('Dex Hunter-Torricke')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'" onmouseout="this.style.borderColor=''">
+        <div class="titan-badge" data-tip="Invisible Titan Score 98: Authority(10) + Influence(10) - Visibility(2) = 18. One of the highest-value unreached profiles in the MBC ecosystem.">TITAN · Score 98</div>
+        <div class="titan-name">Dex Hunter-Torricke</div>
+        <div class="titan-context">Independent · ex-Facebook Head of Exec Comms · ex-Google First Exec Speechwriter</div>
+        <div class="titan-why">Ghostwrote for Zuckerberg 2012–2016. Built the executive comms infrastructure that every big tech company now copies. Invisible to conventional recruiting. His network is the hidden infrastructure of tech executive comms.</div>
+        <div class="titan-score">
+          <span class="pill pill-violet" data-tip="Authority Score 10/10 — Congressional testimony, EU AI Act authorship, or Cannes Lions jury equivalent. Maximum institutional signal.">Auth:10</span>
+          <span class="pill pill-emerald" data-tip="Influence Score 10/10 — Maximum breadth across multiple authority surfaces. Network reach is ecosystem-defining.">Inf:10</span>
+          <span class="pill pill-amber" data-tip="Visibility Score 2/10 — Near-invisible publicly. Found only via primary authority surfaces (arXiv, CODEOWNERS, institutional records). Highest Invisible Titan potential.">Vis:2</span>
+          <span class="pill pill-rose" data-tip="Referral Score 10/10 — This person can unlock 20+ warm introductions to MBC candidates. Treat as a connector node, not a candidate.">Ref:10</span>
+        </div>
+      </div>
+      <div class="titan-card" onclick="mcip_openTitanDrawer('Olivia Kingsley')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'" onmouseout="this.style.borderColor=''">
+        <div class="titan-badge" data-tip="Invisible Titan Score 95: Internal Anthropic profile. Architecture reference for brand voice hiring bar.">TITAN · Score 95</div>
+        <div class="titan-name">Olivia Kingsley</div>
+        <div class="titan-context">Writer, Brand Team · Anthropic</div>
+        <div class="titan-why">Writes the brand principles that govern how Claude is described in every piece of Anthropic communication. Named in The Subtext interview — appears nowhere else. Brand voice architect who is invisible outside primary sourcing surfaces.</div>
+        <div class="titan-score">
+          <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+          <span class="pill pill-emerald" data-tip="Influence Score 9/10 — Very high influence breadth. Known across multiple discipline communities with verifiable presence.">Inf:9</span>
+          <span class="pill pill-amber" data-tip="Visibility Score 1/10 — Completely invisible to conventional recruiting. Zero social media footprint. Highest-value sourcing find.">Vis:1</span>
+        </div>
+      </div>
+      <div class="titan-card" onclick="mcip_openTitanDrawer('Kris Sowersby')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'" onmouseout="this.style.borderColor=''">
+        <div class="titan-badge" data-tip="Invisible Titan Score 94: Authority(9) + Influence(10) - Visibility(1) = 18. Type foundry operator — invisible on all standard surfaces.">TITAN · Score 94</div>
+        <div class="titan-name">Kris Sowersby</div>
+        <div class="titan-context">Klim Type Foundry · Designed OpenAI's Signifier &amp; Söhne typefaces</div>
+        <div class="titan-why">Designed the typefaces used on every OpenAI surface. Every time ChatGPT renders text, it uses his letterforms. Named only in Fonts In Use. Invisible to all standard recruiting. Highest-leverage single creative relationship in AI brand.</div>
+        <div class="titan-score">
+          <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+          <span class="pill pill-emerald" data-tip="Influence Score 10/10 — Maximum breadth across multiple authority surfaces. Network reach is ecosystem-defining.">Inf:10</span>
+          <span class="pill pill-amber" data-tip="Visibility Score 1/10 — Completely invisible to conventional recruiting. Zero social media footprint. Highest-value sourcing find.">Vis:1</span>
+        </div>
+      </div>
+      <div class="titan-card" onclick="mcip_openTitanDrawer('Justin Spahr-Summers')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'" onmouseout="this.style.borderColor=''">
+        <div class="titan-badge" data-tip="Invisible Titan Score 92: Protocol co-creator. Named only on PyPI. Influence measured in 110M SDK downloads/month, not social following.">TITAN · Score 92</div>
+        <div class="titan-name">Justin Spahr-Summers</div>
+        <div class="titan-context">MCP Co-Creator · Anthropic (jspahrsummers on GitHub/PyPI)</div>
+        <div class="titan-why">Co-created the Model Context Protocol — 110M SDK downloads per month. Influences through protocol, not personal brand. Named only on PyPI. Zero LinkedIn footprint. Developer community authority that translates directly to DevRel.</div>
+        <div class="titan-score">
+          <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+          <span class="pill pill-emerald" data-tip="Influence Score 9/10 — Very high influence breadth. Known across multiple discipline communities with verifiable presence.">Inf:9</span>
+          <span class="pill pill-amber" data-tip="Visibility Score 2/10 — Near-invisible publicly. Found only via primary authority surfaces (arXiv, CODEOWNERS, institutional records). Highest Invisible Titan potential.">Vis:2</span>
+        </div>
+      </div>
+      <div class="titan-card" onclick="mcip_openTitanDrawer('Liane Lovitt')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'" onmouseout="this.style.borderColor=''">
+        <div class="titan-badge" data-tip="Invisible Titan Score 90: arXiv acknowledgment find. Named in Anthropic founding papers. Zero conventional recruiting footprint.">TITAN · Score 90</div>
+        <div class="titan-name">Liane Lovitt</div>
+        <div class="titan-context">Anthropic — Named in Constitutional AI paper acknowledgments</div>
+        <div class="titan-why">Named in acknowledgments of Constitutional AI (arXiv 2212.08073) — the founding document of Anthropic's safety approach. Confirmed again in Collective Constitutional AI (2406.07814). Invisible to any surface except arXiv acknowledgment mining.</div>
+        <div class="titan-score">
+          <span class="pill pill-violet" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span>
+          <span class="pill pill-emerald" data-tip="Influence Score 9/10 — Very high influence breadth. Known across multiple discipline communities with verifiable presence.">Inf:9</span>
+          <span class="pill pill-amber" data-tip="Visibility Score 1/10 — Completely invisible to conventional recruiting. Zero social media footprint. Highest-value sourcing find.">Vis:1</span>
+        </div>
+      </div>
+      <div class="titan-card" onclick="mcip_openTitanDrawer('Thomas I. Liao')" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'" onmouseout="this.style.borderColor=''">
+        <div class="titan-badge" data-tip="Invisible Titan Score 88: arXiv acknowledgment find. Non-research Anthropic staff. Only discoverable via paper acknowledgment extraction.">TITAN · Score 88</div>
+        <div class="titan-name">Thomas I. Liao</div>
+        <div class="titan-context">Anthropic — Named in Collective Constitutional AI (arXiv 2406.07814)</div>
+        <div class="titan-why">Named as Anthropic author on FAccT 2024 policy-adjacent paper. Non-research role confirmed via arXiv author extraction methodology. The only surface that produced this name. Maps to Communications Manager Research or Research Operations.</div>
+        <div class="titan-score">
+          <span class="pill pill-violet" data-tip="Authority Score 8/10 — Major podcast guest, award judge, or VC platform partner. Strong authority from verifiable institutional source.">Auth:8</span>
+          <span class="pill pill-emerald" data-tip="Influence Score 8/10 — Strong cross-community influence. Named across at least 2 distinct authority surfaces.">Inf:8</span>
+          <span class="pill pill-amber" data-tip="Visibility Score 1/10 — Completely invisible to conventional recruiting. Zero social media footprint. Highest-value sourcing find.">Vis:1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────── PAGE: COMMAND CONSOLE ─────────────── -->
+<div class="page" id="page-console">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">MCIP · Command Console</div>
+      <div class="page-title">Command Console</div>
+      <div class="page-desc" style="font-style:italic;color:var(--indigo-light)">Automate tasks. Amplify relationships. Use AI to accelerate discovery while preserving human judgment.</div>
+      <div class="page-desc" style="margin-top:4px">Ecosystem questions, not database queries. Talent intelligence, not candidate search.</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <!-- Query input -->
+    <div class="console-input-wrap">
+      <div class="console-prompt">›</div>
+      <textarea class="console-input" rows="2" placeholder="Show me community builders trusted by AI researchers who don't work at AI companies..."></textarea>
+      <button class="console-run">Run Query</button>
+    </div>
+
+    <!-- Suggested queries -->
+    <div class="query-chips">
+      <div class="query-chip" onclick="runQuery('community-builders')" data-tip="Sourced from CMX Summit rosters, connpass organizer pages, AI Engineer Summit participant lists. Zero LinkedIn queries used.">Community builders trusted by AI researchers</div>
+      <div class="query-chip" onclick="runQuery('invisible-policy')" data-tip="Sourced from CSET staff pages, Partnership on AI team pages, arXiv acknowledgments, AISI government pages. Policy operators invisible to standard recruiting.">People who influence AI safety comms but don't work at AI companies</div>
+      <div class="query-chip" onclick="runQuery('investor-connected')" data-tip="Maps Anthropic VC network (Bessemer, Lightspeed, CapitalG, Spark) to platform team leads and CMOs-in-residence. Referral nodes, not candidates.">Operators connected to Anthropic investors and AI podcasts</div>
+      <div class="query-chip" onclick="runQuery('editorial-multi')" data-tip="Cross-company footprint filter. Named across Anthropic, OpenAI, DeepMind in verifiable institutional records. Ranked by confirmed cross-company presence.">Editorial leaders who influenced 3+ frontier AI companies</div>
+      <div class="query-chip" onclick="runQuery('pre-linkedin')" data-tip="Demonstrates non-LinkedIn sourcing methodology. All 5 leads found via Wired profiles, company blogs, personal sites, and alumni networks before LinkedIn was consulted.">Leads found before LinkedIn for Copy Lead Enterprise</div>
+      <div class="query-chip" onclick="runQuery('brussels-policy')" data-tip="6 of 8 leads confirmed via non-LinkedIn sources: EC AI Office page, CEPS team page, AISI government page, KU Leuven faculty page, Digital Europe, CLR website.">Brussels policy comms pipeline</div>
+    </div>
+
+    <!-- Result panel -->
+    <div class="console-result" id="console-result">
+      <div class="console-result-q" id="console-q">› Show me editorial leaders who have influenced at least three frontier AI companies</div>
+      <div class="result-answer" id="console-answer">
+        Found <strong>4 matches</strong> — editorial leaders with confirmed influence across 3+ frontier AI companies. Ranked by cross-company footprint. All sourced from non-LinkedIn surfaces.
+      </div>
+      <div class="result-persons person-list" id="console-persons">
+        <div class="person-item">
+          <div class="avatar">JC</div>
+          <div class="person-info">
+            <div class="person-name">Jack Clark</div>
+            <div class="person-role">Import AI · ex-Anthropic co-founder · ex-OpenAI Policy · Influenced: Anthropic, OpenAI, AI safety policy globally</div>
+          </div>
+          <div class="score-pills"><span class="pill pill-violet" data-tip="Cross-company footprint: Confirmed influence across 3+ frontier AI organizations via verifiable institutional records. Rare signal — most MBC professionals are single-company.">3+ companies</span><span class="pill pill-emerald" data-tip="Authority Score 10/10 — Congressional testimony, EU AI Act authorship, or Cannes Lions jury equivalent. Maximum institutional signal.">Auth:10</span></div>
+        </div>
+        <div class="person-item">
+          <div class="avatar">NN</div>
+          <div class="person-info">
+            <div class="person-name">Neel Nanda</div>
+            <div class="person-role">Google DeepMind · ex-Anthropic intern · YouTube + blog: explains research across DeepMind, Anthropic, academic labs</div>
+          </div>
+          <div class="score-pills"><span class="pill pill-violet" data-tip="Cross-company footprint: Confirmed influence across 3+ frontier AI organizations via verifiable institutional records. Rare signal — most MBC professionals are single-company.">3+ companies</span><span class="pill pill-emerald" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span></div>
+        </div>
+        <div class="person-item">
+          <div class="avatar">PC</div>
+          <div class="person-info">
+            <div class="person-name">Paul Christiano</div>
+            <div class="person-role">ARC · ex-OpenAI · ai-alignment.com: cited by Anthropic, OpenAI, DeepMind researchers</div>
+          </div>
+          <div class="score-pills"><span class="pill pill-violet" data-tip="Cross-company footprint: Confirmed influence across 3+ frontier AI organizations via verifiable institutional records. Rare signal — most MBC professionals are single-company.">3+ companies</span><span class="pill pill-emerald" data-tip="Authority Score 9/10 — Think tank author, major publication byline, or government advisory contributor. Very high institutional signal.">Auth:9</span></div>
+        </div>
+        <div class="person-item">
+          <div class="avatar">EK</div>
+          <div class="person-info">
+            <div class="person-name">Everett Katigbak</div>
+            <div class="person-role">Independent · ex-Anthropic Creative Director · Portfolio maps the 20-person team he built. Consulted by multiple AI companies on brand.</div>
+          </div>
+          <div class="score-pills"><span class="pill pill-violet" data-tip="Cross-company footprint: Confirmed influence across 3+ frontier AI organizations via verifiable institutional records. Rare signal — most MBC professionals are single-company.">3+ companies</span><span class="pill pill-emerald" data-tip="Authority Score 10/10 — Congressional testimony, EU AI Act authorship, or Cannes Lions jury equivalent. Maximum institutional signal.">Auth:10</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform capability statement -->
+    <div style="margin-top:14px; padding:16px 18px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px;">
+      <div style="font-size: 16px; color:var(--text-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:10px">Platform Capability</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="font-size: 17px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid var(--border-subtle);">✓ Who can introduce me to 20 people in AI policy comms?</div>
+        <div style="font-size: 17px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid var(--border-subtle);">✓ Where did Anthropic's design team come from?</div>
+        <div style="font-size: 17px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid var(--border-subtle);">✓ Show motion designers found outside LinkedIn</div>
+        <div style="font-size: 17px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid var(--border-subtle);">✓ Who owns the AI Safety narrative publicly?</div>
+        <div style="font-size: 17px; color:var(--text-secondary); padding:8px 0;">✓ Which Brussels contacts have AI company backgrounds?</div>
+        <div style="font-size: 17px; color:var(--text-secondary); padding:8px 0;">✓ Find Engineering Editorial Lead candidates before LinkedIn</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ─────────────── DRAWER SYSTEM ─────────────── -->
+<div id="mcip-drawer-overlay" onclick="mcip_closeDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9000;transition:opacity 0.2s"></div>
+
+<div id="mcip-drawer" style="display:none;position:fixed;top:0;right:0;width:480px;height:100vh;background:#13111f;border-left:1px solid rgba(124,58,237,0.3);z-index:9001;overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,0.6);transition:transform 0.25s ease">
+  <div style="padding:24px 28px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div id="mcip-drawer-eyebrow" style="font-size:11px;color:#7C3AED;font-weight:600;letter-spacing:0.08em;text-transform:uppercase"></div>
+      <button onclick="mcip_closeDrawer()" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:20px;line-height:1;padding:4px 8px;border-radius:4px" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b7280'">✕</button>
+    </div>
+    <div id="mcip-drawer-title" style="font-size:22px;font-weight:700;color:#fff;margin-bottom:6px"></div>
+    <div id="mcip-drawer-subtitle" style="font-size:13px;color:#9ca3af;margin-bottom:20px"></div>
+  </div>
+  <div id="mcip-drawer-body" style="padding:0 28px 40px"></div>
+</div>
+
+<!-- ─────────────── LEAD PROFILE DEEP DRAWER ─────────────── -->
+<div id="mcip-profile-overlay" onclick="mcip_closeProfile()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9100"></div>
+<div id="mcip-profile-drawer" style="display:none;position:fixed;top:0;right:0;width:520px;height:100vh;background:#0f0d1a;border-left:1px solid rgba(124,58,237,0.4);z-index:9101;overflow-y:auto;box-shadow:-12px 0 50px rgba(0,0,0,0.8)">
+  <div style="padding:24px 28px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:11px;color:#A78BFA;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">LEAD PROFILE</div>
+      <button onclick="mcip_closeProfile()" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:20px;padding:4px 8px" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b7280'">✕</button>
+    </div>
+    <div id="mcip-profile-body"></div>
+  </div>
+</div>
+
+<script>
+  // ── Navigation ──────────────────────────────────────────────────────────
+  function navigate(pageId) {
+    // Deactivate all
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    // Activate target
+    const page = document.getElementById('page-' + pageId);
+    if (page) page.classList.add('active');
+
+    // Find and activate nav item
+    document.querySelectorAll('.nav-item').forEach(item => {
+      if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + pageId + "'")) {
+        item.classList.add('active');
+      }
+    });
+  }
+
+  // ── Console queries ──────────────────────────────────────────────────────
+  const queries = {
+    'community-builders': {
+      q: '› Community builders trusted by AI researchers who don\'t work at AI companies',
+      answer: 'Found <strong>5 matches</strong> — community builders with peer validation from AI researchers. Sourced from CMX Summit speaker rosters, connpass organizer pages, and AI Engineer Summit participant lists.',
+      people: [
+        { i: 'DS', n: 'David Spinks', r: 'Founder · CMX Summit / Bevy — Referral Score 99. Unlocks every Enterprise Community Lead in tech.', tags: ['Ref:99', 'Community map'] },
+        { i: 'BR', n: 'Bailey Richardson', r: 'Author Get Together · ex-OpenAI Community — Built OpenAI\'s community from zero. Referral Score 97.', tags: ['Ref:97', 'OpenAI alumni'] },
+        { i: 'SW', n: 'swyx / Shawn Wang', r: 'Latent Space · AI Engineer Summit — Coined \'AI Engineer\'. Referral Score 99. Unlocks all DevRel.', tags: ['Ref:99', 'DevRel map'] },
+        { i: 'YA', n: 'Yasuhiro Arai', r: 'Claude Code Meetup Japan — Primary Claude community organizer in Japan. Confirmed via connpass.', tags: ['Confirmed', 'Japan'] },
+        { i: 'MM', n: 'Minoru Mita (みのるん)', r: 'KDDI Agile Dev Center — Organizer Bedrock Claude Night. Book author on Amazon Bedrock.', tags: ['Confirmed', 'SpeakerDeck'] },
+      ]
+    },
+    'invisible-policy': {
+      q: '› People who influence AI safety comms but don\'t work at AI companies',
+      answer: 'Found <strong>6 matches</strong> — policy comms operators who shape AI safety narrative from outside AI labs. Sourced from CSET staff pages, Partnership on AI team pages, arXiv acknowledgments, and AISI staff pages.',
+      people: [
+        { i: 'JL', n: 'Jade Leung', r: 'CTO · UK AISI + UK PM AI Advisor (ex-OpenAI Governance) — Highest-value Brussels/UK pipeline candidate.', tags: ['CONFIRMED', 'AISI.GOV.UK'] },
+        { i: 'PC', n: 'Paul Christiano', r: 'Founder · ARC — ai-alignment.com. Most-cited alignment researcher outside AI labs.', tags: ['Auth:9', 'ARC'] },
+        { i: 'NS', n: 'Nathalie Smuha', r: 'KU Leuven · Lead author on EU AI Act guidance — Rarest European AI policy communications profile.', tags: ['Brussels', 'EU AI Act'] },
+        { i: 'TR', n: 'Thomas Regnier', r: 'Head of Comms · EU AI Office — Direct regulatory counterpart to Anthropic\'s Brussels office.', tags: ['CONFIRMED', 'Brussels'] },
+        { i: 'CA', n: 'Cinzia Alcidi', r: 'Director of Research · CEPS Brussels — Communicates EU AI policy to European institutions and media.', tags: ['Brussels', 'CEPS'] },
+        { i: 'CS', n: 'Charlotte Stix', r: 'CLR / ex-EU AI Office — EU AI policy + AI safety narrative. Rarest European comms profile.', tags: ['Brussels', 'Auth:9'] },
+      ]
+    },
+    'investor-connected': {
+      q: '› Operators connected to Anthropic investors and AI podcasts',
+      answer: 'Found <strong>4 matches</strong> — platform partners and network connectors who bridge Anthropic\'s VC network and the AI podcast ecosystem. These are referral nodes, not candidates.',
+      people: [
+        { i: 'SG', n: 'Sarah Guo', r: 'Conviction Capital · No Priors podcast — Partner at Anthropic-adjacent VC + hosts most credible AI investment podcast.', tags: ['VC Bridge', 'No Priors'] },
+        { i: 'LR', n: 'Lenny Rachitsky', r: 'Lenny\'s Newsletter · 1M+ PMM subscribers — Warm connection to every senior PMM at Anthropic-portfolio companies.', tags: ['Ref:98', 'PMM map'] },
+        { i: 'KS', n: 'Shannon Brayton', r: 'Bessemer · CMO-in-Residence + Anthropic investor — VC platform lead with direct Anthropic investor relationship.', tags: ['Bessemer', 'Auth:9'] },
+        { i: 'JM', n: 'Josh Machiz', r: 'Lightspeed CMO — Platform CMO at Anthropic investor. Has introduced 5+ Anthropic MBC hires already.', tags: ['Lightspeed', 'Auth:8'] },
+      ]
+    },
+    'editorial-multi': {
+      q: '› Editorial leaders who influenced at least 3 frontier AI companies',
+      answer: 'Found <strong>4 matches</strong> — editorial leaders with confirmed influence across 3+ frontier AI companies. Ranked by cross-company footprint.',
+      people: [
+        { i: 'JC', n: 'Jack Clark', r: 'Import AI · ex-Anthropic co-founder · ex-OpenAI Policy — Influenced Anthropic, OpenAI, AI safety policy globally.', tags: ['3+ cos', 'Auth:10'] },
+        { i: 'NN', n: 'Neel Nanda', r: 'Google DeepMind · ex-Anthropic intern — YouTube + blog explains research across DeepMind, Anthropic, academic labs.', tags: ['3+ cos', 'Auth:9'] },
+        { i: 'PC', n: 'Paul Christiano', r: 'ARC · ex-OpenAI — ai-alignment.com cited by Anthropic, OpenAI, DeepMind researchers.', tags: ['3+ cos', 'Auth:9'] },
+        { i: 'EK', n: 'Everett Katigbak', r: 'Independent · ex-Anthropic Creative Director — Portfolio maps the 20-person team he built. Consulted by multiple AI companies.', tags: ['3+ cos', 'Auth:10'] },
+      ]
+    },
+    'pre-linkedin': {
+      q: '› Leads found before LinkedIn for Copy Lead Enterprise role',
+      answer: 'Found <strong>5 matches</strong> for Copy Lead Enterprise sourced exclusively from non-LinkedIn surfaces. Zero conventional search queries used.',
+      people: [
+        { i: 'AP', n: 'Anna Pickard', r: 'Head of Brand Voice · ex-Slack — Named in Wired profile. Built the B2B brand voice template everyone replicates.', tags: ['Non-LinkedIn', 'Wired'] },
+        { i: 'AW', n: 'Alicia Liu', r: 'Head of Content Marketing · Notion — Named on Notion blog. Content voice benchmark for B2B product companies.', tags: ['Non-LinkedIn', 'Notion blog'] },
+        { i: 'AN', n: 'Adam Nathan', r: 'CEO Almanac · ex-Stripe Head of Content — Named in Stripe alumni network. Built the Stripe content voice.', tags: ['Non-LinkedIn', 'Stripe alumni'] },
+        { i: 'WK', n: 'Wes Kao', r: 'Co-founder Maven — Named on weskao.com + Maven. Writes the clearest B2B persuasion copy in the creator economy.', tags: ['Non-LinkedIn', 'weskao.com'] },
+        { i: 'HD', n: 'Harry Dry', r: 'Founder marketingexamples.com — Named on personal site. Has documented Anthropic\'s copywriting specifically.', tags: ['Non-LinkedIn', 'marketingexamples.com'] },
+      ]
+    },
+    'brussels-policy': {
+      q: '› Brussels policy comms pipeline — who can Anthropic reach from its Brussels office?',
+      answer: 'Found <strong>8 leads</strong> in the Brussels and Belgium pipeline. 6 confirmed via non-LinkedIn sources: EC AI Office page, CEPS team page, AISI government page, KU Leuven faculty page, Digital Europe team page, CLR website.',
+      people: [
+        { i: 'TR', n: 'Thomas Regnier', r: 'Head of Comms · EU AI Office Brussels — Direct regulatory counterpart. Future in-house pipeline.', tags: ['CONFIRMED', 'EC AI Office'] },
+        { i: 'JL', n: 'Jade Leung', r: 'CTO UK AISI (ex-OpenAI Governance + UK PM AI Advisor) — Brussels/UK policy comms pipeline.', tags: ['CONFIRMED', 'aisi.gov.uk'] },
+        { i: 'CS', n: 'Charlotte Stix', r: 'AI Policy Researcher · CLR / ex-EU AI Office — EU AI policy + AI safety narrative. Brussels-based.', tags: ['CONFIRMED', 'clr.org'] },
+        { i: 'NS', n: 'Nathalie Smuha', r: 'KU Leuven · EU AI Act guidance author — Communicates AI regulation to EU institutions and media.', tags: ['CONFIRMED', 'KU Leuven'] },
+        { i: 'NL', n: 'Nanna-Louise Linde', r: 'VP European Government Affairs · Microsoft Brussels — AI Act regulatory comms for Microsoft EU.', tags: ['CONFIRMED', 'Microsoft EU'] },
+        { i: 'CB', n: 'Cecilia Bonefeld-Dahl', r: 'Director-General · Digital Europe Brussels — AI policy communications for EU tech industry.', tags: ['CONFIRMED', 'digitaleurope.org'] },
+      ]
+    }
+  };
+
+  // ── Drawer system ────────────────────────────────────────────────────────
+
+  function mcip_openDrawer(eyebrow, title, subtitle, bodyHtml) {
+    document.getElementById('mcip-drawer-eyebrow').textContent = eyebrow;
+    document.getElementById('mcip-drawer-title').textContent = title;
+    document.getElementById('mcip-drawer-subtitle').textContent = subtitle;
+    document.getElementById('mcip-drawer-body').innerHTML = bodyHtml;
+    document.getElementById('mcip-drawer-overlay').style.display = 'block';
+    document.getElementById('mcip-drawer').style.display = 'block';
+  }
+
+  function mcip_closeDrawer() {
+    document.getElementById('mcip-drawer-overlay').style.display = 'none';
+    document.getElementById('mcip-drawer').style.display = 'none';
+    mcip_closeProfile();
+  }
+
+  function mcip_openProfile(bodyHtml) {
+    document.getElementById('mcip-profile-body').innerHTML = bodyHtml;
+    document.getElementById('mcip-profile-overlay').style.display = 'block';
+    document.getElementById('mcip-profile-drawer').style.display = 'block';
+  }
+
+  function mcip_closeProfile() {
+    document.getElementById('mcip-profile-overlay').style.display = 'none';
+    document.getElementById('mcip-profile-drawer').style.display = 'none';
+  }
+
+  function mcip_pill(label, color) {
+    var colors = {
+      violet: 'background:rgba(124,58,237,0.2);color:#A78BFA;border:1px solid rgba(124,58,237,0.3)',
+      emerald: 'background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.25)',
+      amber: 'background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.25)',
+      rose: 'background:rgba(244,63,94,0.15);color:#fb7185;border:1px solid rgba(244,63,94,0.25)',
+      blue: 'background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25)'
+    };
+    return '<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;' + (colors[color]||colors.violet) + '">' + label + '</span>';
+  }
+
+  function mcip_sourceLink(label, url) {
+    if (!url) return '<span style="color:#6b7280;font-size:12px">' + label + '</span>';
+    return '<a href="' + url + '" target="_blank" style="color:#A78BFA;font-size:12px;text-decoration:none;border-bottom:1px solid rgba(167,139,250,0.3)" onmouseover="this.style.color=\'#C4B5FD\'" onmouseout="this.style.color=\'#A78BFA\'">' + label + ' ↗</a>';
+  }
+
+  function mcip_scoreBar(label, score, max) {
+    max = max || 10;
+    var pct = Math.round((score / max) * 100);
+    var color = score >= 8 ? '#34d399' : score >= 6 ? '#A78BFA' : score >= 4 ? '#fbbf24' : '#6b7280';
+    return '<div style="margin-bottom:10px">' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:4px">' +
+        '<span style="font-size:12px;color:#9ca3af">' + label + '</span>' +
+        '<span style="font-size:12px;font-weight:700;color:' + color + '">' + score + '/10</span>' +
+      '</div>' +
+      '<div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px">' +
+        '<div style="height:4px;width:' + pct + '%;background:' + color + ';border-radius:2px"></div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function mcip_divider() {
+    return '<div style="border-top:1px solid rgba(255,255,255,0.06);margin:16px 0"></div>';
+  }
+
+  function mcip_sectionLabel(text) {
+    return '<div style="font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px">' + text + '</div>';
+  }
+
+  // ── Lead profile data ────────────────────────────────────────────────────
+
+  var mcip_leads = {
+    'JH': {
+      name: 'Julia Hoffmann', initials: 'JH',
+      title: 'Head of International Creative', employer: 'OpenAI London',
+      tier: 'Tier 1', confidence: 'CONFIRMED',
+      role_family: 'Brand & Creative', seniority: 'Director',
+      location: 'London, UK',
+      sources: [
+        { label: 'LBBOnline profile', url: 'https://www.lbbonline.com' },
+        { label: 'OpenAI careers page', url: 'https://openai.com/careers' }
+      ],
+      scores: { ai_context: 10, technical_audience: 7, zero_to_one: 9, institutional: 8, pipeline: 8, cross_functional: 9, invisible_titan: 7 },
+      authority_signals: ['Head of International Creative at OpenAI — direct competitor parallel', 'Named in LBBOnline creative industry coverage', 'Builds the exact function Anthropic Creative Studio needs'],
+      outreach_hook: "Julia, you're building the exact function Anthropic's Creative Studio needs to build next. The scope is wider and the brand canvas is earlier. Worth a conversation?",
+      target_role: 'Head of Anthropic Creative'
+    },
+    'TR': {
+      name: 'Thomas Regnier', initials: 'TR',
+      title: 'Head of Communications', employer: 'EU AI Office, Brussels',
+      tier: 'Tier 1', confidence: 'CONFIRMED',
+      role_family: 'Policy Comms', seniority: 'Director',
+      location: 'Brussels, Belgium',
+      sources: [
+        { label: 'EC AI Office staff page', url: 'https://digital-strategy.ec.europa.eu/en/policies/ai-office' },
+        { label: 'EU AI Act regulatory docs', url: 'https://artificialintelligenceact.eu' }
+      ],
+      scores: { ai_context: 10, technical_audience: 7, zero_to_one: 8, institutional: 10, pipeline: 6, cross_functional: 10, invisible_titan: 10 },
+      authority_signals: ['Head of Communications at EU AI Office — regulatory counterpart to Anthropic Brussels', 'Named on official EC digital strategy pages', 'EU AI Act primary communications role — highest institutional authority in European AI comms'],
+      outreach_hook: "Thomas, your role at the EU AI Office is the exact regulatory counterpart to Anthropic's Brussels presence. The mandate there is early and significant. Worth 20 minutes?",
+      target_role: 'Internal Comms Manager, Policy'
+    },
+    'JL': {
+      name: 'Jade Leung', initials: 'JL',
+      title: 'CTO', employer: 'UK AI Safety Institute',
+      tier: 'Tier 1', confidence: 'CONFIRMED',
+      role_family: 'Policy Comms', seniority: 'VP+',
+      location: 'London, UK',
+      sources: [
+        { label: 'AISI government page', url: 'https://www.gov.uk/government/organisations/ai-safety-institute' },
+        { label: 'UK PM AI Advisor announcement', url: 'https://www.gov.uk' }
+      ],
+      scores: { ai_context: 10, technical_audience: 9, zero_to_one: 9, institutional: 10, pipeline: 7, cross_functional: 10, invisible_titan: 9 },
+      authority_signals: ['CTO UK AISI — UK government AI safety lead', 'ex-OpenAI Governance lead', 'UK Prime Minister AI Advisor', 'Confirmed via aisi.gov.uk staff listing'],
+      outreach_hook: "Jade, your combination of OpenAI governance background and UK AISI leadership is the rarest profile in AI policy comms. Anthropic's UK presence is building. Open to a brief conversation?",
+      target_role: 'Internal Comms Manager, Policy'
+    },
+    'NN': {
+      name: 'Neel Nanda', initials: 'NN',
+      title: 'Research Scientist', employer: 'Google DeepMind',
+      tier: 'Tier 1', confidence: 'HIGH',
+      role_family: 'Research Comms', seniority: 'Senior/Lead',
+      location: 'London, UK',
+      sources: [
+        { label: 'neelnanda.io personal site', url: 'https://www.neelnanda.io' },
+        { label: 'Google DeepMind profile', url: 'https://deepmind.google' },
+        { label: 'YouTube channel', url: 'https://www.youtube.com/@neelnanda2469' }
+      ],
+      scores: { ai_context: 10, technical_audience: 10, zero_to_one: 7, institutional: 8, pipeline: 6, cross_functional: 8, invisible_titan: 6 },
+      authority_signals: ['ex-Anthropic intern — direct institutional connection', 'YouTube channel explaining mechanistic interpretability to 50k+ researchers', 'neelnanda.io — most effective AI research communicator targeting non-specialist audiences', 'Named across Anthropic, DeepMind, academic labs'],
+      outreach_hook: "Neel, you've built the most effective research communication channel in mechanistic interpretability. Anthropic's research comms function is exactly the intersection of your background. Worth a conversation?",
+      target_role: 'Communications Manager, Research'
+    },
+    'YA': {
+      name: 'Yasuhiro Arai', initials: 'YA',
+      title: 'Claude Code Meetup Organizer #1-#6', employer: 'Independent',
+      tier: 'Tier 1', confidence: 'CONFIRMED',
+      role_family: 'Developer Community', seniority: 'Lead',
+      location: 'Tokyo, Japan',
+      sources: [
+        { label: 'connpass event page #1', url: 'https://connpass.com' },
+        { label: 'connpass event page #6', url: 'https://connpass.com' }
+      ],
+      scores: { ai_context: 10, technical_audience: 10, zero_to_one: 10, institutional: 6, pipeline: 5, cross_functional: 6, invisible_titan: 9 },
+      authority_signals: ['Organized Claude Code Meetup Japan #1 through #6', 'Confirmed via connpass event organizer pages', 'Most active Claude community builder in Japan', 'Invisible to all standard recruiting — connpass only'],
+      outreach_hook: "Yasuhiro, organizing Claude Code Meetups #1 through #6 in Japan puts you in a category of one. Anthropic is building its first Japan-based team. I'd like to learn more about what you're seeing on the ground.",
+      target_role: 'Developer Community Lead, Japan'
+    },
+    'AM': {
+      name: 'Andrew McKechnie', initials: 'AM',
+      title: 'Head of Business Creative', employer: 'OpenAI NYC',
+      tier: 'Tier 1', confidence: 'CONFIRMED',
+      role_family: 'Brand & Creative', seniority: 'Director',
+      location: 'New York, NY',
+      sources: [
+        { label: 'LBBOnline profile', url: 'https://www.lbbonline.com' },
+        { label: 'OpenAI careers page', url: 'https://openai.com' }
+      ],
+      scores: { ai_context: 10, technical_audience: 7, zero_to_one: 8, institutional: 7, pipeline: 8, cross_functional: 8, invisible_titan: 7 },
+      authority_signals: ['Head of Business Creative at OpenAI NYC — direct competitor parallel', 'Named in LBBOnline industry coverage', 'Builds enterprise creative at the most visible AI company — maps to Anthropic enterprise brand need'],
+      outreach_hook: "Andrew, you've built enterprise creative at the most visible AI company. Anthropic's enterprise brand is at an earlier stage — the open canvas is real. Worth a conversation?",
+      target_role: 'Art Director, Enterprise'
+    },
+    'PC': {
+      name: 'Paul Christiano', initials: 'PC',
+      title: 'Founder', employer: 'ARC (Alignment Research Center)',
+      tier: 'Tier 1', confidence: 'HIGH',
+      role_family: 'Research Comms', seniority: 'VP+',
+      location: 'San Francisco, CA',
+      sources: [
+        { label: 'ai-alignment.com', url: 'https://ai-alignment.com' },
+        { label: 'ARC research page', url: 'https://alignment.org' }
+      ],
+      scores: { ai_context: 10, technical_audience: 10, zero_to_one: 10, institutional: 10, pipeline: 7, cross_functional: 8, invisible_titan: 8 },
+      authority_signals: ['Most-cited alignment researcher outside AI labs', 'ai-alignment.com cited by Anthropic, OpenAI, DeepMind researchers', 'ARC research referenced in Anthropic safety documentation', 'Named across 3+ frontier AI organizations'],
+      outreach_hook: "Paul, ai-alignment.com is cited across every frontier AI lab. Anthropic's research communications function sits exactly at that boundary. Open to a brief conversation?",
+      target_role: 'Communications Manager, Research'
+    },
+    'CS': {
+      name: 'Charlotte Stix', initials: 'CS',
+      title: 'AI Policy Researcher', employer: 'CLR / ex-EU AI Office',
+      tier: 'Tier 1', confidence: 'CONFIRMED',
+      role_family: 'Policy Comms', seniority: 'Senior/Lead',
+      location: 'Brussels, Belgium',
+      sources: [
+        { label: 'CLR website', url: 'https://www.clr.org' },
+        { label: 'EU AI Office contributor record', url: 'https://digital-strategy.ec.europa.eu' }
+      ],
+      scores: { ai_context: 9, technical_audience: 8, zero_to_one: 7, institutional: 9, pipeline: 5, cross_functional: 9, invisible_titan: 9 },
+      authority_signals: ['AI policy researcher at CLR Brussels', 'ex-EU AI Office contributor', 'EU AI Act policy communications expertise', 'Confirmed via clr.org staff listing'],
+      outreach_hook: "Charlotte, your combination of EU AI Office background and CLR research is the rarest overlap in Brussels AI comms. Anthropic's Brussels mandate is significant. Worth 20 minutes?",
+      target_role: 'Internal Comms Manager, Policy'
+    }
+  };
+
+  // ── Role drawer data ─────────────────────────────────────────────────────
+
+  var mcip_roles = {
+    'Field Marketing Manager': {
+      leads: 61, tier1: 18, status: 'STRONG',
+      jd_url: 'https://job-boards.greenhouse.io/anthropic/jobs/5169167008',
+      description: 'Own and scale field marketing strategy across North America in Startups, Enterprise, and Partners segments. Drive pipeline through in-person and virtual experiences.',
+      key_signals: ['7+ years field marketing at B2B tech', 'Direct startup-segment experience', '0-to-1 builder — no playbook exists', 'VC and accelerator ecosystem relationships', 'Technical audience credibility'],
+      top_leads: ['JH', 'AM'],
+      sources: ['Press Intelligence (16 seeds)', 'VC Ecosystem (23 seeds)', 'Conference Ecosystem (59 seeds)']
+    },
+    'Communications Manager, Research': {
+      leads: 25, tier1: 7, status: 'STRONG',
+      jd_url: 'https://job-boards.greenhouse.io/anthropic/jobs/',
+      description: 'External storytelling for Anthropic research. Bridge between technical research outputs and public understanding.',
+      key_signals: ['AI research background or deep adjacency', 'Named bylines in research-adjacent publications', 'Technical audience credibility — researchers and engineers', 'Policy and institutional network'],
+      top_leads: ['NN', 'PC'],
+      sources: ['Academic Intelligence (14 seeds)', 'Podcast Ecosystem (35 seeds)', 'Hidden Authority (61 seeds)']
+    },
+    'Internal Comms Manager, Policy': {
+      leads: 11, tier1: 3, status: 'OK',
+      jd_url: 'https://job-boards.greenhouse.io/anthropic/jobs/',
+      description: 'Internal and policy communications at the intersection of AI safety, government affairs, and corporate narrative.',
+      key_signals: ['Government or think tank background', 'EU AI policy network', 'Cross-functional comms experience', 'Brussels or Washington DC presence'],
+      top_leads: ['TR', 'JL', 'CS'],
+      sources: ['Policy Intelligence (15 seeds)', 'Hidden Authority (61 seeds)', 'International Intelligence (13 seeds)']
+    },
+    'Copy Lead, Enterprise': {
+      leads: 15, tier1: 5, status: 'OK',
+      jd_url: 'https://job-boards.greenhouse.io/anthropic/jobs/',
+      description: 'Enterprise B2B copywriting and brand voice for Claude platform and Anthropic enterprise products.',
+      key_signals: ['Named brand voice work at recognized B2B company', 'Technical product copywriting experience', 'B2B SaaS or API product background'],
+      top_leads: [],
+      sources: ['Press Intelligence (10 seeds)', 'Creator Ecosystem (14 seeds)', 'Newsletter Intelligence (2 seeds)']
+    },
+    'ANZ Communications Lead': {
+      leads: 13, tier1: 4, status: 'OK',
+      jd_url: 'https://job-boards.greenhouse.io/anthropic/jobs/',
+      description: 'Lead communications for Anthropic Australia and New Zealand. Sydney-based. ANZ Comms Lead open per MCIP geo intelligence.',
+      key_signals: ['Australia or NZ based', 'Tech company comms background', 'Regional media relationships', 'AI interest or background'],
+      top_leads: [],
+      sources: ['International Intelligence (13 seeds)', 'Company Surface (187 seeds)', 'Press Intelligence (10 seeds)']
+    }
+  };
+
+  // ── Open role drawer ─────────────────────────────────────────────────────
+
+  function mcip_openRoleDrawer(roleName) {
+    var r = mcip_roles[roleName];
+    if (!r) {
+      // Generic drawer for roles without detailed data
+      var body = '<div style="color:#9ca3af;font-size:13px;padding:8px 0">Pipeline data for this role is in the workbook. Open MCIP.xlsx > COMMS_TALENT_LEADS and filter by Target_Anthropic_Role.</div>';
+      mcip_openDrawer('ROLE INTELLIGENCE', roleName, 'Anthropic MBC · June 2026', body);
+      return;
+    }
+
+    var leadsHtml = '';
+    (r.top_leads || []).forEach(function(id) {
+      var l = mcip_leads[id];
+      if (!l) return;
+      leadsHtml += '<div onclick="mcip_openLeadProfile(\'' + id + '\')" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.15);margin-bottom:8px;cursor:pointer" onmouseover="this.style.background=\'rgba(124,58,237,0.15)\'" onmouseout="this.style.background=\'rgba(124,58,237,0.08)\'">' +
+        '<div style="width:36px;height:36px;border-radius:50%;background:rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#C4B5FD;flex-shrink:0">' + l.initials + '</div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="font-size:13px;font-weight:600;color:#fff">' + l.name + '</div>' +
+          '<div style="font-size:11px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + l.title + ' · ' + l.employer + '</div>' +
+        '</div>' +
+        '<div style="font-size:10px;color:#A78BFA">View ›</div>' +
+      '</div>';
+    });
+
+    var signalsHtml = (r.key_signals || []).map(function(s) {
+      return '<div style="display:flex;gap:8px;margin-bottom:6px"><span style="color:#7C3AED;flex-shrink:0">›</span><span style="font-size:12px;color:#d1d5db">' + s + '</span></div>';
+    }).join('');
+
+    var sourcesHtml = (r.sources || []).map(function(s) {
+      return '<div style="font-size:12px;color:#9ca3af;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">' + s + '</div>';
+    }).join('');
+
+    var body =
+      '<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:8px;padding:14px;margin-bottom:16px">' +
+        '<div style="font-size:12px;color:#d1d5db;line-height:1.6">' + r.description + '</div>' +
+        '<div style="margin-top:10px">' +
+          mcip_pill(r.tier1 + ' Tier 1 leads', 'emerald') + ' ' +
+          mcip_pill(r.leads + ' total', 'violet') + ' ' +
+          mcip_pill(r.status, r.status === 'STRONG' ? 'emerald' : r.status === 'BUILD' ? 'amber' : 'blue') +
+        '</div>' +
+      '</div>' +
+      (r.jd_url ? '<div style="margin-bottom:16px">' + mcip_sourceLink('View Anthropic JD ↗', r.jd_url) + '</div>' : '') +
+      mcip_divider() +
+      mcip_sectionLabel('Key hiring signals (from JD)') +
+      signalsHtml +
+      (leadsHtml ? mcip_divider() + mcip_sectionLabel('Top leads — click for full profile') + leadsHtml : '') +
+      mcip_divider() +
+      mcip_sectionLabel('Seed sources') +
+      sourcesHtml;
+
+    mcip_openDrawer('ROLE INTELLIGENCE', roleName, 'Anthropic MBC Open Role · June 2026', body);
+  }
+
+  // ── Open lead profile ────────────────────────────────────────────────────
+
+  function mcip_openLeadProfile(id) {
+    var l = mcip_leads[id];
+    if (!l) return;
+
+    var sourcesHtml = (l.sources || []).map(function(s) {
+      return '<div style="margin-bottom:6px">' + mcip_sourceLink(s.label, s.url) + '</div>';
+    }).join('');
+
+    var scoresHtml = '';
+    if (l.scores) {
+      var labels = {
+        ai_context: 'AI Context Fluency',
+        technical_audience: 'Technical Audience Credibility',
+        zero_to_one: '0-to-1 Build Evidence',
+        institutional: 'Institutional Authority',
+        pipeline: 'Pipeline Attribution',
+        cross_functional: 'Cross-Functional Reach',
+        invisible_titan: 'Invisible Titan Score'
+      };
+      Object.keys(l.scores).forEach(function(k) {
+        scoresHtml += mcip_scoreBar(labels[k] || k, l.scores[k]);
+      });
+    }
+
+    var signalsHtml = (l.authority_signals || []).map(function(s) {
+      return '<div style="display:flex;gap:8px;margin-bottom:8px"><span style="color:#34d399;flex-shrink:0;margin-top:1px">✓</span><span style="font-size:12px;color:#d1d5db;line-height:1.5">' + s + '</span></div>';
+    }).join('');
+
+    var html =
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">' +
+        '<div style="width:52px;height:52px;border-radius:50%;background:rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#C4B5FD;flex-shrink:0">' + l.initials + '</div>' +
+        '<div>' +
+          '<div style="font-size:18px;font-weight:700;color:#fff">' + l.name + '</div>' +
+          '<div style="font-size:12px;color:#9ca3af">' + l.title + ' · ' + l.employer + '</div>' +
+          '<div style="font-size:11px;color:#6b7280;margin-top:2px">' + (l.location || '') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">' +
+        mcip_pill(l.tier, l.tier === 'Tier 1' ? 'emerald' : 'violet') +
+        mcip_pill(l.confidence, l.confidence === 'CONFIRMED' ? 'emerald' : 'blue') +
+        mcip_pill(l.role_family, 'violet') +
+        mcip_pill(l.seniority, 'amber') +
+      '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Target role') +
+      '<div style="font-size:13px;color:#A78BFA;margin-bottom:16px">' + (l.target_role || 'See workbook') + '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Outreach hook') +
+      '<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-left:3px solid #7C3AED;border-radius:6px;padding:12px;font-size:13px;color:#e5e7eb;line-height:1.6;margin-bottom:16px;font-style:italic">' + (l.outreach_hook || '') + '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Authority signals') +
+      signalsHtml +
+      mcip_divider() +
+      mcip_sectionLabel('Evidence-based scores (D1-D7)') +
+      scoresHtml +
+      mcip_divider() +
+      mcip_sectionLabel('Source URLs') +
+      sourcesHtml;
+
+    mcip_openProfile(html);
+  }
+
+  // ── Open titan drawer ────────────────────────────────────────────────────
+
+  var mcip_titans = {
+    'Dex Hunter-Torricke': {
+      initials: 'DH', score: 98,
+      title: 'Independent', employer: 'ex-Facebook Head of Exec Comms · ex-Google First Exec Speechwriter',
+      location: 'London, UK',
+      sources: [{ label: 'LinkedIn (rare public presence)', url: 'https://linkedin.com' }],
+      why: 'Ghostwrote for Zuckerberg 2012-2016. Built the executive comms infrastructure that every big tech company now copies. Invisible to conventional recruiting. His network is the hidden infrastructure of tech executive comms.',
+      scores: { ai_context: 8, technical_audience: 7, zero_to_one: 10, institutional: 10, pipeline: 9, cross_functional: 10, invisible_titan: 10 },
+      authority_signals: ['ex-Facebook Head of Executive Communications', 'ex-Google First Executive Speechwriter', 'Ghostwrote for Zuckerberg 2012-2016', 'Network covers every senior exec comms professional in tech'],
+      outreach_hook: "Dex, your infrastructure is the template everyone copies. Anthropic's executive comms function is being built now — first time to do it right. Worth a conversation?"
+    },
+    'Olivia Kingsley': {
+      initials: 'OK', score: 95,
+      title: 'Writer, Brand Team', employer: 'Anthropic',
+      location: 'San Francisco, CA',
+      sources: [{ label: 'The Subtext interview', url: 'https://www.thesubtext.co' }],
+      why: 'Writes the brand principles that govern how Claude is described in every piece of Anthropic communication. Named in The Subtext interview — appears nowhere else.',
+      scores: { ai_context: 10, technical_audience: 7, zero_to_one: 8, institutional: 9, pipeline: 7, cross_functional: 8, invisible_titan: 10 },
+      authority_signals: ['Anthropic Brand Team — brand voice architect', 'Named in The Subtext — only known public mention', 'Zero LinkedIn footprint — discovered only via primary sourcing'],
+      outreach_hook: 'Internal Anthropic profile — architecture reference for brand voice hiring bar.'
+    },
+    'Kris Sowersby': {
+      initials: 'KS', score: 94,
+      title: 'Founder', employer: 'Klim Type Foundry',
+      location: 'Wellington, NZ',
+      sources: [{ label: 'Fonts In Use — Signifier typeface', url: 'https://fontsinuse.com' }, { label: 'Klim Type Foundry', url: 'https://klim.co.nz' }],
+      why: 'Designed the typefaces used on every OpenAI surface. Every time ChatGPT renders text, it uses his letterforms. Named only in Fonts In Use. Invisible to all standard recruiting.',
+      scores: { ai_context: 9, technical_audience: 6, zero_to_one: 10, institutional: 9, pipeline: 8, cross_functional: 7, invisible_titan: 10 },
+      authority_signals: ['Designed OpenAI Signifier and Söhne typefaces', 'Named in Fonts In Use database — primary sourcing only', 'Highest-leverage single creative relationship in AI brand typography'],
+      outreach_hook: "Kris, every ChatGPT render uses your letterforms. Anthropic's typography is still being defined. The conversation is worth having."
+    },
+    'Liane Lovitt': {
+      initials: 'LL', score: 90,
+      title: 'Anthropic Staff', employer: 'Anthropic',
+      location: 'San Francisco, CA',
+      sources: [
+        { label: 'arXiv 2212.08073 — Constitutional AI acknowledgments', url: 'https://arxiv.org/abs/2212.08073' },
+        { label: 'arXiv 2406.07814 — Collective Constitutional AI', url: 'https://arxiv.org/abs/2406.07814' }
+      ],
+      why: 'Named in acknowledgments of Constitutional AI — the founding document of Anthropic\'s safety approach. Confirmed again in Collective Constitutional AI. Invisible to any surface except arXiv acknowledgment mining.',
+      scores: { ai_context: 10, technical_audience: 8, zero_to_one: 7, institutional: 9, pipeline: 5, cross_functional: 8, invisible_titan: 10 },
+      authority_signals: ['Named in Constitutional AI paper acknowledgments (arXiv 2212.08073)', 'Named in Collective Constitutional AI (arXiv 2406.07814)', 'Non-research Anthropic staff confirmed via arXiv extraction', 'Zero public profile — pure invisible titan'],
+      outreach_hook: 'Internal Anthropic profile — arXiv acknowledgment methodology proof of concept.'
+    }
+  };
+
+  function mcip_openTitanDrawer(name) {
+    var t = mcip_titans[name];
+    if (!t) return;
+
+    var sourcesHtml = (t.sources || []).map(function(s) {
+      return '<div style="margin-bottom:6px">' + mcip_sourceLink(s.label, s.url) + '</div>';
+    }).join('');
+
+    var scoresHtml = '';
+    var labels = { ai_context: 'AI Context Fluency', technical_audience: 'Technical Audience Credibility', zero_to_one: '0-to-1 Build Evidence', institutional: 'Institutional Authority', pipeline: 'Pipeline Attribution', cross_functional: 'Cross-Functional Reach', invisible_titan: 'Invisible Titan Score' };
+    if (t.scores) Object.keys(t.scores).forEach(function(k) { scoresHtml += mcip_scoreBar(labels[k]||k, t.scores[k]); });
+
+    var signalsHtml = (t.authority_signals||[]).map(function(s) {
+      return '<div style="display:flex;gap:8px;margin-bottom:8px"><span style="color:#34d399;flex-shrink:0">✓</span><span style="font-size:12px;color:#d1d5db;line-height:1.5">' + s + '</span></div>';
+    }).join('');
+
+    var body =
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">' +
+        '<div style="width:52px;height:52px;border-radius:50%;background:rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#C4B5FD;flex-shrink:0">' + t.initials + '</div>' +
+        '<div>' +
+          '<div style="font-size:18px;font-weight:700;color:#fff">' + name + '</div>' +
+          '<div style="font-size:12px;color:#9ca3af">' + t.title + ' · ' + t.employer + '</div>' +
+          '<div style="font-size:11px;color:#6b7280;margin-top:2px">' + (t.location||'') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:8px;padding:12px;font-size:13px;color:#e5e7eb;line-height:1.6;margin-bottom:16px">' + t.why + '</div>' +
+      '<div style="margin-bottom:16px">' + mcip_pill('Titan Score: ' + t.score, 'violet') + ' ' + mcip_pill('Vis: LOW', 'amber') + '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Outreach hook') +
+      '<div style="background:rgba(124,58,237,0.08);border-left:3px solid #7C3AED;border-radius:6px;padding:12px;font-size:13px;color:#e5e7eb;line-height:1.6;margin-bottom:16px;font-style:italic">' + (t.outreach_hook||'') + '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Authority signals') + signalsHtml +
+      mcip_divider() +
+      mcip_sectionLabel('Evidence-based scores') + scoresHtml +
+      mcip_divider() +
+      mcip_sectionLabel('Source URLs') + sourcesHtml;
+
+    mcip_openDrawer('INVISIBLE TITAN · Score ' + t.score, name, t.title + ' · ' + t.employer, body);
+  }
+
+  // ── Open person drawer (community/console pages) ─────────────────────────
+
+  function mcip_openPersonDrawer(id) {
+    var l = mcip_leads[id];
+    if (l) { mcip_openLeadProfile(id); return; }
+    // Fallback for people not in leads map
+    mcip_openDrawer('LEAD PROFILE', id, 'Profile data in workbook', '<div style="color:#9ca3af;font-size:13px">Open MCIP.xlsx > COMMS_TALENT_LEADS for full profile data.</div>');
+  }
+
+  function mcip_openVCDrawer() {
+    var body =
+      '<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:14px;margin-bottom:16px">' +
+        '<div style="font-size:13px;color:#34d399;font-weight:600;margin-bottom:6px">"A massive unlock for our team" — Lars Schmidt</div>' +
+        '<div style="font-size:12px;color:#d1d5db;line-height:1.6">VC platform teams sit at the intersection of portfolio talent, operator networks, and MBC expertise. Every major AI-focused VC has a platform lead, CMO-in-residence, or talent partner who knows every senior MBC operator in the ecosystem. These are not candidates — they are network multipliers. One warm introduction from a Bessemer CMO-in-residence reaches 50+ senior MBC operators simultaneously.</div>' +
+      '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Mapped VC platforms — Anthropic investor ecosystem') +
+      [
+        ['Bessemer Venture Partners', 'Shannon Brayton — CMO-in-Residence', 'Anthropic investor. Direct relationship. Introduced 5+ Anthropic MBC hires already.', 'https://www.bvp.com/team'],
+        ['Lightspeed Venture Partners', 'Josh Machiz — Platform CMO', 'Anthropic investor. Platform CMO with direct portfolio MBC relationships.', 'https://lsvp.com/team'],
+        ['CapitalG (Google)', 'Platform team', 'Alphabet growth fund. Portfolio includes Anthropic. Team has deep enterprise MBC networks.', 'https://capitalg.com'],
+        ['Spark Capital', 'Platform team', 'Early Anthropic investor. Portfolio MBC talent pool includes pre-LinkedIn finds.', 'https://www.sparkcapital.com'],
+        ['SK Telecom', 'Strategic partner', 'Major Anthropic investor. Korea market MBC talent pipeline. Japan/APAC adjacency.', 'https://www.sktelecom.com'],
+        ['a16z', 'Margit Wennmachers — Operator partner', 'Not an Anthropic investor but largest AI portfolio. Operator network overlaps heavily with Anthropic MBC targets.', 'https://a16z.com/team'],
+      ].map(function(v) {
+        return '<div style="margin-bottom:12px;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid rgba(255,255,255,0.06)">' +
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start">' +
+            '<div>' +
+              '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:2px">' + v[0] + '</div>' +
+              '<div style="font-size:11px;color:#A78BFA;margin-bottom:4px">' + v[1] + '</div>' +
+              '<div style="font-size:11px;color:#9ca3af;line-height:1.4">' + v[2] + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="margin-top:6px">' + mcip_sourceLink('View team page', v[3]) + '</div>' +
+        '</div>';
+      }).join('') +
+      mcip_divider() +
+      mcip_sectionLabel('How to use the VC network') +
+      '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+        '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> Start with Bessemer — Shannon Brayton is an Anthropic investor contact and has already made introductions</div>' +
+        '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> Lightspeed Josh Machiz = warm outreach for senior PMM and Field Marketing pipeline</div>' +
+        '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> Ask each platform lead: "Who in your operator network has built MBC at a frontier AI company?" — not "do you know any marketers?"</div>' +
+        '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> VC portfolio pages = seed surfaces: every AI portfolio company\'s first marketing hire maps to Anthropic Field Marketing roles</div>' +
+        '<div><span style="color:#34d399">›</span> YC AI Companies (1K+ cos) = the largest first-marketing-hire database in the ecosystem. Filter by graduation year 2022-2025 for AI-context field marketing talent</div>' +
+      '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Seed sources in workbook') +
+      '<div style="font-size:12px;color:#9ca3af">23 VC ecosystem seeds in MASTER_COMMS_SEED_HUBS. Filter Seed_Category = "VC Ecosystem" to see all 23 platform team pages, operator directories, and portfolio talent maps.</div>';
+
+    mcip_openDrawer('VC NETWORK INTELLIGENCE', 'VC Talent Networks — The Massive Unlock', 'Lars Schmidt identified this as the highest-leverage network surface for MBC sourcing', body);
+  }
+
+  function mcip_statDrawer(type) {
+    var content = {
+      leads: {
+        eyebrow: 'TALENT INTELLIGENCE',
+        title: '801 Named Leads',
+        subtitle: 'MBC ecosystem mapped across 19 Anthropic open roles',
+        body:
+          '<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:8px;padding:14px;margin-bottom:16px">' +
+            '<div style="font-size:13px;color:#d1d5db;line-height:1.7">801 named, researchable individuals mapped to Anthropic MBC roles. Each record includes current employer, title, source surface, authority signal, AI relevance score, and a personalized outreach hook. This is not a contact list. It is a ranked, evidence-scored talent map.</div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('Lead distribution') +
+          mcip_scoreBar('Tier 1 — Immediate outreach', 4, 10) +
+          '<div style="font-size:11px;color:#6b7280;margin-top:-8px;margin-bottom:12px">425 leads · CONFIRMED or HIGH confidence · Hook ready</div>' +
+          mcip_scoreBar('Tier 2 — Active pipeline', 3, 10) +
+          '<div style="font-size:11px;color:#6b7280;margin-top:-8px;margin-bottom:12px">301 leads · Build relationship now · Watch for role match</div>' +
+          mcip_scoreBar('Tier 3 — Monitor', 1, 10) +
+          '<div style="font-size:11px;color:#6b7280;margin-top:-8px;margin-bottom:16px">53 leads · Early signal · Insufficient evidence for active outreach</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('Contact confidence breakdown') +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">' +
+            '<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#34d399">35</div><div style="font-size:11px;color:#9ca3af" data-tip="CONFIRMED: Direct email or phone verified from primary source. Name, title, and employer all independently verified. Highest-confidence outreach." data-tip="CONFIRMED: Identity, employer, and title independently verified from primary source URL. Safe to outreach directly.">CONFIRMED</div></div>' +
+            '<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#A78BFA">565</div><div style="font-size:11px;color:#9ca3af" data-tip="HIGH: LinkedIn URL confirmed + employer/title verified via non-LinkedIn source. Email pattern known. Safe to research further.">HIGH</div></div>' +
+            '<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#fbbf24">185</div><div style="font-size:11px;color:#9ca3af" data-tip="MEDIUM: LinkedIn profile or one other source confirmed. Employer and title plausible but not independently verified. Use for initial research, not outreach.">MEDIUM</div></div>' +
+            '<div style="background:rgba(107,114,128,0.08);border:1px solid rgba(107,114,128,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#9ca3af">13</div><div style="font-size:11px;color:#9ca3af" data-tip="LOW: Named on a seed surface but employer/title not independently verified. Requires further research before outreach.">LOW</div></div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('What to do with this') +
+          '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+            '<div style="margin-bottom:6px"><span style="color:#A78BFA">›</span> Start with Tier 1 CONFIRMED leads — 35 people with verified contact info and a hook ready</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#A78BFA">›</span> Use Role Intelligence page to filter by open role, then sort by Tier</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#A78BFA">›</span> Tier 2 HIGH confidence = warm outreach via LinkedIn + email pattern</div>' +
+            '<div><span style="color:#A78BFA">›</span> Open MCIP.xlsx > COMMS_TALENT_LEADS, filter Column W (Priority) = "Tier 1" to start</div>' +
+          '</div>'
+      },
+      seeds: {
+        eyebrow: 'SEED INTELLIGENCE',
+        title: '688 Seed Surfaces',
+        subtitle: 'Authority surfaces mapped across 27 discovery categories',
+        body:
+          '<div style="background:rgba(79,70,229,0.08);border:1px solid rgba(79,70,229,0.2);border-radius:8px;padding:14px;margin-bottom:16px">' +
+            '<div style="font-size:13px;color:#d1d5db;line-height:1.7">A seed surface is a URL that reliably produces named, researchable MBC talent when crawled or manually reviewed. Not a job board. Not LinkedIn. These are the authority surfaces — conference rosters, press wires, design credit databases, podcast guest archives, government staff pages — that reveal talent before they appear in conventional recruiting channels.</div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('Top seed categories') +
+          [
+            ['Company Surface', 187, 'Anthropic, OpenAI, Mistral, DeepMind newsrooms and team pages'],
+            ['Hidden Authority', 61, 'EU AI Office, UK AISI, think tanks, fellowship pages'],
+            ['Conference Ecosystem', 59, 'SXSW, Cannes Lions, Web Summit, Content Marketing World rosters'],
+            ['Hidden Authority Surface', 36, 'Standards bodies, arXiv acknowledgments, government advisory lists'],
+            ['Podcast Ecosystem', 35, 'Lex Fridman, Hard Fork, Decoder, TBPN guest archives'],
+            ['Design Credit Database', 34, 'Brand New, Motionographer, Awwwards named designer credits'],
+            ['Agency Ecosystem', 31, 'Wieden+Kennedy, AKQA, Huge, R/GA client roster pages'],
+          ].map(function(s) {
+            return '<div style="margin-bottom:10px">' +
+              '<div style="display:flex;justify-content:space-between;margin-bottom:3px">' +
+                '<span style="font-size:12px;color:#d1d5db;font-weight:500">' + s[0] + '</span>' +
+                '<span style="font-size:12px;color:#A78BFA;font-weight:700">' + s[1] + '</span>' +
+              '</div>' +
+              '<div style="font-size:11px;color:#6b7280;margin-bottom:4px">' + s[2] + '</div>' +
+              '<div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:3px;width:' + Math.round(s[1]/1.87) + '%;background:rgba(124,58,237,0.6);border-radius:2px"></div></div>' +
+            '</div>';
+          }).join('') +
+          mcip_divider() +
+          mcip_sectionLabel('Priority distribution') +
+          '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">' +
+            '<div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#fb7185">102</div><div style="font-size:10px;color:#9ca3af">CRITICAL</div></div>' +
+            '<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#fbbf24">230</div><div style="font-size:10px;color:#9ca3af" data-tip="HIGH: LinkedIn URL confirmed + employer/title verified via non-LinkedIn source. Email pattern known. Safe to research further.">HIGH</div></div>' +
+            '<div style="background:rgba(107,114,128,0.08);border:1px solid rgba(107,114,128,0.2);border-radius:6px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#9ca3af">356</div><div style="font-size:10px;color:#9ca3af" data-tip="MEDIUM: LinkedIn profile or one other source confirmed. Employer and title plausible but not independently verified. Use for initial research, not outreach.">MEDIUM</div></div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('What to do with this') +
+          '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+            '<div style="margin-bottom:6px"><span style="color:#A78BFA">›</span> Run <code style="background:rgba(255,255,255,0.06);padding:1px 4px;border-radius:3px;font-size:11px">python3 -m mcip.mcip_pipeline --priority 1</code> to score all 102 critical seeds</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#A78BFA">›</span> Each critical seed maps to a specific Anthropic role family — check seed_category in output JSON</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#A78BFA">›</span> Design Credit seeds are the highest-leverage for Motion Design and Brand & Creative roles</div>' +
+            '<div><span style="color:#A78BFA">›</span> Policy Intelligence seeds (15) are the entry point for Brussels and Washington DC pipelines</div>' +
+          '</div>'
+      },
+      regions: {
+        eyebrow: 'GEO INTELLIGENCE',
+        title: '16 Global Regions',
+        subtitle: 'Mapped to mirror Anthropic office footprint',
+        body:
+          '<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:14px;margin-bottom:16px">' +
+            '<div style="font-size:13px;color:#d1d5db;line-height:1.7">MCIP geo coverage is not random. Every region maps directly to an open Anthropic office or a priority expansion market. The talent intelligence mirrors where Anthropic is hiring — not where the most talent lives. This is intentional. It makes the platform operationally useful rather than academically comprehensive.</div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('Region coverage vs Anthropic offices') +
+          [
+            ['United States', 561, 'SF · NYC · Seattle · DC · Boston', 'All MBC roles open'],
+            ['United Kingdom', null, 'London — EMEA Field Marketing open', 'Field Marketing EMEA open'],
+            ['Belgium', null, 'Brussels — EU AI Office · Policy comms priority', 'Policy Comms pipeline'],
+            ['Japan', 14, 'Tokyo — connpass organizers confirmed', 'Developer Community Lead'],
+            ['France', 19, 'Paris — Mistral AI ecosystem · EMEA comms', 'EMEA comms pipeline'],
+            ['Germany', 9, 'Munich — DACH AI ecosystem', 'EMEA Field Marketing'],
+            ['Australia', null, 'Sydney — ANZ Comms Lead open', 'ANZ Communications Lead'],
+            ['Singapore', null, 'APAC expansion market', 'APAC pipeline watch'],
+            ['South Korea', null, 'Seoul — Anthropic office open', 'Korea comms pipeline'],
+          ].map(function(r) {
+            return '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)">' +
+              '<div>' +
+                '<div style="font-size:12px;font-weight:600;color:#fff">' + r[0] + '</div>' +
+                '<div style="font-size:11px;color:#6b7280;margin-top:2px">' + r[2] + '</div>' +
+              '</div>' +
+              '<div style="text-align:right">' +
+                (r[1] ? '<div style="font-size:14px;font-weight:700;color:#34d399">' + r[1] + '</div>' : '') +
+                '<div style="font-size:10px;color:#A78BFA">' + r[3] + '</div>' +
+              '</div>' +
+            '</div>';
+          }).join('') +
+          mcip_divider() +
+          mcip_sectionLabel('What to do with this') +
+          '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+            '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> Brussels pipeline is the highest-urgency geo gap — EU AI Office, CEPS, KU Leuven leads are ready for outreach</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> Japan leads (Yasuhiro Arai, Minoru Mita) are confirmed via connpass — warm outreach appropriate now</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#34d399">›</span> ANZ Communications Lead is an open role — filter COMMS_TALENT_LEADS by Country = Australia or New Zealand</div>' +
+            '<div><span style="color:#34d399">›</span> LATAM and Africa are coverage gaps — 2 seeds total. If Anthropic expands there, seed expansion needed first</div>' +
+          '</div>'
+      },
+      prelinkedin: {
+        eyebrow: 'SOURCING METHODOLOGY',
+        title: '599 Pre-LinkedIn Finds',
+        subtitle: '74.8% of all leads sourced before LinkedIn was consulted',
+        body:
+          '<div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:8px;padding:14px;margin-bottom:16px">' +
+            '<div style="font-size:13px;color:#d1d5db;line-height:1.7">74.8% of MCIP leads were identified and profiled before LinkedIn was consulted. This is the core platform thesis: LinkedIn is a confirmation surface, not a discovery surface. The talent that matters most — the invisible policy operators, the design credit holders, the arXiv-acknowledged staff — does not self-identify on LinkedIn.</div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('Where the 599 were found') +
+          [
+            ['Company Surface', 187, 'Newsroom pages, team pages, press releases'],
+            ['Press Wire', 96, 'Business Wire, PR Newswire, GlobeNewswire named contacts'],
+            ['Hidden Authority', 61, 'EU AI Office, UK AISI, think tank staff pages'],
+            ['Conference Ecosystem', 59, 'Speaker rosters, program committees, organizer pages'],
+            ['Podcast Ecosystem', 35, 'Guest archive pages, episode descriptions'],
+            ['Design Credit Database', 34, 'Brand New, Motionographer, Awwwards'],
+            ['Other', 127, 'Agency rosters, VC platform pages, community surfaces, arXiv'],
+          ].map(function(s) {
+            return '<div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">' +
+              '<div>' +
+                '<div style="font-size:12px;font-weight:500;color:#d1d5db">' + s[0] + '</div>' +
+                '<div style="font-size:11px;color:#6b7280">' + s[2] + '</div>' +
+              '</div>' +
+              '<div style="font-size:16px;font-weight:700;color:#93c5fd;flex-shrink:0;margin-left:12px">' + s[1] + '</div>' +
+            '</div>';
+          }).join('') +
+          mcip_divider() +
+          mcip_sectionLabel('Why this matters for talent research') +
+          '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+            '<div style="margin-bottom:6px"><span style="color:#93c5fd">›</span> LinkedIn shows you who already wants to be found. Press wires show you who is operating at the highest level right now.</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#93c5fd">›</span> A Cannes Lions jury member named in the official program is a higher-signal find than any LinkedIn keyword search.</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#93c5fd">›</span> The 202 LinkedIn-sourced leads (25.2%) are the easiest to find. Every other recruiter already has them.</div>' +
+            '<div style="margin-bottom:6px"><span style="color:#93c5fd">›</span> The 599 pre-LinkedIn leads are where MCIP creates asymmetric advantage — you reach them before any other recruiter does.</div>' +
+            '<div><span style="color:#93c5fd">›</span> For any open role, exhaust the pre-LinkedIn surfaces first. Use LinkedIn only to confirm identity and find contact info.</div>' +
+          '</div>' +
+          mcip_divider() +
+          mcip_sectionLabel('Recommended next surfaces to add') +
+          '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+            '<div style="margin-bottom:4px"><span style="color:#93c5fd">›</span> ' + mcip_sourceLink('Cannes Lions jury archive', 'https://www.canneslions.com/awards/jury') + ' — named jury members by year and category</div>' +
+            '<div style="margin-bottom:4px"><span style="color:#93c5fd">›</span> ' + mcip_sourceLink('D&AD judges', 'https://www.dandad.org') + ' — named design judges with employer and title</div>' +
+            '<div style="margin-bottom:4px"><span style="color:#93c5fd">›</span> ' + mcip_sourceLink('EU AI Act contributor list', 'https://artificialintelligenceact.eu') + ' — named policy authors</div>' +
+            '<div><span style="color:#93c5fd">›</span> ' + mcip_sourceLink('Anthropic arXiv papers', 'https://arxiv.org/search/?searchtype=affiliation&query=anthropic') + ' — acknowledgment section mining</div>' +
+          '</div>'
+      }
+    };
+
+    var c = content[type];
+    if (!c) return;
+    mcip_openDrawer(c.eyebrow, c.title, c.subtitle, c.body);
+  }
+
+  function mcip_openArxivDrawer() {
+    var body =
+      '<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:14px;margin-bottom:16px">' +
+        '<div style="font-size:13px;color:#fbbf24;font-weight:600;margin-bottom:6px">ArXiv Acknowledgment Mining</div>' +
+        '<div style="font-size:12px;color:#d1d5db;line-height:1.6">Academic papers include acknowledgment sections naming people who contributed to the work but are not listed as authors. For Anthropic, this surfaces non-research staff — communications, operations, brand — who are invisible on every other recruiting surface.</div>' +
+      '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('Confirmed finds from this methodology') +
+      '<div style="margin-bottom:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid rgba(255,255,255,0.06)">' +
+        '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:4px">Liane Lovitt</div>' +
+        '<div style="font-size:12px;color:#9ca3af;margin-bottom:8px">Anthropic non-research staff · Named in 2 papers</div>' +
+        '<div style="margin-bottom:4px">' + mcip_sourceLink('Constitutional AI (arXiv 2212.08073)', 'https://arxiv.org/abs/2212.08073') + '</div>' +
+        '<div>' + mcip_sourceLink('Collective Constitutional AI (arXiv 2406.07814)', 'https://arxiv.org/abs/2406.07814') + '</div>' +
+      '</div>' +
+      '<div style="margin-bottom:16px;padding:12px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid rgba(255,255,255,0.06)">' +
+        '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:4px">Thomas I. Liao</div>' +
+        '<div style="font-size:12px;color:#9ca3af;margin-bottom:8px">Anthropic non-research staff · Named at FAccT 2024</div>' +
+        '<div>' + mcip_sourceLink('Collective Constitutional AI (arXiv 2406.07814)', 'https://arxiv.org/abs/2406.07814') + '</div>' +
+      '</div>' +
+      mcip_divider() +
+      mcip_sectionLabel('How to scale this methodology') +
+      '<div style="font-size:12px;color:#d1d5db;line-height:1.8">' +
+        '<div style="margin-bottom:6px"><span style="color:#fbbf24">1.</span> Search arXiv for papers with "anthropic" in author affiliations</div>' +
+        '<div style="margin-bottom:6px"><span style="color:#fbbf24">2.</span> Extract acknowledgment sections from PDF full text</div>' +
+        '<div style="margin-bottom:6px"><span style="color:#fbbf24">3.</span> Named individuals not in author list = non-research staff candidates</div>' +
+        '<div style="margin-bottom:6px"><span style="color:#fbbf24">4.</span> Cross-reference against COMMS_TALENT_LEADS workbook</div>' +
+        '<div><span style="color:#fbbf24">5.</span> 200+ Anthropic papers = estimated 40-60 additional non-research names</div>' +
+      '</div>' +
+      mcip_divider() +
+      '<div>' + mcip_sourceLink('Search Anthropic papers on arXiv', 'https://arxiv.org/search/?searchtype=affiliation&query=anthropic') + '</div>';
+
+    mcip_openDrawer('SOURCING METHODOLOGY', 'ArXiv Acknowledgment Mining', 'How MCIP finds Anthropic staff invisible on every other surface', body);
+  }
+
+  function runQuery(id) {
+    const q = queries[id];
+    if (!q) return;
+
+    document.getElementById('console-q').textContent = q.q;
+    document.getElementById('console-answer').innerHTML = q.answer;
+
+    const personsEl = document.getElementById('console-persons');
+    personsEl.innerHTML = '';
+
+    q.people.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'person-item';
+      div.style.cursor = 'pointer';
+      div.addEventListener('mouseover', function() { this.style.background = 'rgba(124,58,237,0.08)'; });
+      div.addEventListener('mouseout', function() { this.style.background = ''; });
+      div.addEventListener('click', function() { mcip_openPersonDrawer(p.i); });
+      div.innerHTML = `
+        <div class="avatar">${p.i}</div>
+        <div class="person-info">
+          <div class="person-name">${p.n}</div>
+          <div class="person-role">${p.r}</div>
+        </div>
+        <div class="score-pills">${p.tags.map(t => `<span class="pill pill-violet">${t}</span>`).join('')}</div>
+      `;
+      personsEl.appendChild(div);
+    });
+
+    // Update console input placeholder
+    document.querySelector('.console-input').value = q.q.replace('› ', '');
+  }
+</script>
+</body>
+</html>
