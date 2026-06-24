@@ -1,0 +1,61 @@
+{
+  "_comment": "MCIP domain config. Loaded when TALENT_DOMAIN=mcip.",
+  "_prefix_rule": "Every file in this directory is prefixed mcip_. No exceptions.",
+  "domain": "mcip",
+  "version": "v19",
+  "workbook": {
+    "name": "MCIP.xlsx",
+    "path_hint": "/Users/davemendoza/Desktop/Research_First_Sourcer_Automation/data/MCIP.xlsx",
+    "seed_sheet": "MASTER_COMMS_SEED_HUBS",
+    "leads_sheet": "COMMS_TALENT_LEADS",
+    "header_row": 2,
+    "data_start_row": 3
+  },
+  "runtime": {
+    "seed_hub_path": "mcip/MCIP_Seed_Hub_min.json",
+    "port": 8010,
+    "talent_domain": "mcip",
+    "fail_closed": true
+  },
+  "scoring_governance": {
+    "forbidden_signals": [
+      "followers",
+      "likes",
+      "views",
+      "engagement",
+      "virality"
+    ],
+    "authority_formula": "Trust_Signals * Source_Weight * Recurrence",
+    "influence_formula": "Breadth * Recurrence * Authority",
+    "invisible_titan_formula": "Authority + Influence - Public_Visibility",
+    "score_range": [
+      1,
+      10
+    ],
+    "score_type": "integer"
+  },
+  "priority_values": [
+    "Tier 1",
+    "Tier 2",
+    "Tier 3"
+  ],
+  "confidence_values": [
+    "CONFIRMED",
+    "HIGH",
+    "MEDIUM",
+    "LOW"
+  ],
+  "source_weights": {
+    "Congressional_Government": 10,
+    "Tier1_Conference": 10,
+    "Think_Tank_Author": 9,
+    "Major_Publication": 9,
+    "Major_Podcast": 8,
+    "Award_Program": 8,
+    "Newsletter": 7,
+    "Community": 6,
+    "Social_Platform": 3,
+    "Followers": 0,
+    "Engagement": 0
+  }
+}
